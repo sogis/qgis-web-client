@@ -147,12 +147,13 @@ function isTooltipSOGIS(){
 * @property-write sets bolSOGISTooltip true, if the server sends htmls
 * @desc as apache makes a directory listening, only html without the tag <html> is being treated as a response. Better solution is welcome
 */
-function getTooltipHtml(x,y, scale){
+function getTooltipHtml(x,y,scale,extent){
     Ext.Ajax.request({
         url:  strSOGISTooltipURL + getProject() + '/', // URL to the SOGIS tooltip
         params: {'x': x, //
                  'y': y,
-                 'scale': scale},
+                 'scale': scale,
+                 'extent': extent},
         method: 'GET',
         success: function(response){
             if (response.responseText.indexOf('webgis') == -1){
@@ -196,16 +197,7 @@ function showTooltip(str_html){
 * @return string with the project name
 */
 function getProject(){
-      str_url = document.URL;
-      arr_url = str_url.split('/');
-      str_url = arr_url[arr_url.length -1];
-      arr_url = str_url.split('?');
-      str_url = arr_url[0];
-      if (str_url.split('.qgs').length > 0){
-        arr_url = str_url.split('.qgs');
-        str_url = arr_url[0];
-      }
-      return str_url;
+      return wmsMapName.replace("/", "");
 }
 
 /**

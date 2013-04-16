@@ -1190,6 +1190,11 @@ function mapToolbarHandler(btn, evt) {
         var xy = geoExtMap.map.events.getMousePosition(evt);
         var geoxy = geoExtMap.map.getLonLatFromPixel(xy);
         var nDeci = 0;
+        var left = Math.round(geoExtMap.map.getExtent().left)
+        var bottom = Math.round(geoExtMap.map.getExtent().bottom)
+        var right = Math.round(geoExtMap.map.getExtent().right)
+        var top = Math.round(geoExtMap.map.getExtent().top)
+        var strExtent = left + ',' + bottom + ',' + right + ',' + top;
 		var currentScale = geoExtMap.map.getScale();
 			    if (currentScale <= 400) {
 			    	nDeci = 1;
@@ -1198,7 +1203,7 @@ function mapToolbarHandler(btn, evt) {
 			    	}
 			    }
                 if ((btn.id == "IdentifyTool") && (btn.pressed)) {
-                    getTooltipHtml(geoxy.lon.toFixed(nDeci), geoxy.lat.toFixed(nDeci), Math.round(currentScale));
+                    getTooltipHtml(geoxy.lon.toFixed(nDeci), geoxy.lat.toFixed(nDeci), Math.round(currentScale), strExtent);
                 }
             }
 
