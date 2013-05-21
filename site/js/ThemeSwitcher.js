@@ -332,6 +332,7 @@ ThemeSwitcher.prototype.changeTheme = function (dataView, index, node, evt) {
 				alert(errMessageExtentParamWrongPart1[lang] + "maxExtent" + errMessageExtentParamWrongPart2[lang]);
 			}
 		}
+		printLayoutsDefinded = false;
 		//now load the config of the new project
 		if (urlParamsOK) {
 			loadWMSConfig();
