@@ -285,20 +285,29 @@ function postLoading() {
 		});
 	}
 	
-	if (!initialLoadDone) {
-		printExtent = new GeoExt.plugins.PrintExtent({
-			printProvider: printProvider
-		});
+		if (!printExtent) {
+            printExtent = new GeoExt.plugins.PrintExtent({
+            printProvider: printProvider
+            });
+        } else {
+            printExtent.printProvider = printProvider;
+        }
+        //set this to false, so that printExtent object will be re-initalized
+        if (!printExtent.initialized) {
+            printExtent.initialized = false;
+        }
 
-		var styleHighLightLayer = new OpenLayers.Style();
-		styleHighLightLayer.addRules([
-		new OpenLayers.Rule({
-			symbolizer: symbolizersHighLightLayer
-		})]);
-		var styleMapHighLightLayer = new OpenLayers.StyleMap({
-			"default": styleHighLightLayer
-		});
-	}
+
+        if (!initialLoadDone) {
+            var styleHighLightLayer = new OpenLayers.Style();
+            styleHighLightLayer.addRules([
+                new OpenLayers.Rule({
+                symbolizer: symbolizersHighLightLayer
+            })]);
+            var styleMapHighLightLayer = new OpenLayers.StyleMap({
+            "default": styleHighLightLayer
+            });
+        }
 
 	var MapPanelRef = Ext.getCmp('MapPanel');
 
@@ -398,22 +407,6 @@ function postLoading() {
 			}]
 		});
 	}
-    
-
-    if (!printExtent) {
-     printExtent = new GeoExt.plugins.PrintExtent({
-       printProvider: printProvider
-     });
-  }
-  else {
-    printExtent.printProvider = printProvider;
-  }
-  //set this to false, so that printExtent object will be re-initalized
-  if (!printExtent.initialized) {
-    printExtent.initialized = false;
-  } 
-    
-    
 	else {
 		thematicLayer.name = layerTree.root.firstChild.text;
 		thematicLayer.url = wmsURI;
@@ -1085,54 +1078,49 @@ function postLoading() {
 					}
 				}]
 			});
+            }
+                } else {
+                    printLayoutsCombobox = Ext.getCmp('PrintLayoutsCombobox');
+                    printLayoutsCombobox.store.removeAll();
+                    printLayoutsCombobox.store.loadData(printCapabilities);
+                }
+                if (printLayoutsDefined == false) {
+                    //need to disable printing because no print layouts are defined in
+                    var printMapButton = Ext.getCmp('PrintMap');
+                    printMapButton.disable();
+                    printMapButton.setTooltip(printMapDisabledTooltipString[lang]);
+                } else {
+                    printLayoutsCombobox = Ext.getCmp('PrintLayoutsCombobox');
+                    printLayoutsCombobox.setValue(printLayoutsCombobox.store.getAt(0).data.name);
+                    //var printDPICombobox = Ext.getCmp('PrintDPICombobox');
+                    //printDPICombobox.setValue("300");
+                    //need to manually fire the event, because .setValue doesn't; index omitted, not needed
+                    //printDPICombobox.fireEvent("select", printDPICombobox, printDPICombobox.findRecord(printDPICombobox.valueField, "300"));
+                    //bug in spinnerField: need to explicitly show/hide printWindow (toolbar)
+                    printWindow.show();
+                    printWindow.hide();
+                }
+                    printExtent.hide();
 
-}
-}
-  else {
-    printLayoutsCombobox = Ext.getCmp('PrintLayoutsCombobox');
-    printLayoutsCombobox.store.removeAll();
-    printLayoutsCombobox.store.loadData(printCapabilities);
-  }
-  if (printLayoutsDefined == false) { 
-
-
-			//need to disable printing because no print layouts are defined in
-			var printMapButton = Ext.getCmp('PrintMap');
-			printMapButton.disable();
-			printMapButton.setTooltip(printMapDisabledTooltipString[lang]);
-	} else {
-        printLayoutsCombobox = Ext.getCmp('PrintLayoutsCombobox');
-        printLayoutsCombobox.setValue(printLayoutsCombobox.store.getAt(0).data.name);
-        //var printDPICombobox = Ext.getCmp('PrintDPICombobox');
-        //printDPICombobox.setValue("300");
-        //need to manually fire the event, because .setValue doesn't; index omitted, not needed
-        //printDPICombobox.fireEvent("select", printDPICombobox, printDPICombobox.findRecord(printDPICombobox.valueField, "300"));
-        //bug in spinnerField: need to explicitly show/hide printWindow (toolbar)
-        printWindow.show();
-        printWindow.hide();
-  }
-  printExtent.hide();
-  
-    if (initialLoadDone) {
-        if (identifyToolWasActive) {
-            identifyToolWasActive = false;
-            Ext.getCmp('IdentifyTool').toggle(true);
-        }
-        themeChangeActive = false;
-    }
-	
+                if (initialLoadDone) {
+                    if (identifyToolWasActive) {
+                        identifyToolWasActive = false;
+                        Ext.getCmp('IdentifyTool').toggle(true);
+                    }
+                    themeChangeActive = false;
+                }
 
 	//handle events for legend display
-    var selModel = layerTree.getSelectionModel();
-    //add listeners to selection model
-    selModel.addListener("selectionChange", layerTreeSelectionChangeHandlerFunction);
+  var selModel = layerTree.getSelectionModel();
+  //add listeners to selection model
+  selModel.addListener("selectionChange", layerTreeSelectionChangeHandlerFunction);
 
 	//show that we are done with initializing the map
 	mainStatusText.setText(modeNavigationString[lang]);
-    if (loadMask) {
-        loadMask.hide();
-    }
-    initialLoadDone = true;
+  if (loadMask) {
+    loadMask.hide();
+  }
+	initialLoadDone = true;
 }
 
 function getVisibleLayers(visibleLayers, currentNode){
@@ -1179,7 +1167,7 @@ function showLegendImage(treeNode) {
     if ("&" != wmsURI.substr(wmsURI.length -1, 1)){
       wmsURI = wmsURI + "&";
     }
-    var imageUrl = wmsURI + 'SERVICE=WMS&VERSION=1.3&REQUEST=GetLegendGraphics&FORMAT=image/png&EXCEPTIONS=application/vnd.ogc.se_inimage&WIDTH=195&LAYERS=' + encodeURIComponent(visibleLayers) + '&dpi=' + screenDpi + '&LAYERFONTSIZE=10&ITEMFONTSIZE=9&LAYERFONTBOLD=TRUE&SYMBOLSPACE=1';
+    var imageUrl = wmsURI + 'SERVICE=WMS&VERSION=1.3&REQUEST=GetLegendGraphics&FORMAT=image/png&EXCEPTIONS=application/vnd.ogc.se_inimage&WIDTH=195&LAYERS=' + encodeURIComponent(visibleLayers) + '&dpi=' + screenDpi + '&LAYERFONTSIZE=10&ITEMFONTSIZE=9&LAYERFONTBOLD=TRUE';
     var legendImage = '<p><img src="' + imageUrl + '" alt="Legend of Layer ' + visibleLayers + '" /></p>';
   }
   
@@ -1301,13 +1289,13 @@ function mapToolbarHandler(btn, evt) {
 				});
 				printExtent.initialized = true;
 			}
-             //need to check if current page matches entry of PrintLayoutsCombobox
-     var printLayoutsCombobox = Ext.getCmp('PrintLayoutsCombobox');
-     var currentIndex = printLayoutsCombobox.store.findExact('name',printLayoutsCombobox.getValue());
-     var currentRecord = printLayoutsCombobox.store.getAt(currentIndex);
-      if (printProvider.layout.data.size.width != currentRecord.data.size.width || printProvider.layout.data.size.height != currentRecord.data.size.height) {
-        printProvider.setLayout(currentRecord);
-      } 
+            //need to check if current page matches entry of PrintLayoutsCombobox
+            var printLayoutsCombobox = Ext.getCmp('PrintLayoutsCombobox');
+            var currentIndex = printLayoutsCombobox.store.findExact('name',printLayoutsCombobox.getValue());
+            var currentRecord = printLayoutsCombobox.store.getAt(currentIndex);
+            if (printProvider.layout.data.size.width != currentRecord.data.size.width || printProvider.layout.data.size.height != currentRecord.data.size.height) {
+                printProvider.setLayout(currentRecord);
+            } 
 			printExtent.page.setRotation(0, true);
 			Ext.getCmp('PrintLayoutRotation').setValue(0);
 			printExtent.page.fit(geoExtMap, {
