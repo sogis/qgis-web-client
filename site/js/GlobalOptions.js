@@ -11,7 +11,7 @@ var serverAndCGI = "http://srsofaioi12288.ktso.ch/wms"; //URL mit Name des qgis 
 //Define whether you want to use the GetProjectSettings extension of QGIS Server
 //for more configuration options in the project.
 //Set this to false to use GetCapabilities for older QGIS Server versions (<= 1.8).
-var useGetProjectSettings = false;
+var useGetProjectSettings = true;
 
 // show the layerOrderTab in the GUI
 var showLayerOrderTab = true;
