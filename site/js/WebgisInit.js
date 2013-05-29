@@ -1167,7 +1167,7 @@ function showLegendImage(treeNode) {
     if ("&" != wmsURI.substr(wmsURI.length -1, 1)){
       wmsURI = wmsURI + "&";
     }
-    var imageUrl = wmsURI + 'SERVICE=WMS&VERSION=1.3&REQUEST=GetLegendGraphics&FORMAT=image/png&EXCEPTIONS=application/vnd.ogc.se_inimage&WIDTH=195&LAYERS=' + encodeURIComponent(visibleLayers) + '&dpi=' + screenDpi + '&LAYERFONTSIZE=10&ITEMFONTSIZE=9&LAYERFONTBOLD=TRUE';
+    var imageUrl = wmsURI + 'SERVICE=WMS&VERSION=1.3&REQUEST=GetLegendGraphics&FORMAT=image/png&EXCEPTIONS=application/vnd.ogc.se_inimage&WIDTH=195&LAYERS=' + encodeURIComponent(visibleLayers) + '&dpi=' + screenDpi + '&LAYERFONTSIZE=10&ITEMFONTSIZE=9&LAYERFONTBOLD=TRUE&SYMBOLSPACE=1';
     var legendImage = '<p><img src="' + imageUrl + '" alt="Legend of Layer ' + visibleLayers + '" /></p>';
   }
   
