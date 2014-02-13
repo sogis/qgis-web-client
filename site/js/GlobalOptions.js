@@ -48,7 +48,7 @@ if (enableBingCommercialMaps || enableGoogleCommercialMaps) {
 }
 
 // do not show fields in ObjectIdentification results that have null values
-var suppressEmptyValues = true;
+var suppressEmptyValues = false;
 // hide geometry in ObjectIdentification results (should be only false if there is a good reason to do so)
 var suppressInfoGeometry = true;
 // do show field names in click-popup during object identification
@@ -253,7 +253,7 @@ var printCapabilities={
     {"name":"1:500'000","value":"500000"},
     {"name":"1:750'000","value":"750000"},
     {"name":"1:1'000'000","value":"1000000"},
-    {"name":"1:2'500'000","value":"3000000"}
+    {"name":"1:3'000'000","value":"3000000"}
     /*
     {"name":"1:5'000'000","value":"5000000"},
     {"name":"1:7'500'000","value":"7500000"},
