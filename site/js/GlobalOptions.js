@@ -308,10 +308,10 @@ if (!window.QGIS) {
 //see http://dev.openlayers.org/releases/OpenLayers-2.10/doc/apidocs/files/OpenLayers/Style-js.html
 var symbolizersHighLightLayer = {
   "Point": {
-    pointRadius: 4,
+    pointRadius: 10,
     graphicName: "circle",
     fillColor: "#FF8C00",
-    fillOpacity: 0.3,
+    fillOpacity: 0.4,
     strokeWidth: 1,
     strokeColor: "#FF8C00"
   },

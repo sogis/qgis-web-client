@@ -21,6 +21,16 @@ function initSOGISProjects(){
     
     removeButtons(); // remove all buttons
 
+    //close tooltip window, if opened
+    if (typeof(Ext.getCmp('tooltipWindow')) != 'undefined'){
+            Ext.getCmp('tooltipWindow').destroy();
+        }
+
+    //close permalink window, if opened
+    if (typeof(Ext.getCmp('permalinkWindow')) != 'undefined'){
+        Ext.getCmp('permalinkWindow').destroy();
+    }
+
     
     /* EXCEPTION SOVOTE */
     if ((getProject().indexOf('ea_') != -1 ||
@@ -179,7 +189,7 @@ function addButtons(arr_buttons_seperators){
 */
 function setDefaultButton(defaultButton){
     if (defaultButton != ""){
-        Ext.getCmp(defaultButton).toggle();
+        Ext.getCmp(defaultButton).toggle(true);
     }
 }
 

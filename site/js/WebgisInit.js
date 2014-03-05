@@ -418,7 +418,7 @@ function postLoading() {
 	}
 	else {
 		printProvider = new QGIS.PrintProvider({
-			method: "GET", // "POST" recommended for production use
+			method: "POST", // "POST" recommended for production use
 			capabilities: printCapabilities, // from the info.json script in the html
 			url: printUri
 		});
@@ -611,7 +611,6 @@ function postLoading() {
 		//to hide miles/feet in the graphical scale bar we need to adapt "olControlScaleLineBottom" in file /OpenLayers/theme/default/style.css: display:none;
 		geoExtMap.map.addControl(new OpenLayers.Control.ScaleLine());
 		geoExtMap.map.addControl(new OpenLayers.Control.PanZoomBar({zoomWorldIcon:true,forceFixedZoomLevel:false}));
-
 		//coordinate display
 		coordinateTextField = Ext.getCmp('CoordinateTextField')
 		geoExtMap.map.events.register('mousemove', this, function (evt) {
