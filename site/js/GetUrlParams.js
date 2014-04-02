@@ -18,7 +18,7 @@ var wmsMapName; // map parameter or appended map name (with URL rewriting)
 var maxExtent; //later holds the bounding box
 var olBoundsRegexp = /^-*[\d\.]+,-*[\d\.]+,-*[\d\.]+,-*[\d\.]+$/; //regExp to check whether bounding box matches OpenLayers bounding box format
 var urlString = "";
-var format = "image/png"; //the default image format
+var format = "image/jpeg"; //the default image format
 //var format = "image/png; mode=8bit"; //the default image format
 var origFormat = format; //the original default image format, format is temporarily changed
 var searchtables = null;
