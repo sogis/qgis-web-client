@@ -16,6 +16,7 @@ var intSOGISTooltipHeight = 400;
 var arr_SOGISButtons = ['measureDistance','measureArea','PrintMap','SendPermalink','ShowHelp','IdentifyTool'];
 var strSOGISDefaultButton = 'IdentifyTool';
 var strSOGISMinScale = null;
+var strSOGISMaxScale = null;
 
 
 var gis_projects = {
