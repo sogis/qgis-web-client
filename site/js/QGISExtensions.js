@@ -62,7 +62,7 @@ Ext.extend(QGIS.WMSCapabilitiesLoader, GeoExt.tree.WMSCapabilitiesLoader, {
         "wms": OpenLayers.Util.applyDefaults({
 
           "ComposerTemplates": function(node, obj) {
-            obj.composerTemplates = []
+            obj.composerTemplates = [];
             this.readChildNodes(node, obj.composerTemplates);
           },
           "ComposerTemplate": function(node, obj) {

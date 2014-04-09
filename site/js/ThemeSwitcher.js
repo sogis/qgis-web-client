@@ -18,6 +18,8 @@ function ThemeSwitcher(parentPanel) {
 	this.activeTopicIndex = 0; //points to all topics
 	this.activeTopicName = ""; //will hold the current topic filter later
 	this.titleAndTagFilter = ""; //will hold the current title or tag filter string later
+	this.activeProjectData = undefined; //will hold data of currently active project
+	
 	me = this;
 	//create a new jsonstore holding the topic-listing data
 	if (gis_projects) {
@@ -38,41 +40,60 @@ function ThemeSwitcher(parentPanel) {
 		//will be used to display a table of thumbnails
 		var topicCounter = 0;
 		var projListingArray = [];
+		var mapName = wmsMapName.replace(/\.qgs$/,'');
 		for (var i = 0; i < this.gisTopicListingStore.getCount(); i++) {
 			var topicRec = this.gisTopicListingStore.getAt(i);
 			for (var j = 0; j < topicRec.data.projects.length; j++) {
-				var projData = topicRec.data.projects[j];
+                var projData = topicRec.data.projects[j];
+                //SOGIS project is not being displayed in theme-switcher
                 if (projData.switcher == true){
-				    projData.topic = topicRec.data.name;
-				    var tooltip = themeSwitcherTooltipMapThemeString[lang] + projData.name;
-				    if (projData.tags) {
-				    	tooltip += "\n" + themeSwitcherTooltipTagString[lang] + projData.tags;
-				    }
-				    if (projData.responsible) {
-				    	tooltip += "\n" + themeSwitcherTooltipResponsibleString[lang] + projData.responsible;
-				    }
-				    if (projData.updateInterval) {
-				    	tooltip += "\n" + themeSwitcherTooltipUpdateString[lang] + projData.updateInterval;
-				    }
-				    if (projData.lastUpdate) {
-				    	tooltip += "\n" + themeSwitcherTooltipLastUpdateString[lang] + projData.lastUpdate;
-				    }
-				    var pwprotected = "no";
-				    if (projData.pwProtected) {
-				    	if (projData.pwProtected == "yes") {
-				    		pwprotected = "yes";
-				    		tooltip += "\n\n" + themeSwitcherTooltipPwProtectedString[lang] + ": " + projData.pwMessage;
-				    	}
-				    }
-				    projListingArray.push([topicCounter + '_' + projData.projectfile, projData.name, projData.topic, projData.projectfile, projData.tags, pwprotected, tooltip, projData]);
-			}
-			topicCounter++;
+                    projData.topic = topicRec.data.name;
+                    var tooltip = themeSwitcherTooltipMapThemeString[lang] + projData.name;
+                    if (projData.tags) {
+                        tooltip += "\n" + themeSwitcherTooltipTagString[lang] + projData.tags;
+                    }
+                    if (projData.responsible) {
+                        tooltip += "\n" + themeSwitcherTooltipResponsibleString[lang] + projData.responsible;
+                    }
+                    if (projData.updateInterval) {
+                        tooltip += "\n" + themeSwitcherTooltipUpdateString[lang] + projData.updateInterval;
+                    }
+                    if (projData.lastUpdate) {
+                        tooltip += "\n" + themeSwitcherTooltipLastUpdateString[lang] + projData.lastUpdate;
+                    }
+                    var pwprotected = "no";
+                    if (projData.pwProtected) {
+                        if (projData.pwProtected == "yes") {
+                            pwprotected = "yes";
+                            tooltip += "\n\n" + themeSwitcherTooltipPwProtectedString[lang] + ": " + projData.pwMessage;
+                        }
+                    }
+                    var projShowFeatureInfoLayerTitle = showFeatureInfoLayerTitle;
+                    if (typeof(projData.showFeatureInfoLayerTitle) == "boolean") {
+                        projShowFeatureInfoLayerTitle = projData.showFeatureInfoLayerTitle;
+                    }
+                    projData.showFeatureInfoLayerTitle = projShowFeatureInfoLayerTitle;
+                    var thumbnail = null;
+                    if (projData.thumbnail) {
+                        thumbnail = projData.thumbnail;
+                    }
+                    else {
+                        thumbnail = projData.projectfile + ".png";
+                    }
+                    projListingArray.push([topicCounter + '_' + projData.projectfile, projData.name, projData.topic, projData.projectfile, projData.tags, projData.showFeatureInfoLayerTitle, pwprotected, tooltip, thumbnail, projData]);
+                    //test to see if this record matches current project
+                    //variable "map" comes from file GetUrlParams.js
+                    if (projData.projectpath+"/"+projData.projectfile == mapName) {
+                        this.activeProjectData = projData;
+                    }
+                }
+                topicCounter++;
             }
 		}
 		//create a new json data store holding the project data
 		this.gisProjectListingStore = new Ext.data.ArrayStore({
 			storeId: 'gisProjectListingStore',
-			fields: ['id', 'projname', 'topic', 'projectfile', 'tags', 'pwprotected', 'tooltip', 'data'],
+			fields: ['id', 'projname', 'topic', 'projectfile', 'tags', 'showFeatureInfoLayerTitle', 'pwprotected', 'tooltip', 'thumbnail', 'data'],
 			idProperty: 'id',
 			data: projListingArray
 		});
@@ -105,7 +126,7 @@ ThemeSwitcher.prototype.openOrInitialize = function () {
 
 ThemeSwitcher.prototype.initialize = function () {
 	me = this;
-	var template = themeSwitcherTemplate?themeSwitcherTemplate:new Ext.XTemplate('<ul>', '<tpl for=".">', '<li class="project">', '<img width="300" height="200" class="thumbnail" src="thumbnails/{projectfile}.png" title="{tooltip}" />', '<tpl if="pwprotected==\'yes\'">', '<img class="pwProtected" src="gis_icons/lockIcon.png" width="32" height="32" />','</tpl>','<strong>{projname}', '<tpl if="pwprotected==\'yes\'">', ' - ' + themeSwitcherTooltipPwProtectedString[lang], '</tpl>', '</strong>', '</li>', '</tpl>', '</ul>');
+	var template = themeSwitcherTemplate?themeSwitcherTemplate:new Ext.XTemplate('<ul>', '<tpl for=".">', '<li class="project">', '<img width="300" height="200" class="thumbnail" src="thumbnails/{thumbnail}" title="{tooltip}" />', '<tpl if="pwprotected==\'yes\'">', '<img class="pwProtected" src="gis_icons/lockIcon.png" width="32" height="32" />','</tpl>','<strong>{projname}', '<tpl if="pwprotected==\'yes\'">', ' - ' + themeSwitcherTooltipPwProtectedString[lang], '</tpl>', '</strong>', '</li>', '</tpl>', '</ul>');
 
 	//add data view for grid thumbnails view
 	this.projectDataView = new Ext.DataView({
@@ -134,7 +155,7 @@ ThemeSwitcher.prototype.initialize = function () {
 		maximizable: true,
 		layout: 'border',
         constrain: false,
-        constrainHead: true,
+        constrainHeader: true,
 		listeners: {
 			"close": function (myWindow) {
 				me.themeSearchField.reset();
@@ -276,9 +297,9 @@ ThemeSwitcher.prototype.changeTheme = function (dataView, index, node, evt) {
 			legendMetadataWindow.close();
 		 }
 
-		//SOGIS has individual projects
+        //SOGIS has individual projects
         initSOGISProjects();
-
+		
 		//switch off GetFeatureInfo if active
 		if (identifyToolActive) {
 			identifyToolWasActive = true;
@@ -286,6 +307,7 @@ ThemeSwitcher.prototype.changeTheme = function (dataView, index, node, evt) {
 		}
 		themeChangeActive = true;
 		var projData = dataView.getSelectedRecords()[0].data.data;
+		this.activeProjectData = projData;
 		this.themeSearchField.reset();
 		this.filterThumbnailsByTitleOrTag('');
 		this.gisProjectListingStore.clearFilter(false);
@@ -327,7 +349,6 @@ ThemeSwitcher.prototype.changeTheme = function (dataView, index, node, evt) {
 		if (projData.searchtables) {
 			searchtables = projData.searchtables;
 		}
-        
 		//handle max extent
 		if (projData.maxExtent) {
 			//need to check validity of maxExtent parameter

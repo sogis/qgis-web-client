@@ -33,6 +33,10 @@ function customInit() {
 function customBeforeMapInit() {
 }
 
+// called before print
+function customBeforePrint() {
+}
+
 // called after map initialization
 function customAfterMapInit() {
 

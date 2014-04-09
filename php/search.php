@@ -4,8 +4,8 @@
 
     Generic search: just like search.wsgi
 
-    @copyright: 2013 by Alessandro Pasotti ItOpen (http://www.itopen.it)
-        <apasotti@gmail.com>
+    @copyright: 2013-2014 by Alessandro Pasotti -
+        ItOpen (http://www.itopen.it) <apasotti@gmail.com>
     @license: GNU AGPL, see COPYING for details.
 */
 
@@ -19,6 +19,14 @@ $map = get_map_path(@$_REQUEST['map']);
 $query = trim(@$_REQUEST['query']);
 // Get project
 $project = get_project($map);
+
+if (defined('THEMES_CHOOSABLE') && THEMES_CHOOSABLE) {
+    $selectable = "1";
+    $max_bbox = defined('MAX_BBOX') ? MAX_BBOX : null;
+} else {
+    $selectable = "0";
+    $max_bbox = null;
+}
 
 // WARNING: we are using layer names instead of table names, the
 // parameter name "searchtables" was not changed.
@@ -56,7 +64,7 @@ function build_postgis_search_query($dbtable, $search_column, $geom_column, $lay
     }
     #for each querystring
     for($j = 0; $j < count($querystrings); $j++){
-      
+
       $sql .= "$search_column ILIKE '%" . $querystrings[$j] . "%'";
 
       if ($j < count($querystrings) - 1){
@@ -84,7 +92,7 @@ function build_spatialite_search_query($dbtable, $search_column, $geom_column, $
     }
     #for each querystring
     for($j = 0; $j < count($querystrings); $j++){
-      
+
       $sql .= "$search_column LIKE '%" . $querystrings[$j] . "%'";
 
       if ($j < count($querystrings) - 1){
@@ -130,7 +138,6 @@ if(count($sql)){
         $sql .= ' LIMIT ' . SEARCH_LIMIT;
     }
     $sql .= ';';
-    //die($sql);
     // Get connection from the last layer
     $dbh = get_connection($layer, $project, $map);
     $stmt = $dbh->prepare($sql);
@@ -141,17 +148,17 @@ if(count($sql)){
     while ($row = $stmt->fetch()) {
         if($lastSearchCategory != $row['search_category']){
             $row_data[] = array(
-                "displaytext" => $row['search_category'],"searchtable" => null, "bbox" => null
+                "displaytext" => $row['search_category'],"searchtable" => null, "bbox" => $max_bbox, "showlayer" => null, "selectable" => $selectable
             );
         }
         $row_data[] = array(
-            "displaytext" => $row['displaytext'],"searchtable" => $row['searchtable'],"bbox" => $row['bbox']
+            "displaytext" => $row['displaytext'],"searchtable" => $row['searchtable'],"bbox" => $row['bbox'], "showlayer" => $row['searchtable'], "selectable" => "1"
         );
         $lastSearchCategory = $row['search_category'];
     }
     $resultString = '{"results": '.json_encode($row_data).'}';
     $resultString = str_replace('"bbox":"[','"bbox": [', $resultString);
-    $resultString = str_replace(']"}',']}', $resultString);
+    $resultString = str_replace(']",','],', $resultString);
 
     #we need to add the name of the callback function if the parameter was specified
     if ($cb = @$_REQUEST["cb"]){

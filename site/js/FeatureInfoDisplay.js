@@ -65,6 +65,8 @@ function showFeatureInfo(evt) {
                     true,  // closeBox
                     onClickPopupClosed // closeBoxCallBackFunction
                     );
+                // For the displacement problem
+                clickPopup.panMapIfOutOfView = Ext.isGecko;
                 clickPopup.autoSize = true;
                 clickPopup.events.fallThrough = false;
                 map.addPopup(clickPopup); //*/
@@ -92,6 +94,15 @@ function showFeatureInfoHover(evt) {
         var layerNodes = xmlDoc.getElementsByTagName("Layer");
         var text = '';
         var result = false;
+        //test if we need to show the feature info layer title
+        //either from global setting or from project setting
+        var showFILayerTitle = showFeatureInfoLayerTitle;
+        if (mapThemeSwitcher) {
+            if (mapThemeSwitcher.activeProjectData != undefined) {
+                showFILayerTitle = mapThemeSwitcher.activeProjectData.showFeatureInfoLayerTitle;
+            }
+        }
+
         for (var i = layerNodes.length - 1; i > -1; --i) {
             //case vector layers
             var featureNodes = layerNodes[i].getElementsByTagName("Feature");
@@ -99,7 +110,7 @@ function showFeatureInfoHover(evt) {
             var tooltipAttributeName = wmsLoader.layerProperties[layerNodes[i].getAttribute("name")].displayField || "tooltip";
             for (var j = 0; j < featureNodes.length; ++j) {
                 if (j == 0) {
-                    if (showHoverLayerTitle) {
+                    if (showFILayerTitle) {
                         text += '<h2 class="hoverLayerTitle">' + wmsLoader.layerProperties[layerNodes[i].getAttribute("name")].title + '</h2>';
                     }
                     result = true;
@@ -163,7 +174,7 @@ function showFeatureInfoHover(evt) {
             }
             for (var j = 0; j < rasterAttributeNodes.length; ++j) {
                 if (j == 0) {
-                    if (showHoverLayerTitle) {
+                    if (showFILayerTitle) {
                         text += '<h2 class="hoverLayerTitle">' + wmsLoader.layerProperties[layerNodes[i].getAttribute("name")].title + '</h2>';
                     }
                     result = true;
@@ -270,10 +281,19 @@ function clearFeatureSelected() {
 
 function parseFIResult(node) {
     if (node.hasChildNodes()) {
+		//test if we need to show the feature info layer title
+		//either from global setting or from project setting
+		var showFILayerTitle = showFeatureInfoLayerTitle;
+		if (mapThemeSwitcher) {
+			showFILayerTitle = mapThemeSwitcher.activeProjectData.showFeatureInfoLayerTitle;
+		}
         if (node.hasChildNodes() && node.nodeName == "Layer") {
             var hasAttributes = false;
             var rasterData = false;
-            var htmlText = "<h2>" + wmsLoader.layerProperties[node.getAttribute("name")].title + "</h2>";
+            var htmlText = "";
+			if (showFILayerTitle) {
+				htmlText += "<h2>" + wmsLoader.layerProperties[node.getAttribute("name")].title + "</h2>";
+			}
             var geoms = new Array();
             var layerChildNode = node.firstChild;
             while (layerChildNode) {
@@ -298,19 +318,28 @@ function parseFIResult(node) {
                                         hasAttributes = true;
                                     }
                                 } else {
-                                    htmlText += "\n   <tr>";
-                                    if (showFieldNamesInClickPopup) {
-                                        htmlText += "<td>" + attName + ":</td>";
-                                    }
-                                    // add hyperlinks for URLs in attribute values
-                                    if (attValue != '' && /http:\/\/.+\..+/i.test(attValue)) {
-                                        if (! /\<a./i.test(attValue)) {
-                                            //do not reformat already formated tags
-                                            attValue = "<a class=\"popupLink\" href=\"" + attValue + "\" target=\"_blank\">" + attValue + "</a>";
-                                        }
-                                    }
-                                    htmlText += "<td>" + attValue + "</td></tr>";
-                                    hasAttributes = true;
+                                    if (attName !== "maptip") {
+                                      htmlText += "\n   <tr>";
+                                      if (showFieldNamesInClickPopup) {
+                                          htmlText += "<td>" + attName + ":</td>";
+                                      }
+                                      // add hyperlinks for URLs in attribute values
+                                      if (attValue != '' && /^((http|https|ftp):\/\/).+\..+/i.test(attValue)) {
+                                          if (! /\<a./i.test(attValue)) {
+                                              //do not reformat already formated tags
+                                              attValue = "<a class=\"popupLink\" href=\"" + attValue + "\" target=\"_blank\">" + attValue + "</a>";
+                                          }
+                                      }
+                                      // add hyperlinks for URLs containing mediaurl pattern
+                                      if (mediaurl != ''){
+                                          var mediapattern = new RegExp(mediaurl,'i');
+                                          if (mediapattern.test(attValue)){
+                                              attValue = "<a href=\"/" + attValue + "\" target=\"_blank\">" + attValue + "</a>";
+                                          }
+                                      }
+                                      htmlText += "<td>" + attValue + "</td></tr>";
+                                      hasAttributes = true;
+                                  }
                                 }
                             }
                         }

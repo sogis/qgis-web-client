@@ -8,66 +8,8 @@ var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip/'; // URL to the 
 * 
 */
 function initSOGISProjects() {
-    //fun with zoom
-    //To iterate an entire layerTree
-
-    var allLayerTreeIDs = Array();
-    layerTree.root.firstChild.cascade(
-	   function (n) {
-           if (n.isLeaf()) {
-                allLayerTreeIDs.push([n.text,n.id]);
-           }
-    }
-);
-
-    function setTOCgray() {
-        for (var i=0;i<wmsLoader.projectSettings.capability.layers.length;i++){
-            MaxScale = Math.round(wmsLoader.projectSettings.capability.layers[i].maxScale);
-            if (MaxScale < 1){
-                MaxScale = 1;
-            } 
-
-            MinScale = Math.round(wmsLoader.projectSettings.capability.layers[i].minScale);
-            if (MinScale < 1){
-                MinScale = 1200000;
-            } 
-
-            //set content gray
-            if (wmsLoader.projectSettings.capability.layers[i].maxScale > geoExtMap.map.getScale() ||
-                wmsLoader.projectSettings.capability.layers[i].minScale < geoExtMap.map.getScale()) {
-                    try{
-                    for (var j=0;j<allLayerTreeIDs.length;j++){
-                        //comparison layerTree and info from getProjectsettings
-                        if (allLayerTreeIDs[j][0] == wmsLoader.projectSettings.capability.layers[i].title) {
-                            layerTree.root.findChild('id', allLayerTreeIDs[j][1], true).setCls('outsidescale');//add css for outside scale
-
-                            strTOCTooltip = 'Layer wird in den Massstäben 1:' + MaxScale + ' bis 1:' + MinScale + ' dargestellt.' 
-                            layerTree.root.findChild('id', allLayerTreeIDs[j][1], true).setTooltip(strTOCTooltip);
-                            layerTree.root.findChild('id', allLayerTreeIDs[j][1], true).isOutsideScale = true;
-                            layerTree.root.findChild('id', allLayerTreeIDs[j][1], true).MinScale = MinScale;
-                            layerTree.root.findChild('id', allLayerTreeIDs[j][1], true).MaxScale = MaxScale;
-                        }
-                    }
-                } catch(err){}
-                // reset gray
-                } else {
-                    try {
-                    for (var j=0;j<allLayerTreeIDs.length;j++){
-                        if (allLayerTreeIDs[j][0] == wmsLoader.projectSettings.capability.layers[i].title) {
-                            layerTree.root.findChild('id', allLayerTreeIDs[j][1], true).setTooltip(''); //empty tooltip
-                            node = layerTree.root.findChild('id', allLayerTreeIDs[j][1], true); //remove css class
-                            node.ui.removeClass('outsidescale'); //remove css class
-                            layerTree.root.findChild('id', allLayerTreeIDs[j][1], true).isOutsideScale = false;
-                            layerTree.root.findChild('id', allLayerTreeIDs[j][1], true).MinScale = MinScale;
-                            layerTree.root.findChild('id', allLayerTreeIDs[j][1], true).MinScale = MaxScale;
-                        }
-                    }
-                    } catch(err) {}
-                }
-            }
-    }
-    
-    //get sogis settings
+    removeButtons(); // remove all buttons
+//get sogis settings
     for (var i=0;i<gis_projects.topics.length; i++){
         for (var j=0;j<gis_projects.topics[i].projects.length; j++){
             if ( gis_projects.topics[i].projects[j].projectfile == getProject() ){
@@ -80,82 +22,15 @@ function initSOGISProjects() {
         }
     }
 
-    removeButtons(); // remove all buttons
 
-    function graygroups() {
-         arrLayerGroups = Array();
-         arrOutsideScale = Array();
-         arrMaxScale = Array();
-         arrMinScale = Array();
-         layerTree.root.firstChild.cascade(
-            function (n) {
-                if (!(n.isLeaf())) {
-                    layerTree.root.findChild('id', n.id, true).cascade(
-                    function (m) {
-                        // has to be a leaf and outside scale 
-                        if (m.isLeaf()){
-                            arrOutsideScale.push(m.isOutsideScale);
-                            arrMaxScale.push(m.MaxScale);
-                            arrMinScale.push(m.MinScale);
-                        }
-                    });
-                    arrLayerGroups.push([n.id, n.text, arrOutsideScale, arrMaxScale, arrMinScale]);
-                }
-                arrOutsideScale = [];
-                arrMaxScale = [];
-                arrMinScale = [];
-            }
-            );
-            //console.log(arrLayerGroups);
+    //TODO
+    MapOptions.maxScale = strSOGISMaxScale;
+    geoExtMap.map.setOptions(MapOptions);
 
-            for (var i=0;i<arrLayerGroups.length;i++){
-                // iterate all leaf layers within a group
-                bolGroupOutsideScale = true;
-                MinScale = 0;
-                MaxScale = 1000000;
-                for (var j=0;j<arrLayerGroups[i][2].length;j++){
-                    if (MinScale < arrLayerGroups[i][4][j]){
-                        MinScale = arrLayerGroups[i][4][j];
-                    } 
+    geoExtMap.map.events.on({ "zoomend": function (e) {
 
-                    if (MaxScale > arrLayerGroups[i][3][j]){
-                        MaxScale = arrLayerGroups[i][3][j];
-                    } 
-
-                    // if one single leaf layer is declared visible, the group has as well to be declared visible
-                    if (!arrLayerGroups[i][2][j]){
-                        bolGroupOutsideScale = false;
-                    }
-                }
-
-                // the group is declared invisible
-                if (bolGroupOutsideScale){
-                    layerTree.root.findChild('id', arrLayerGroups[i][0], true).setCls('outsidescale'); // add css class 
-                    strTOCTooltip = 'Layergruppe wird in den Massstäben 1:' + MaxScale + ' bis 1:' + MinScale + ' dargestellt.' 
-                    layerTree.root.findChild('id', arrLayerGroups[i][0], true).setTooltip(strTOCTooltip);
-
-                // the group is declared visible
-                } else { 
-                    node = layerTree.root.findChild('id', arrLayerGroups[i][0], true); //remove css class
-                    node.ui.removeClass('outsidescale'); //remove css class
-                    layerTree.root.findChild('id', arrLayerGroups[i][0], true).setTooltip('');
-                }
-            }
-    }
-//maxScale
-//TODO
-MapOptions.maxScale = strSOGISMaxScale;
-geoExtMap.map.setOptions(MapOptions);
-
-
-setTOCgray(); //when initialising
-graygroups(); //when initialising
-
-geoExtMap.map.events.on({ "zoomend": function (e) {
-    setTOCgray();
-    graygroups();
-    //if zoom inside sogisMaxScale zoom back
-    if (geoExtMap.map.getScale() < parseInt(strSOGISMaxScale) && strSOGISMaxScale != null) {
+        //if zoom inside sogisMaxScale zoom back
+        if (geoExtMap.map.getScale() < parseInt(strSOGISMaxScale) && strSOGISMaxScale != null) {
             geoExtMap.map.zoomToScale(strSOGISMaxScale);
             //Ext.MessageBox.alert("Masstabsbeschränkung", "Bei diesem Projekt darf nicht weiter hineingezoomt werden\n als 1:"+strSOGISMaxScale);  
             mainStatusText.setText('<p style="color:#ff0000;">Bei diesem Projekt darf nicht weiter hineingezoomt werden\n als 1:'+strSOGISMaxScale + '</p>');
@@ -165,7 +40,7 @@ geoExtMap.map.events.on({ "zoomend": function (e) {
                 mainStatusText.setText(modeNavigationString[lang]);
             }, 4000);
         }
-            }
+    }
     });
 
 
@@ -197,7 +72,7 @@ geoExtMap.map.events.on({ "zoomend": function (e) {
 
     }
 
-    if ( strSOGISDefaultButton == "sogistooltip") {
+    if ( strSOGISDefaultButton == "sogistooltip" ) {
         Ext.getCmp("ObjectIdentificationText").hide();
         Ext.getCmp("ObjectIdentificationModeCombo").hide();   
         Ext.getCmp("CenterPanel").doLayout(); 

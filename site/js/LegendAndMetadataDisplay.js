@@ -127,11 +127,12 @@ function showLegendAndMetadata(layertitle) {
 		FORMAT: "image/png",
 		EXCEPTIONS: "application/vnd.ogc.se_inimage",
 		BOXSPACE: 1,
-		LAYERSPACE: 2,
+		LAYERSPACE: 4,
 		SYMBOLSPACE: 1,
 		SYMBOLHEIGHT: 2,
-		LAYERFONTSIZE: 8,
-		ITEMFONTSIZE: 8,
+		LAYERFONTSIZE: 10,
+        LAYERFONTBOLD: 'TRUE',
+		ITEMFONTSIZE: 10,
 		LAYERS: layername,
 		DPI: screenDpi
 	});
@@ -192,6 +193,12 @@ function showLegendAndMetadata(layertitle) {
 	}
 	metadataText += '</div>'
 	metadataTab.update(metadataText);
+
+    //if no metadata shall be displayed, remove tab
+    //the var showMetaDataInLegend is defined in GlobalOptions.js
+    if (! showMetaDataInLegend ){
+        legendMetaTabPanel.remove('metadataTab', true);
+    }
 	
 	//create legend image
 	legendMetaTabPanel.activate(legendTab);
@@ -232,7 +239,7 @@ function setupLegendAndMetadataWindow() {
 			}
 		}
 	});
-	legendMetaTabPanel = Ext.getCmp('legendMetaTabPanel');
-	legendTab = Ext.getCmp('legendTab');
-	metadataTab = Ext.getCmp('metadataTab');
+    legendMetaTabPanel = Ext.getCmp('legendMetaTabPanel');
+    legendTab = Ext.getCmp('legendTab');
+    metadataTab = Ext.getCmp('metadataTab');
 }

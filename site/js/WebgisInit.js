@@ -7,7 +7,7 @@
  * https://github.com/qgis/qgis-web-client/blob/master/README
  * for the full text of the license and the list of contributors.
  *
-*/ 
+*/
 
 var geoExtMap;
 var layerTree;
@@ -16,8 +16,8 @@ var selectedQueryableLayers; //later an array of all visible (selected and query
 var allLayers; //later an array containing all leaf layers
 var thematicLayer, highlightLayer, featureInfoHighlightLayer;
 var googleSatelliteLayer;
+var googleMapLayer;
 var bingSatelliteLayer;
-// var bingApiKey = "add Bing api key here"; // http://msdn.microsoft.com/en-us/library/ff428642.aspx
 var highLightGeometry = new Array();
 var WMSGetFInfo, WMSGetFInfoHover;
 var lastLayer, lastFeature;
@@ -43,7 +43,8 @@ var mapInfoFieldName = "tooltip"; // this field is suppressed in the AttributeTr
 var identifyToolActive = false; // a state variable used to track whether the tooltip should be displayed or not
 var identifyToolWasActive = false; //this state variable is used during theme switching
 var initialLoadDone = false; //a state variable defining if an initial project was loaded or not
-var themeChangeActive = false; //status to indicate if theme chang is active
+var themeChangeActive = false; //status to indicate if theme change is active
+var mapThemeSwitcher = null; //later optionally holds reference to themeSwitcher
 var layerTreeSelectionChangeHandlerFunction; //a reference to the handler function of the selection tree
 var layerOrderPanel = null;
 var help_active = false; //help window is active or not
@@ -55,6 +56,7 @@ var legendTab; //a reference to the Ext tab holding the legend graphic
 var metadataTab; //a reference to the Ext tab holding the metadata information
 var measurePopup;
 var baseLayers = [];
+var currentlyVisibleBaseLayer = null;
 var layerImageFormats = layerImageFormats || []; // use config from GlobalOptions if any
 
 // Call custom Init in Customizations.js
@@ -64,7 +66,7 @@ Ext.onReady(function () {
 	//dpi detection
 	screenDpi = document.getElementById("dpiDetection").offsetHeight;
 	OpenLayers.DOTS_PER_INCH = screenDpi;
-	
+
 	//fix for IE <= 8, missing indexOf function
 	if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
@@ -113,6 +115,11 @@ Ext.onReady(function () {
 			{type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22, isBaseLayer: true}
 		);
 		baseLayers.push(googleSatelliteLayer);
+		googleMapLayer = new OpenLayers.Layer.Google(
+			"Google Map",
+			{type: google.maps.MapTypeId.MAP, numZoomLevels: 22, isBaseLayer: true}
+		);
+		baseLayers.push(googleMapLayer);
 	}
 	if (enableBingCommercialMaps) {
 		bingSatelliteLayer = new OpenLayers.Layer.Bing({
@@ -124,7 +131,7 @@ Ext.onReady(function () {
 		});
 		baseLayers.push(bingSatelliteLayer);
 	}
-	
+
 	if (urlParamsOK) {
 		loadWMSConfig();
 	} else {
@@ -196,7 +203,7 @@ function loadWMSConfig() {
 		    }
 	});
 
-	layerTree.setRootNode(root);	
+	layerTree.setRootNode(root);
 
 }
 
@@ -270,7 +277,7 @@ function postLoading() {
 			//GetProjectSettings response - we need to adapt the drawing order from the project
 			visibleLayers = layersInDrawingOrder(wmsLoader.initialVisibleLayers);
 		}
-			
+
 		layerTree.root.firstChild.expand(true, false);
 		// expand all nodes in order to allow toggling checkboxes on deeper levels
 		layerTree.root.findChildBy(function () {
@@ -290,13 +297,13 @@ function postLoading() {
 				return false;
 			}, null, true);
 		}
-		
+
 		//we need to get a flat list of visible layers so we can set the layerOrderPanel
 		getVisibleFlatLayers(layerTree.root.firstChild);
 
 		// add abstracts to project node and group nodes
 		addAbstractToLayerGroups();
-		
+
 		// add components to tree nodes while tree is expanded to match GUI layout
 		// info buttons in layer tree
 		addInfoButtonsToLayerTree();
@@ -315,14 +322,18 @@ function postLoading() {
 		Ext.getCmp('measureDistance').toggleHandler = mapToolbarHandler;
 		Ext.getCmp('measureArea').toggleHandler = mapToolbarHandler;
 		Ext.getCmp('PrintMap').toggleHandler = mapToolbarHandler;
-        // Remove permaLinkURLShortener if not defined
-        if(typeof(permaLinkURLShortener) == 'undefined' || ! permaLinkURLShortener){
+        // check for undefined to not break existing installations
+        if (typeof(enablePermalink) == 'undefined') {
+            enablePermalink = true;
+        }
+        // Remove permaLinkButton as configured in GlobalOptions
+        if (!enablePermalink) {
             Ext.getCmp('SendPermalink').destroy();
         } else {
             Ext.getCmp('SendPermalink').handler = mapToolbarHandler;
         }
 		Ext.getCmp('ShowHelp').handler = mapToolbarHandler;
-		
+
 		// Add custom buttons (Customizations.js)
 		customToolbarLoad();
 
@@ -336,7 +347,7 @@ function postLoading() {
 			layerTree.fireEvent("leafschange");
 		});
 	}
-	
+
 	//test if max extent was set from URL or project settings
 	//if not, set map parameters from GetProjectSettings/GetCapabilities
 	//get values from first layer group (root) of project settings
@@ -355,7 +366,7 @@ function postLoading() {
 					LayerOptions
 				);
 				dummyLayer.projection = new OpenLayers.Projection(authid);
-				var reverseAxisOrder = dummyLayer.reverseAxisOrder(); 
+				var reverseAxisOrder = dummyLayer.reverseAxisOrder();
 				maxExtent = OpenLayers.Bounds.fromArray(bboxArray, reverseAxisOrder);
 			}
 		}
@@ -422,8 +433,9 @@ function postLoading() {
 			capabilities: printCapabilities, // from the info.json script in the html
 			url: printUri
 		});
+        printProvider.addListener("beforeprint", customBeforePrint);
 	}
-	
+
 	if (!printExtent) {
 		printExtent = new GeoExt.plugins.PrintExtent({
 			printProvider: printProvider
@@ -534,7 +546,7 @@ function postLoading() {
 			"FORMAT": format
 		});
 	}
-	
+
 	if (!initialLoadDone) {
 		if (urlParams.startExtent) {
 			var startExtentParams = urlParams.startExtent.split(",");
@@ -565,6 +577,9 @@ function postLoading() {
 				Ext.getCmp('navZoomBoxButton').toggle(false);
 			}
 		});
+
+        //scale listener to gray out names in TOC, which are outside visible scale
+        geoExtMap.map.events.register('zoomend', this, this.setGrayNameWhenOutsideScale);
 
 		// loading listeners
 		thematicLayer.events.register('loadstart', this, function() {
@@ -648,7 +663,7 @@ function postLoading() {
 		navHistoryCtrl = new OpenLayers.Control.NavigationHistory();
 		geoExtMap.map.addControl(navHistoryCtrl);
 	}
-	
+
 	//controls for getfeatureinfo
 	selectedQueryableLayers = layersInDrawingOrder(selectedQueryableLayers);
 
@@ -685,7 +700,7 @@ function postLoading() {
 	});
 	WMSGetFInfoHover.events.register("getfeatureinfo", this, showFeatureInfoHover);
 	geoExtMap.map.addControl(WMSGetFInfoHover);
-	
+
 	//overview map
 	if (!initialLoadDone) {
 		OverviewMapOptions.maxExtent = maxExtent;
@@ -784,7 +799,7 @@ function postLoading() {
 
 		//map themes panel
 		if (mapThemeSwitcherActive == true) {
-			var MyThemeSwitcher = new ThemeSwitcher(Ext.getCmp('MapPanel'));
+			mapThemeSwitcher = new ThemeSwitcher(Ext.getCmp('MapPanel'));
 		} else {
 			// hide map theme button
 			Ext.getCmp('mapThemeButton').hide();
@@ -833,7 +848,7 @@ function postLoading() {
 
         /*
          * Show search panel results
-         */ 
+         */
         function showSearchPanelResults(searchPanelInstance, features){
             if(features.length){
                 // Here we select where to show the search results
@@ -841,12 +856,16 @@ function postLoading() {
                 if(typeof(mapSearchPanelOutputRegion) == 'undefined'){
                    mapSearchPanelOutputRegion = 'default';
                 }
+                // These option are for different output modes
+                var collapsible = true;
+                var autoHeight = true;
                 switch(mapSearchPanelOutputRegion){
                     case 'right':
                         targetComponent = Ext.getCmp('RightPanel');
                     break;
                     case 'bottom':
                         targetComponent = Ext.getCmp('BottomPanel');
+                        collapsible = false; // No collapsible in bottom
                     break;
                     case 'popup':
                         if(typeof(Ext.getCmp('SearchResultsPopUp')) == 'undefined'){
@@ -860,6 +879,8 @@ function postLoading() {
                                 closeAction: 'hide'
                             });
                         }
+                        autoHeight = false; // No scrollbars if true
+                        collapsible = false; // No collapsible in popup
                         targetComponent = Ext.getCmp('SearchResultsPopUp');
                     break;
                     case 'default':
@@ -871,17 +892,19 @@ function postLoading() {
                 targetComponent.show();
                 targetComponent.collapsible && targetComponent.expand();
                 // Delete and re-create
-                if(searchPanelInstance.resultsGrid){
+                try {
                     Ext.getCmp('SearchPanelResultsGrid').destroy();
+                } catch(e) {
+                    // Eventually log...
                 }
                 searchPanelInstance.resultsGrid = new Ext.grid.GridPanel({
                   id: 'SearchPanelResultsGrid',
                   title: searchResultString[lang],
-                  collapsible: true,
+                  collapsible: collapsible,
                   collapsed: false,
                   store: searchPanelInstance.store,
                   columns: searchPanelInstance.gridColumns,
-                  autoHeight: true,
+                  autoHeight: autoHeight, // No vert. scrollbars in popup if true!!
                   viewConfig: {
                     forceFit: true
                   }
@@ -894,11 +917,17 @@ function postLoading() {
                 searchPanelInstance.resultsGrid.collapsible && searchPanelInstance.resultsGrid.expand();
             } else {
                 // No features: shouldn't we warn the user?
-                Ext.MessageBox.alert(searchPanelTitleString[lang], searchNoRecordsFoundString[lang]);                
+                Ext.MessageBox.alert(searchPanelTitleString[lang], searchNoRecordsFoundString[lang]);
+                try {
+                    Ext.getCmp('SearchPanelResultsGrid').destroy();
+                } catch(e) {
+                    // Eventually log...
+                }
+                searchPanelInstance.resultsGrid = null;
             }
             return true;
         }
-        
+
 		//search panel and URL search parameters
 		var searchPanelConfigs = [];
 		if (wmsMapName in mapSearchPanelConfigs) {
@@ -1004,7 +1033,7 @@ function postLoading() {
 		//change array order
 		selectedLayers = layersInDrawingOrder(selectedLayers);
 		selectedQueryableLayers = layersInDrawingOrder(selectedQueryableLayers);
-		
+
 		//special case if only active layers are queried for feature infos
 		if (identificationMode == 'activeLayers') {
 			//only collect selected layers that are active
@@ -1048,42 +1077,78 @@ function postLoading() {
 				'QUERY_LAYERS': selectedActiveQueryableLayers.join(',')
 			};
 		}
+		// switch backgroundLayers
+		if (enableBGMaps) {
+			var checkedBackgroundNodes = [];
+			var newVisibleBaseLayer = null;
+			layerTree.root.lastChild.cascade(
+			function (n) {
+				if (n.isLeaf() && n.attributes.checked) {
+					checkedBackgroundNodes.push(n);
+				}
+			});
+			
+			if (checkedBackgroundNodes.length == 1) {
+				newVisibleBaseLayer = checkedBackgroundNodes[0].layer.name;
+			} else if (checkedBackgroundNodes.length == 2) {
+				layerTree.removeListener("leafschange",leafsChangeFunction);
+				layerTree.root.lastChild.cascade(
+				function (n) {
+					if (n.isLeaf() && n.attributes.checked) {
+						if (n.layer.name == currentlyVisibleBaseLayer) {
+							n.unselect();
+							n.layer.setVisibility(false);
+						} else {
+							newVisibleBaseLayer = n.layer.name;
+						}
+					}
+				});
+				layerTree.addListener('leafschange',leafsChangeFunction);
+			}
+			currentlyVisibleBaseLayer = newVisibleBaseLayer;
+		}
 	}
-	
+
 	if (initialLoadDone) {
 		layerTree.removeListener("leafschange",leafsChangeFunction);
 	}
 	//add listeners for layertree
 	layerTree.addListener('leafschange',leafsChangeFunction);
-	
+
 	//deal with commercial external bg layers
 	if (enableBGMaps) {
 		var BgLayerList = new Ext.tree.TreeNode({
 			leaf: false,
 			expanded: true,
-			text: "Background Layers"
+			text: backgroundLayerTitleString[lang]
 		});
 
 		layerTree.root.appendChild(BgLayerList);
+		
+		if (visibleBackgroundLayer != null) {
+			initialBGMap = -1; 
+			// do not show any baseLayer if passed visibleBackgroundLayer is not found
+			for (var i = 0; i < baseLayers.length; i++) {
+				if (baseLayers[i].name == visibleBackgroundLayer) {
+					initialBGMap = i;
+					break;
+				}
+			}
+		}
 
-		if (enableBGMaps && baseLayers.length > 0) {
-			//todo use a more generic way to implement
-			var bgnode0 = new GeoExt.tree.LayerNode({
-				layer: baseLayers[0],
+		for (var i = 0; i < baseLayers.length; i++) {
+			baseLayers[i].setVisibility(i == initialBGMap);
+			var bgnode = new GeoExt.tree.LayerNode({
+				layer: baseLayers[i],
 				leaf: true,
-				checked: true,
+				checked: (i == initialBGMap),
 				uiProvider: Ext.tree.TriStateNodeUI
 			});
-			var bgnode1 = new GeoExt.tree.LayerNode({
-				layer: baseLayers[1],
-				leaf: true,
-				checked: false,
-				uiProvider: Ext.tree.TriStateNodeUI
-			});
-
-			BgLayerList.appendChild(bgnode0);
-			BgLayerList.appendChild(bgnode1);
-		}	
+			if (i == initialBGMap) {
+				currentlyVisibleBaseLayer = baseLayers[i].name;
+			}
+			BgLayerList.appendChild(bgnode);
+		}
 	}
 
 	if (!initialLoadDone) {
@@ -1285,7 +1350,7 @@ function postLoading() {
 		printWindow.hide();
 	}
 	printExtent.hide();
-	
+
 	if (initialLoadDone) {
 		if (identifyToolWasActive) {
 			identifyToolWasActive = false;
@@ -1293,7 +1358,7 @@ function postLoading() {
 		}
 		themeChangeActive = false;
 	}
-	
+
 	//handle selection events
 	var selModel = layerTree.getSelectionModel();
 	//add listeners to selection model
@@ -1305,6 +1370,9 @@ function postLoading() {
 		loadMask.hide();
 	}
 	initialLoadDone = true;
+
+    //draw layers outside scale gray
+    setGrayNameWhenOutsideScale();
 
 	// run the function in the Customizations.js
 	customAfterMapInit();
@@ -1335,6 +1403,20 @@ function getVisibleFlatLayers(currentNode) {
 	});
 }
 
+function getVisibleBackgroundLayer() {
+    var visibleBackgroundLayer = null;
+    
+    if (enableBGMaps) {
+        layerTree.root.lastChild.cascade(function(node) {
+            if (node.isLeaf() && node.attributes.checked) {
+                visibleBackgroundLayer = node.text;
+            }
+        });
+    }
+    return visibleBackgroundLayer;
+}
+        
+        
 function uniqueLayersInLegend(origArr) {
 	var newArr = [],
 	origLen = origArr.length,
@@ -1571,6 +1653,7 @@ function createPermalink(){
 	var permalinkParams = {};
 	visibleLayers = getVisibleLayers(visibleLayers, layerTree.root.firstChild);
 	visibleLayers = uniqueLayersInLegend(visibleLayers);
+	var visibleBackgroundLayer = getVisibleBackgroundLayer();
 	var startExtentArray = geoExtMap.map.getExtent().toArray();
 	var startExtent = startExtentArray[0] + "," + startExtentArray[1] + "," + startExtentArray[2] + "," + startExtentArray[3];
 
@@ -1597,6 +1680,9 @@ function createPermalink(){
 	// extent
 	permalinkParams.startExtent = startExtent;
 
+	// visible BackgroundLayer
+	permalinkParams.visibleBackgroundLayer = visibleBackgroundLayer;
+    
 	// visible layers and layer order
 	permalinkParams.visibleLayers = visibleLayers.toString();
 
@@ -1617,19 +1703,19 @@ function createPermalink(){
 	if (opacities != null) {
 		permalinkParams.opacities = Ext.util.JSON.encode(opacities);
 	}
-	
+
 	//layer order
 	permalinkParams.initialLayerOrder = layerOrderPanel.orderedLayers().toString();
 
 	// selection
-	permalinkParams.selection = thematicLayer.params.SELECTION;	
+	permalinkParams.selection = thematicLayer.params.SELECTION;
 	if (permaLinkURLShortener) {
 		permalink = encodeURIComponent(permalink + decodeURIComponent(Ext.urlEncode(permalinkParams)));
 	}
 	else {
-		permalink = permalink + Ext.urlEncode(permalinkParams);	
+		permalink = permalink + Ext.urlEncode(permalinkParams);
 	}
-	
+
 	return permalink;
 }
 
@@ -1855,4 +1941,135 @@ function imageFormatForLayers(layers) {
 		}
 	}
 	return format;
+}
+
+
+//this function checks if layers and layer-groups are outside scale-limits.
+//if a layer is outside scale-limits, its label in the TOC is being displayed in a light gray
+function setGrayNameWhenOutsideScale() {
+    if ( grayLayerNameWhenOutsideScale ) { //only if global boolean is set
+
+        //layers
+        //------
+        var allLayersWithIDs = new Array();
+
+        //iterate layer tree to get title and layer-id
+        layerTree.root.firstChild.cascade(
+            function (n) {
+                if (n.isLeaf()) {
+                    allLayersWithIDs.push([n.text,n.id]);
+                }
+            }
+        );
+
+        //iterate ProjectSettings
+        for (var i=0;i<wmsLoader.projectSettings.capability.layers.length;i++){
+
+            MaxScale = Math.round(wmsLoader.projectSettings.capability.layers[i].maxScale);
+            //if no MaxScale is defined
+            if (MaxScale < 1){
+                MaxScale = 1;
+            }
+
+            MinScale = Math.round(wmsLoader.projectSettings.capability.layers[i].minScale);
+            //if no MinScale is defined
+            if (MinScale < 1){ //if not defined, this value is very small
+                MinScale = 150000000; //within terrestrial dimensions big enough
+            }
+
+            //set content gray
+            if (wmsLoader.projectSettings.capability.layers[i].maxScale > geoExtMap.map.getScale() ||
+                wmsLoader.projectSettings.capability.layers[i].minScale < geoExtMap.map.getScale()) {
+                    for (var j=0;j<allLayersWithIDs.length;j++){
+                        //comparison layerTree and info from getProjectsettings
+                        if (allLayersWithIDs[j][0] == wmsLoader.projectSettings.capability.layers[i].title) {
+                                layerTree.root.findChild('id', allLayersWithIDs[j][1], true).setCls('outsidescale');//add css for outside scale
+                                strTOCTooltip = tooltipLayerTreeLayerOutsideScale[lang] + ' 1:' + MaxScale + ' - 1:' + MinScale
+                                layerTree.root.findChild('id', allLayersWithIDs[j][1], true).setTooltip(strTOCTooltip);
+                                layerTree.root.findChild('id', allLayersWithIDs[j][1], true).isOutsideScale = true;
+                                layerTree.root.findChild('id', allLayersWithIDs[j][1], true).MinScale = MinScale;
+                                layerTree.root.findChild('id', allLayersWithIDs[j][1], true).MaxScale = MaxScale;
+                            }
+                        }
+
+                    // reset gray
+                    } else {
+                        for (var j=0;j<allLayersWithIDs.length;j++){
+                            if (allLayersWithIDs[j][0] == wmsLoader.projectSettings.capability.layers[i].title) {
+                                layerTree.root.findChild('id', allLayersWithIDs[j][1], true).setTooltip(''); //empty tooltip
+                                node = layerTree.root.findChild('id', allLayersWithIDs[j][1], true); //remove css class
+                                node.ui.removeClass('outsidescale'); //remove css class
+                                layerTree.root.findChild('id', allLayersWithIDs[j][1], true).isOutsideScale = false;
+                                layerTree.root.findChild('id', allLayersWithIDs[j][1], true).MinScale = MinScale;
+                                layerTree.root.findChild('id', allLayersWithIDs[j][1], true).MinScale = MaxScale;
+                            }
+                        }
+                    }
+                }
+
+        // layer-groups
+        // ------------
+        var arrLayerGroups = new Array(); //array containing all layer-groups
+        var arrOutsideScale = new Array(); //array with the state of all layers within the group
+        var arrMaxScale = new Array(); //array with the defined max-scale of the group
+        var arrMinScale = new Array(); //array with the defined min-scale of the group
+
+        //iterate layer tree
+        layerTree.root.firstChild.cascade(
+            function (n) {
+                if (!(n.isLeaf())) {
+                    layerTree.root.findChild('id', n.id, true).cascade(
+                    function (m) {
+                        // has to be a leaf and outside scale
+                        if (m.isLeaf()){
+                            arrOutsideScale.push(m.isOutsideScale);
+                            arrMaxScale.push(m.MaxScale);
+                            arrMinScale.push(m.MinScale);
+                        }
+                    });
+                    //arrLayerGroups: layer-id, layer-name, boolean if currently outside scale, maxscale, minscale
+                    arrLayerGroups.push([n.id, n.text, arrOutsideScale, arrMaxScale, arrMinScale]);
+                }
+                // empty arrays for next iteration
+                arrOutsideScale = [];
+                arrMaxScale = [];
+                arrMinScale = [];
+            });
+
+        //iterate all leaf layers within a group
+        for (var i=0;i<arrLayerGroups.length;i++){
+            bolGroupOutsideScale = true;
+            MinScale = 0; //set an extreme minscale
+            MaxScale = 150000000; //set an extreme maxscale
+
+            for (var j=0;j<arrLayerGroups[i][2].length;j++){
+                //in each iteration take the bigger minscale
+                if (MinScale < arrLayerGroups[i][4][j]){
+                    MinScale = arrLayerGroups[i][4][j];
+                }
+                //in each iteration take the smallest maxscale
+                if (MaxScale > arrLayerGroups[i][3][j]){
+                    MaxScale = arrLayerGroups[i][3][j];
+                }
+
+                //if one single leaf layer is visible, the group has as well to be visible
+                if ( !arrLayerGroups[i][2][j] ){ //[2] = arrOutsideScale
+                    bolGroupOutsideScale = false;
+                }
+            }
+
+            //the group is invisible
+            if ( bolGroupOutsideScale ) {
+                layerTree.root.findChild('id', arrLayerGroups[i][0], true).setCls('outsidescale'); // add css class
+                strTOCTooltip = tooltipLayerTreeLayerOutsideScale[lang] + ' 1:' + MaxScale + ' - 1:' + MinScale
+                layerTree.root.findChild('id', arrLayerGroups[i][0], true).setTooltip(strTOCTooltip);
+
+            //the group is visible
+            } else {
+                node = layerTree.root.findChild('id', arrLayerGroups[i][0], true); //remove css class
+                node.ui.removeClass('outsidescale'); //remove css class
+                layerTree.root.findChild('id', arrLayerGroups[i][0], true).setTooltip('');
+            }
+        }
+    }
 }

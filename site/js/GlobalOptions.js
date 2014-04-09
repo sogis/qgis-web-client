@@ -17,6 +17,12 @@ var useGetProjectSettings = true;
 // show the layerOrderTab in the GUI
 var showLayerOrderTab = false;
 
+// show layername in layerTree in gray when layer is outside visible scale
+var grayLayerNameWhenOutsideScale = true;
+
+// show the tab metadata in legend
+var showMetaDataInLegend = false;
+
 // use geodesic measures, i.e. not planar measures
 // this is useful if a projection with high distortion of length/area is used, eg.g. GoogleMercator
 var useGeodesicMeasurement = false
@@ -39,23 +45,40 @@ var project_map = Ext.urlDecode(window.location.search.substring(1)).map;
 //use a URL shortener for your permalink function
 var permaLinkURLShortener = "/wsgi/createShortPermalink.wsgi";
 
-// enable to use commercial Google and Bing layers (also add BingApiKey in WebgisInit.js)
+// enable to use commercial Google and Bing layers (also add BingApiKey)
 var enableBingCommercialMaps = false;
+
+if (enableBingCommercialMaps) {
+    var bingApiKey = "add Bing api key here"; // http://msdn.microsoft.com/en-us/library/ff428642.aspx
+}
 var enableGoogleCommercialMaps = false;
 var enableBGMaps = false;
 if (enableBingCommercialMaps || enableGoogleCommercialMaps) {
-	enableBGMaps = true;
+enableBGMaps = true;
+}
+if (enableBGMaps) {
+// enter the index of the backgroundLayer to be visible after loading,
+// set to a value < 0 to not show any backgroundLayer
+// this setting is overridden if a value for url-parameter visibleBackgroundLayer is passed
+var initialBGMap = 0;
 }
 
+// media base URL to match media links in layer attributes
+var mediaurl = '';
 // do not show fields in ObjectIdentification results that have null values
 var suppressEmptyValues = false;
 // hide geometry in ObjectIdentification results (should be only false if there is a good reason to do so)
 var suppressInfoGeometry = true;
 // do show field names in click-popup during object identification
 var showFieldNamesInClickPopup = true;
-// do show the layer title in the hover popup
-var showHoverLayerTitle = true;
+// show or hide the layer title in the feature info popup
+// can be overwritten on a per-project basis in GISProjectListing.js
+var showFeatureInfoLayerTitle = true;
 // max-width and max-height of the feature-info popup can be controlled in site/css/popup.css
+
+//config for QGIS.SearchPanel
+//Number of results: FEATURE_COUNT in WMS request
+var simpleWmsSearchMaxResults = 10;
 
 //config for QGIS.SearchPanel
 var simpleWmsSearch = {
@@ -165,13 +188,13 @@ var projectTitles = {
 // The formats are applied in the order of the list, from highest to lowest priority.
 var layerImageFormats = [
   {
-    format: "image/jpeg",
+    format: "image/png",
     layers: ["Orthofoto"]
-  }/*,
+  },
   {
-    format: "image/jpeg",
-    layers: ["Orthofoto"]
-  }*/
+    format: "image/png",
+    layers: ["Basisplan"]
+  }
 ];
 
 //EPSG projection code of your QGIS project
