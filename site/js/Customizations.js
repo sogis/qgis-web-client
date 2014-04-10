@@ -31,6 +31,7 @@ function customInit() {
 
 // called before map initialization
 function customBeforeMapInit() {
+    setProjectSettings();
 }
 
 // called before print

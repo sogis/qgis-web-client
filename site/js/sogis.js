@@ -1,6 +1,42 @@
 var servername = "http://" + location.href.split(/\/+/)[1];
 var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip/'; // URL to the SOGIS tooltip
 
+function setProjectSettings() {
+    //get sogis settings
+    for (var i=0;i<gis_projects.topics.length; i++){
+        for (var j=0;j<gis_projects.topics[i].projects.length; j++){
+            if ( gis_projects.topics[i].projects[j].projectfile == getProject() ){
+                SOGISSettings = gis_projects.topics[i].projects[j]
+                intSOGISTooltipWidth = SOGISSettings.sogistooltipwidth;
+                intSOGISTooltipHeight = SOGISSettings.sogistooltipheight;
+                arr_SOGISButtons = SOGISSettings.sogisbuttons;
+                strSOGISDefaultButton = SOGISSettings.sogisdefaultbutton;
+                strSOGISMaxScale = SOGISSettings.sogismaxscale;
+                searchtables = SOGISSettings.searchtables;
+                strSOGISSearchHelpText = SOGISSettings.sogissearchhint;
+            }
+        }
+    }
+    
+    // additional searchtables from url (GET)
+    if (urlParams.searchtables) {
+        if (searchtables.trim() == '') {
+            searchtables = urlParams.searchtables;
+        } else {
+            searchtables += ',' + urlParams.searchtables;
+        }
+    }
+
+    // build search hint
+    strSearchHelpText = '<b>Suche</b><br/>';
+    strSearchHelpText += 'Um nur in bestimmten Datenbereichen zu suchen,<br/>';
+    strSearchHelpText += 'können Sie Kürzel verwenden:<br/><br/>';
+    strSearchHelpText += '- Point of Interest: <b>poi</b><br/>';
+    strSearchHelpText += '- Flurnamen: <b>flurname</b><br/>';
+    strSearchHelpText += '- GB-Nummer: <b>gbnr</b><br/>';
+    strSearchHelpText += '- EGID: <b>egid</b><br/>';
+    strSOGISSearchHelpText = strSearchHelpText + strSOGISSearchHelpText;
+}
 
 
 /**
@@ -8,19 +44,24 @@ var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip/'; // URL to the 
 * 
 */
 function initSOGISProjects() {
-    removeButtons(); // remove all buttons
-//get sogis settings
-    for (var i=0;i<gis_projects.topics.length; i++){
-        for (var j=0;j<gis_projects.topics[i].projects.length; j++){
-            if ( gis_projects.topics[i].projects[j].projectfile == getProject() ){
-                intSOGISTooltipWidth = gis_projects.topics[i].projects[j].sogistooltipwidth;
-                intSOGISTooltipHeight = gis_projects.topics[i].projects[j].sogistooltipheight;
-                arr_SOGISButtons = gis_projects.topics[i].projects[j].sogisbuttons;
-                strSOGISDefaultButton = gis_projects.topics[i].projects[j].sogisdefaultbutton;
-                strSOGISMaxScale = gis_projects.topics[i].projects[j].sogismaxscale;
-            }
-        }
-    }
+
+    removeButtons(); //remove all buttons
+    setProjectSettings(); //set settings from GISProjectlisting.js
+
+
+    //reset search field for projectspecifig search
+    Ext.getCmp('qgissearchcombo').destroy();
+    qgisSearchCombo = new QGIS.SearchComboBox({
+                        map: geoExtMap.map,
+                        highlightLayerName: 'attribHighLight',
+                        hasReverseAxisOrder: thematicLayer.reverseAxisOrder(),
+                        id: 'qgissearchcombo',
+                        width: 300,
+                        searchtables: searchtables
+                    });
+     myTopToolbar = Ext.getCmp('myTopToolbar');
+     myTopToolbar.insert(myTopToolbar.items.length, qgisSearchCombo);
+     myTopToolbar.doLayout();
 
 
     //TODO

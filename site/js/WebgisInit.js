@@ -771,6 +771,7 @@ function postLoading() {
 					map: geoExtMap.map,
 					width: 300,
 					minChars: 2,
+                    id: 'qgissearchcombo',
 					loadingText: geonamesLoadingString[lang],
 					emptyText: geonamesEmptyString[lang]
 				});
@@ -787,6 +788,7 @@ function postLoading() {
 				qgisSearchCombo = new QGIS.SearchComboBox({
 					map: geoExtMap.map,
 					highlightLayerName: 'attribHighLight',
+                    id: 'qgissearchcombo',
 					hasReverseAxisOrder: thematicLayer.reverseAxisOrder(),
 					width: 300,
 					searchtables: searchtables

@@ -516,16 +516,9 @@ QGIS.SearchComboBox = Ext.extend(Ext.form.ComboBox, {
   // private
   afterrenderHandler: function() {
     this.trigger["hide"]();
-    //SOGIS: Tooltip 4 search help
-    textHilfe = '<b>Suche</b><br/>';
-    textHilfe += 'Um nur in bestimmten Datenbereichen zu suchen,<br/>';
-    textHilfe += 'können Sie Kürzel verwenden:<br/><br/>';
-    textHilfe += '- Point of Interest: <b>poi</b><br/>';
-    textHilfe += '- Flurnamen: <b>flurname</b><br/>';
-    textHilfe += '- GB-Nummer: <b>gbnr</b><br/>';
-    textHilfe += '- EGID: <b>egid</b><br/>';
-
-    Ext.QuickTips.register({ target: this.getEl(), text: textHilfe });
+    // Begin SOGIS: Tooltip 4 search
+    Ext.QuickTips.register({ target: this.getEl(), text: strSOGISSearchHelpText });
+    // End SOGIS
   },
 
   beforeselectHandler: function(combo,record,index) {
