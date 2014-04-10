@@ -37,7 +37,7 @@ var gis_projects = {
           "updateInterval": "occasional",
           "responsible": "Amtliche Vermessung",
           "tags": "Ortsplan",
-          "switcher": false,
+          "switcher": true,
           "searchtables": "",
           "sogissearchhint": "",
           "sogistooltipwidth" : 300,

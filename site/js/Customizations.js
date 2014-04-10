@@ -115,4 +115,11 @@ function customMapToolbarHandler(btn, evt) {
               openlayersClickEvent.deactivate();
          }
      }
+
+    if (btn.id != strSOGISDefaultButton){
+        if (!btn.pressed) {
+            Ext.getCmp(strSOGISDefaultButton).toggle(true);
+        }
+    }
 }
+

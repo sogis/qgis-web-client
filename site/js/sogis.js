@@ -2,6 +2,7 @@ var servername = "http://" + location.href.split(/\/+/)[1];
 var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip/'; // URL to the SOGIS tooltip
 
 function setProjectSettings() {
+    strSOGISSearchHelpText = '';
     //get sogis settings
     for (var i=0;i<gis_projects.topics.length; i++){
         for (var j=0;j<gis_projects.topics[i].projects.length; j++){
@@ -115,6 +116,7 @@ function initSOGISProjects() {
 
     if ( strSOGISDefaultButton == "sogistooltip" ) {
         Ext.getCmp("ObjectIdentificationText").hide();
+        Ext.getCmp("sogistooltip").hide(); // TODO BETTER
         Ext.getCmp("ObjectIdentificationModeCombo").hide();   
         Ext.getCmp("CenterPanel").doLayout(); 
         return true;
