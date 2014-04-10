@@ -116,9 +116,9 @@ function customMapToolbarHandler(btn, evt) {
          }
      }
 
-    if (btn.id != strSOGISDefaultButton){
+    if (btn.id != "sogistooltip"){
         if (!btn.pressed) {
-            Ext.getCmp(strSOGISDefaultButton).toggle(true);
+            Ext.getCmp("sogistooltip").toggle(true);
         }
     }
 }

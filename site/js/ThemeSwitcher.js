@@ -18,7 +18,7 @@ function ThemeSwitcher(parentPanel) {
 	this.activeTopicIndex = 0; //points to all topics
 	this.activeTopicName = ""; //will hold the current topic filter later
 	this.titleAndTagFilter = ""; //will hold the current title or tag filter string later
-	this.activeProjectData = undefined; //will hold data of currently active project
+	this.activeProjectData = ""; //will hold data of currently active project
 	
 	me = this;
 	//create a new jsonstore holding the topic-listing data
