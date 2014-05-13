@@ -119,6 +119,21 @@ var gis_projects = {
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip"
     },{
+          "name": "Ingeso",
+          "projectpath": "",
+          "projectfile": "ingeso",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Grundkarte",
+          "updateInterval": "occasional",
+          "responsible": "Amt für Umwelt",
+          "tags": "Ingeso",
+          "switcher": true,
+          "sogistooltipwidth" : "1000",
+          "sogistooltipheight" : "350",
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip"
+    },{
           "name": "Baugrundklassen",
           "projectpath": "",
           "projectfile": "baugrundklassen",

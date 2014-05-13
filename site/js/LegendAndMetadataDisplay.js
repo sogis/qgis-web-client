@@ -130,8 +130,8 @@ function showLegendAndMetadata(layertitle) {
 		LAYERSPACE: 2,
 		SYMBOLSPACE: 1,
 		SYMBOLHEIGHT: 2,
-		LAYERFONTSIZE: 8,
-		ITEMFONTSIZE: 8,
+		LAYERFONTSIZE: 10,
+		ITEMFONTSIZE: 10,
 		LAYERS: layername,
 		DPI: screenDpi
 	});
