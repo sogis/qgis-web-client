@@ -72,7 +72,8 @@ function customAfterMapInit() {
      });
  
      geoExtMap.map.addControl(openlayersClickEvent);
-     initSOGISProjects(); /* INIT SOGIS PROJECT */
+     initSOGISProjects(); //INIT SOGIS PROJECT
+     geoExtMap.map.zoomTo(1); //refresh
 }
 
 function customPostLoading() {

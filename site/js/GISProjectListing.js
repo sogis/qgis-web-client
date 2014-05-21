@@ -201,6 +201,21 @@ var gis_projects = {
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null
 
+    },{
+          "name": "Ingeso",
+          "projectpath": "",
+          "projectfile": "ingeso",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Gemeindegrenzen,Grundkarte schwarz-weiss,Ingeso Objekte/ Geotope",
+          "updateInterval": "occasional",
+          "responsible": "Amt für Umwelt",
+          "tags": "Inventar der geowissenschaftlich schützenswerten Objekte Kanton Solothurn Ingeso",
+          "switcher": false,
+          "sogistooltipwidth" : "500",
+          "sogistooltipheight" : "350",
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip"
     }]  
   },{
     "name": "Amt für Landwirtschaft",
@@ -244,6 +259,21 @@ var gis_projects = {
           "sogisdefaultbutton" : "IdentifyTool",
           "sogismaxscale" : null
  
+    },{
+          "name": "Inventarplan Wanderwege",
+          "projectpath": "",
+          "projectfile": "wanderwege",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Gemeindegrenzen,Grundkarte schwarz-weiss,Wanderwege",
+          "updateInterval": "occasional",
+          "responsible": "Amt für Raumplanung",
+          "tags": "Inventarplan Wanderwege",
+          "switcher": false,
+          "sogistooltipwidth" : "500",
+          "sogistooltipheight" : "350",
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip"
     }]
   },{
     "name": "Gemeinden",

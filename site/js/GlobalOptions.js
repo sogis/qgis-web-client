@@ -210,14 +210,16 @@ var MapOptions = {
   projection: new OpenLayers.Projection(authid),
   units: "m",
   moveDelay: 10,
-  //resolutions: [4000, 3750, 3250, 3000, 2750, 2500, 2250, 2000, 1750, 1500, 1250, 1000, 750, 650, 500, 250, 100, 50, 20, 10, 5, 2, 1.5, 1, 0.5, 0.25, 0.1, 0.05],
-  //numZoomLevels: 29,
+  maxResolution: 250,
+  minResolution: 0.05,
+  resolutions: [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1, 0.05],
+  numZoomLevels: 14,
   //maxScale:50,
   //minScale:750000,
 //  numZoomLevels:20,
 
-  fractionalZoom: enableBGMaps ? false : true,
-  transitionEffect:"resize",
+  //fractionalZoom: enableBGMaps ? false : true,
+  //transitionEffect:"resize",
   fallThrough: false,
   controls: []
 };
@@ -240,9 +242,9 @@ var LayerOptions = {
 //overview map settings - do not change variable names!
 var OverviewMapOptions = {
   projection: new OpenLayers.Projection(authid),
-  units: "m",
+  //units: "m",
   maxScale:50,
-  minScale:1500000,
+  //minScale:1500000,
   transitionEffect:"resize"
 };
 var OverviewMapSize = new OpenLayers.Size(200,200);

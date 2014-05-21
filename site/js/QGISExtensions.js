@@ -517,7 +517,7 @@ QGIS.SearchComboBox = Ext.extend(Ext.form.ComboBox, {
   afterrenderHandler: function() {
     this.trigger["hide"]();
     // Begin SOGIS: Tooltip 4 search
-    Ext.QuickTips.register({ target: this.getEl(), text: strSOGISSearchHelpText });
+    Ext.QuickTips.register({ target: this.getEl(), text: strSOGISSearchHelpText, dismissDelay: 20000 });
     // End SOGIS
   },
 
