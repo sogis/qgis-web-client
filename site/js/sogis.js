@@ -1,6 +1,15 @@
 var servername = "http://"+location.href.split(/\/+/)[1];
 var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip/'; // URL to the SOGIS tooltip
 
+//search tooltip
+strSOGISSearchHelpText = '<b>Suche</b><br/>';
+strSOGISSearchHelpText += 'Um nur in bestimmten Datenbereichen zu suchen,<br/>';
+strSOGISSearchHelpText += 'können Sie Kürzel verwenden:<br/><br/>';
+strSOGISSearchHelpText += '- Point of Interest: <b>poi</b><br/>';
+strSOGISSearchHelpText += '- Flurnamen: <b>flurname</b><br/>';
+strSOGISSearchHelpText += '- GB-Nummer: <b>gbnr</b><br/>';
+strSOGISSearchHelpText += '- EGID: <b>egid</b><br/>';
+
 /**
 * @desc initialises the individual sogis projects
 * 

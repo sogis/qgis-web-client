@@ -407,6 +407,7 @@ Ext.extend(QGIS.PrintProvider, GeoExt.data.PrintProvider, {
         url : printCapabilities.url_proxy,
         method: printCapabilities.method,
         params :  url + '&project=' + wmsMapName,
+        timeout: 240000,
         success: function (response) {
             if (printCapabilities.method == 'POST') {
                 var jsonResp = Ext.util.JSON.decode(response.responseText); // GET URL from proxy
@@ -431,7 +432,7 @@ Ext.extend(QGIS.PrintProvider, GeoExt.data.PrintProvider, {
                 constrainHeader: true,
                 x:50,
                 y:50,
-                html: '<object data="'+img_src+'" type="application/pdf" width="100%" height="100%"><p style="margin:5px;">'+printingObjectDataAlternativeString1[lang] + img_src + printingObjectDataAlternativeString2[lang]
+                html: '<object data="'+img_src+'" type="application/pdf" width="100%" height="100%">'+printingObjectDataAlternativeString1[lang] + img_src + printingObjectDataAlternativeString2[lang] + '</object>'
             });
             pdfWindow.show();
         },
@@ -517,6 +518,8 @@ QGIS.SearchComboBox = Ext.extend(Ext.form.ComboBox, {
   // private
   afterrenderHandler: function() {
     this.trigger["hide"]();
+  // SOGIS Tooltip 4 search
+  Ext.QuickTips.register({ target: this.getEl(), text: strSOGISSearchHelpText, dismissDelay: 20000 });
   },
 
   beforeselectHandler: function(combo,record,index) {

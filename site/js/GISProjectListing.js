@@ -71,14 +71,14 @@ var gis_projects = {
     },{
           "name": "Grundbuchplan",
           "projectpath": "",
-          "projectfile": "grundbuchplan",
+          "projectfile": "grundbuchplan-nf",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Baulinien,Amtliche Vermessung (schwarz-weiss),Strassenkarte",
           "updateInterval": "occasional",
           "responsible": "Amtliche Vermessung",
           "tags": "Grundbuchplan",
-          "switcher": false,
+          "switcher": true,
           "sogistooltipwidth" : "400",
           "sogistooltipheight" : "300",
           "sogisbuttons" : default_buttons_seperators,
@@ -128,7 +128,7 @@ var gis_projects = {
           "updateInterval": "occasional",
           "responsible": "Amt für Umwelt",
           "tags": "Ingeso",
-          "switcher": true,
+          "switcher": false,
           "sogistooltipwidth" : "1000",
           "sogistooltipheight" : "350",
           "sogisbuttons" : default_buttons_seperators,
