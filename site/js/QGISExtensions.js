@@ -430,7 +430,10 @@ Ext.extend(QGIS.PrintProvider, GeoExt.data.PrintProvider, {
                 constrainHeader: true,
                 x:50,
                 y:50,
-                html: '<object data="'+img_src+'" type="application/pdf" width="100%" height="100%"><p style="margin:5px;">'+printingObjectDataAlternativeString1[lang] + img_src + printingObjectDataAlternativeString2[lang]
+                html: '<object data="'+img_src+'" type="application/pdf" width="100%" height="100%">'+
+                      '<embeded src="'+img_src+'" type="application/pdf" />'+
+                      '<a href="'+img_src+'" target="_blank">'+img_src+'</a>'+
+                      '</object>' 
             });
             pdfWindow.show();
         },

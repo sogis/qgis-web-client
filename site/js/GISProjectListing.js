@@ -82,11 +82,28 @@ var gis_projects = {
           "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool'],
           "sogisdefaultbutton" : "IdentifyTool",
           "sogismaxscale" : null
-
     },{
           "name": "Grundbuchplan",
           "projectpath": "",
           "projectfile": "grundbuchplan",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Baulinien,Amtliche Vermessung (schwarz-weiss),Strassenkarte",
+          "updateInterval": "occasional",
+          "responsible": "Amtliche Vermessung",
+          "tags": "Grundbuchplan",
+          "switcher": false,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 400,
+          "sogistooltipheight" : 300,
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null
+    },{
+          "name": "Grundbuchplan",
+          "projectpath": "",
+          "projectfile": "grundbuchplan-nf",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Baulinien,Amtliche Vermessung (schwarz-weiss),Strassenkarte",
@@ -101,7 +118,26 @@ var gis_projects = {
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null
+    },
+    {
 
+          "name": "Hoheitsgrenzsteine",
+          "projectpath": "",
+          "projectfile": "hoheitsgrenzsteine",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Hoheitsgrenzsteine,Amtliche Vermessung (schwarz-weiss),Strassenkarte",
+          "updateInterval": "occasional",
+          "responsible": "Amtliche Vermessung",
+          "tags": "Hoheitsgrenzsteine",
+          "switcher": false,
+          "searchtables": "qwebclient.search_hgs",
+          "sogissearchhint": "- Hoheitsgrenzsteine: <b>hgs</b>",
+          "sogistooltipwidth" : 400,
+          "sogistooltipheight" : 300,
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null
     }]
   },{
     "name": "Amt für Umwelt",

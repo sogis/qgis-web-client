@@ -138,6 +138,9 @@ body {
 }
 
 /* SOGIS TOOLTIP */
+.sogisTooltip {
+    margin: 2px;
+}
 .sogisTooltip h3 {
    	font-size : 11pt;
 	font-family : Verdana, Arial, Helvetica;
