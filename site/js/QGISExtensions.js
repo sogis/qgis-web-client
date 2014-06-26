@@ -645,7 +645,7 @@ QGIS.SearchComboBox = Ext.extend(Ext.form.ComboBox, {
         }
     }
     // highlight feature
-    if (this.useWmsHighlight || true) {
+    if (this.useWmsHighlight) {
       // use QGIS WMS highlight
       this.highlighter.highlightFeature({
         geom: result.responseText,
