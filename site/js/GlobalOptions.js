@@ -23,6 +23,10 @@ var grayLayerNameWhenOutsideScale = true;
 // show the tab metadata in legend
 var showMetaDataInLegend = false;
 
+// show maptips when mouse is over object, set to false if you just want to click and show results
+// if set to true every mouse position over feature of queriable layers is GetFeatureInfo request on server
+var enableHoverPopup = true;
+
 // use geodesic measures, i.e. not planar measures
 // this is useful if a projection with high distortion of length/area is used, eg.g. GoogleMercator
 var useGeodesicMeasurement = false
@@ -33,6 +37,14 @@ var useGeoNamesSearchBox = false;
 //URL for custom search scripts
 var searchBoxQueryURL = "/wsgi/search.wsgi?query=";
 var searchBoxGetGeomURL = "/wsgi/getSearchGeom.wsgi";
+
+// use QGIS WMS highlight for selected search result in search box
+var enableSearchBoxWmsHighlight = true;
+
+// If set, will make sure that the layer for the search results is
+// visible. This feature will work out of the box if PHP scripts are
+// used.
+var autoActivateSearchGeometryLayer = false;
 
 // Used to dynamically determine the project.
 var project_map = Ext.urlDecode(window.location.search.substring(1)).map;
@@ -99,6 +111,8 @@ var simpleWmsSearch = {
   gridColumns: [
     {header: 'Name', dataIndex: 'name', menuDisabled: 'true'}
   ],
+//  highlightFeature: true,
+//  highlightLabel: 'name',
   selectionLayer: 'Country',
   selectionZoom: 0,
   doZoomToExtent: true
@@ -125,6 +139,8 @@ var urlRewriteSearch = {
     {header: 'PKUID', dataIndex: 'pkuid', menuDisabled: 'true'},
     {header: 'Colour', dataIndex: 'colour', menuDisabled: 'true'}
   ],
+//  highlightFeature: true,
+//  highlightLabel: 'colour',
   selectionLayer: 'Hello',
   selectionZoom: 1
 };
@@ -204,6 +220,9 @@ var authid = "EPSG:"+21781;
 //set to true if you want the background to be transparent, layer image will be bigger (32 vs 24bit)
 var qgisLayerTransparency = false;
 
+//number of zoomlevels, uses main map layer and all base layers
+var ZOOM_LEVELS = 22;
+
 // OpenLayers global options
 // see http://dev.openlayers.org/releases/OpenLayers-2.10/doc/apidocs/files/OpenLayers/Map-js.html
 var MapOptions = {
@@ -216,11 +235,12 @@ var MapOptions = {
   numZoomLevels: 14,
   //maxScale:50,
   //minScale:750000,
-//  numZoomLevels:20,
-
   //fractionalZoom: enableBGMaps ? false : true,
   //transitionEffect:"resize",
   fallThrough: false,
+  //numZoomLevels:ZOOM_LEVELS,
+  fractionalZoom: enableBGMaps ? false : true,
+  transitionEffect:"resize",
   controls: []
 };
 
@@ -233,10 +253,13 @@ var LayerOptions = {
   transitionEffect:"resize",
   isBaseLayer: false,
   projection:authid,
-  yx: {"EPSG:900913": false}
+  yx: {"EPSG:900913": false},
   // If your projection is known to have an inverse axis order in WMS 1.3 compared to WMS 1.1 enter true for yx.
   // For EPSG:900913 OpenLayers should know it by default but because of a bug in OL 2.12 we enter it here.
-	
+  tileOptions: {
+    // use POST for long URLs
+    maxGetUrlLength: 2048
+  }
 };
 
 //overview map settings - do not change variable names!
@@ -354,8 +377,20 @@ var symbolizersHighLightLayer = {
   "Polygon": {
     strokeWidth: 2,
     strokeColor: "#FF8C00",
-    fillColor: "none"
+    fillColor: "none",
+    fillOpacity: 0
   }
+};
+
+// style for highlight labels of search results
+// font weight from 0 to 99 (Light: 25, Normal: 50, DemiBold: 63, Bold: 75, Black: 87)
+var highlightLabelStyle = {
+//  font: "Serif",
+  size: 12,
+//  weight: 75,
+  color: "#000000",
+  buffercolor: "#FFFFFF",
+  buffersize: 1
 };
 
 //styling for measure controls (distance and area)

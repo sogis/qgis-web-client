@@ -18,6 +18,7 @@ var thematicLayer, highlightLayer, featureInfoHighlightLayer;
 var googleSatelliteLayer;
 var googleMapLayer;
 var bingSatelliteLayer;
+var highlighter = null;
 var highLightGeometry = new Array();
 var WMSGetFInfo, WMSGetFInfoHover;
 var lastLayer, lastFeature;
@@ -112,12 +113,12 @@ Ext.onReady(function () {
 	if (enableGoogleCommercialMaps) {
 		googleSatelliteLayer = new OpenLayers.Layer.Google(
 			"Google Satellite",
-			{type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22, isBaseLayer: true}
+			{type: google.maps.MapTypeId.SATELLITE, numZoomLevels: ZOOM_LEVELS, isBaseLayer: true}
 		);
 		baseLayers.push(googleSatelliteLayer);
 		googleMapLayer = new OpenLayers.Layer.Google(
 			"Google Map",
-			{type: google.maps.MapTypeId.MAP, numZoomLevels: 22, isBaseLayer: true}
+			{type: google.maps.MapTypeId.MAP, numZoomLevels: ZOOM_LEVELS, isBaseLayer: true}
 		);
 		baseLayers.push(googleMapLayer);
 	}
@@ -433,7 +434,8 @@ function postLoading() {
 			capabilities: printCapabilities, // from the info.json script in the html
 			url: printUri
 		});
-        printProvider.addListener("beforeprint", customBeforePrint);
+		printProvider.addListener("beforeprint", customBeforePrint);
+		printProvider.addListener("afterprint", customAfterPrint);
 	}
 
 	if (!printExtent) {
@@ -671,7 +673,8 @@ function postLoading() {
 	selectedQueryableLayers = layersInDrawingOrder(selectedQueryableLayers);
 
 	if (initialLoadDone) {
-		geoExtMap.map.removeControl(WMSGetFInfoHover);
+		if (enableHoverPopup)
+			geoExtMap.map.removeControl(WMSGetFInfoHover);
 		geoExtMap.map.removeControl(WMSGetFInfo);
 	}
 	var fiLayer = new OpenLayers.Layer.WMS(layerTree.root.firstChild.text, wmsURI, {
@@ -692,18 +695,20 @@ function postLoading() {
 	WMSGetFInfo.events.register("nogetfeatureinfo", this, noFeatureInfoClick);
 	geoExtMap.map.addControl(WMSGetFInfo);
 
-	WMSGetFInfoHover = new OpenLayers.Control.WMSGetFeatureInfo({
-		layers: [fiLayer],
-		infoFormat: "text/xml",
-		queryVisible: true,
-		hover: true,
-		vendorParams: {
-			QUERY_LAYERS: selectedQueryableLayers.join(",")
-		}
-	});
-	WMSGetFInfoHover.events.register("getfeatureinfo", this, showFeatureInfoHover);
-	geoExtMap.map.addControl(WMSGetFInfoHover);
-
+	if (enableHoverPopup) {
+		WMSGetFInfoHover = new OpenLayers.Control.WMSGetFeatureInfo({
+			layers: [fiLayer],
+			infoFormat: "text/xml",
+			queryVisible: true,
+			hover: true,
+			vendorParams: {
+				QUERY_LAYERS: selectedQueryableLayers.join(",")
+			}
+		});
+		WMSGetFInfoHover.events.register("getfeatureinfo", this, showFeatureInfoHover);
+		geoExtMap.map.addControl(WMSGetFInfoHover);
+	}
+	
 	//overview map
 	if (!initialLoadDone) {
 		OverviewMapOptions.maxExtent = maxExtent;
@@ -720,6 +725,11 @@ function postLoading() {
 	else {
 		//todo: find out how to change the max extent in the OverviewMap
 	}
+
+    // highlighting
+    if (!initialLoadDone) {
+        highlighter = new QGIS.Highlighter(geoExtMap.map, thematicLayer);
+    }
 
 	//navigation actions
 	if (!initialLoadDone) {
@@ -792,7 +802,9 @@ function postLoading() {
 					map: geoExtMap.map,
 					highlightLayerName: 'attribHighLight',
                     id: 'qgissearchcombo',
-					hasReverseAxisOrder: thematicLayer.reverseAxisOrder(),
+					useWmsHighlight: enableSearchBoxWmsHighlight,
+					highlighter: highlighter,
+					hasReverseAxisOrder: false, // PostGIS returns bbox' coordinates always x/y
 					width: 300,
 					searchtables: searchtables
 				});
@@ -943,8 +955,8 @@ function postLoading() {
 			var searchTabPanel = Ext.getCmp('SearchTabPanel');
 			for (var i = 0; i < searchPanelConfigs.length; i++) {
 				var panel = new QGIS.SearchPanel(searchPanelConfigs[i]);
-				panel.on("featureselected", showFeatureSelected);
-				panel.on("featureselectioncleared", clearFeatureSelected);
+				panel.on("featureselected", highlighter.highlightFeature, highlighter);
+				panel.on("featureselectioncleared", highlighter.unhighlightFeature, highlighter);
 				panel.on("beforesearchdataloaded", showSearchPanelResults);
                 // Just for debugging...
 				// panel.on("afterdsearchdataloaded", function(e){console.log(e);});
@@ -1068,20 +1080,22 @@ function postLoading() {
 			WMSGetFInfo.vendorParams = {
 				'QUERY_LAYERS': selectedQueryableLayers.join(',')
 			};
+			if (enableHoverPopup) {
+				WMSGetFInfoHover.vendorParams = {
+					'QUERY_LAYERS': selectedQueryableLayers.join(',')
+				};
+			}
 		} else {
 			WMSGetFInfo.vendorParams = {
 				'QUERY_LAYERS': selectedActiveQueryableLayers.join(',')
 			};
-		}
-		if (identificationMode != 'activeLayers') {
-			WMSGetFInfoHover.vendorParams = {
-				'QUERY_LAYERS': selectedQueryableLayers.join(',')
-			};
-		} else {
+			if (enableHoverPopup) {
 			WMSGetFInfoHover.vendorParams = {
 				'QUERY_LAYERS': selectedActiveQueryableLayers.join(',')
 			};
+			}
 		}
+		
 		// switch backgroundLayers
 		if (enableBGMaps) {
 			var checkedBackgroundNodes = [];
@@ -1907,10 +1921,12 @@ function activateGetFeatureInfo(doIt) {
 	// activate/deactivate FeatureInfo
 	if (doIt) {
 		WMSGetFInfo.activate();
-		WMSGetFInfoHover.activate();
+		if (enableHoverPopup)
+			WMSGetFInfoHover.activate();
 	} else {
 		WMSGetFInfo.deactivate();
-		WMSGetFInfoHover.deactivate();
+		if (enableHoverPopup)
+			WMSGetFInfoHover.deactivate();
 	}
 }
 

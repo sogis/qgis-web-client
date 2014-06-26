@@ -38,6 +38,11 @@ function customBeforeMapInit() {
 function customBeforePrint() {
 }
 
+// called when printing is launched
+function customAfterPrint() {
+    // do something. e.g. rearrange your layers
+}
+
 // called after map initialization
 function customAfterMapInit() {
 
@@ -101,6 +106,8 @@ customButtons = [
 function customToolbarLoad() {
     Ext.getCmp('sogistooltip').toggleHandler = mapToolbarHandler;
 }
+
+
 
 // called when an event on toolbar is invoked
 function customMapToolbarHandler(btn, evt) {
