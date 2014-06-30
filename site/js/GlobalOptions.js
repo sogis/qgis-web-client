@@ -29,7 +29,7 @@ var enableHoverPopup = true;
 
 // use geodesic measures, i.e. not planar measures
 // this is useful if a projection with high distortion of length/area is used, eg.g. GoogleMercator
-var useGeodesicMeasurement = false
+var useGeodesicMeasurement = false;
 
 //search box for queries while typing
 //enable to use GeoNames search
@@ -361,7 +361,7 @@ if (!window.QGIS) {
 //see http://dev.openlayers.org/releases/OpenLayers-2.10/doc/apidocs/files/OpenLayers/Style-js.html
 var symbolizersHighLightLayer = {
   "Point": {
-    pointRadius: 10,
+    pointRadius: 4,
     graphicName: "circle",
     fillColor: "#FF8C00",
     fillOpacity: 0.4,
@@ -369,26 +369,26 @@ var symbolizersHighLightLayer = {
     strokeColor: "#FF8C00"
   },
   "Line": {
-    strokeWidth: 3,
+    strokeWidth: 1,
     strokeOpacity: 1,
     strokeColor: "#FF8C00",
     strokeDashstyle: "dash"
   },
   "Polygon": {
-    strokeWidth: 2,
+    strokeWidth: 1,
     strokeColor: "#FF8C00",
-    fillColor: "none",
-    fillOpacity: 0
+    fillColor: "#FF8C00",
+    fillOpacity: 0.4
   }
 };
 
 // style for highlight labels of search results
 // font weight from 0 to 99 (Light: 25, Normal: 50, DemiBold: 63, Bold: 75, Black: 87)
 var highlightLabelStyle = {
-//  font: "Serif",
-  size: 12,
+  font: "CadastraCondensed",
+  size: 10,
 //  weight: 75,
-  color: "#000000",
+  color: "#FF2800",
   buffercolor: "#FFFFFF",
   buffersize: 1
 };

@@ -55,7 +55,9 @@ function initSOGISProjects() {
     qgisSearchCombo = new QGIS.SearchComboBox({
                         map: geoExtMap.map,
                         highlightLayerName: 'attribHighLight',
-                        hasReverseAxisOrder: thematicLayer.reverseAxisOrder(),
+                        hasReverseAxisOrder: false,
+                        useWmsHighlight: enableSearchBoxWmsHighlight,
+                        highlighter: highlighter,
                         id: 'qgissearchcombo',
                         width: 300,
                         searchtables: searchtables
