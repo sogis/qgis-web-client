@@ -22,7 +22,7 @@ var strSOGISSearchHelpText = '';
 
 var gis_projects = {
   "path": "/maptest", /* DEPLOY !!! */
-  "mapserver": "/wms",
+  "mapserver": "/wmstest",
   "thumbnails": "/thumbnails",
   "title": "SO!GIS",
   "topics": [{
