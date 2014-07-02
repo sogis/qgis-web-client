@@ -1641,7 +1641,7 @@ function handleMeasurements(event) {
     measurePopup.keepInMap = true;
     measurePopup.panMapIfOutOfView = true;
     map.addPopup(measurePopup);
-    //measurePopup.setBackgroundColor("gray");
+    measurePopup.setBackgroundColor("gray");
     measurePopup.setOpacity(0.8);
 }
 

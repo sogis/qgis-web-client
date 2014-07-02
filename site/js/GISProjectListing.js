@@ -13,7 +13,7 @@ var default_buttons_seperators = [
 // default values when project is not yet configured in this document
 var intSOGISTooltipWidth = 300;
 var intSOGISTooltipHeight = 400;
-var arr_SOGISButtons = ['measureDistance','measureArea','PrintMap','SendPermalink','ShowHelp','IdentifyTool'];
+var arr_SOGISButtons = ['measureDistance','measureArea','PrintMap','SendPermalink','IdentifyTool','ShowHelp'];
 var strSOGISDefaultButton = 'IdentifyTool';
 var strSOGISMinScale = null;
 var strSOGISMaxScale = null;
@@ -79,7 +79,7 @@ var gis_projects = {
           "sogissearchhint": "",
           "sogistooltipwidth" : 600,
           "sogistooltipheight" : 300,
-          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool'],
+          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool','ShowHelp'],
           "sogisdefaultbutton" : "IdentifyTool",
           "sogismaxscale" : null
     },{
@@ -270,7 +270,7 @@ var gis_projects = {
           "sogissearchhint": "- Bienenstandorte: <b>bienen</b>",
           "sogistooltipwidth" : 400,
           "sogistooltipheight" : 300,
-          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool'],
+          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool','ShowHelp'],
           "sogisdefaultbutton" : "IdentifyTool",
           "sogismaxscale" : null
     }]  
@@ -291,7 +291,7 @@ var gis_projects = {
           "sogissearchhint": "",
           "sogistooltipwidth" : 400,
           "sogistooltipheight" : 300,
-          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool'],
+          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool','ShowHelp'],
           "sogisdefaultbutton" : "IdentifyTool",
           "sogismaxscale" : null
  
@@ -328,7 +328,7 @@ var gis_projects = {
           "sogissearchhint": "",
           "sogistooltipwidth" : 600,
           "sogistooltipheight" : 300,
-          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool'],
+          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool','ShowHelp'],
           "sogisdefaultbutton" : "IdentifyTool",
           //"sogismaxscale" : 50000
           "sogismaxscale" : null

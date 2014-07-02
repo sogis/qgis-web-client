@@ -70,7 +70,9 @@ function customAfterMapInit() {
                 },
                 method: 'GET',
                 success: function(response){
-                    showTooltip(response.responseText);  
+                    if (Ext.getCmp('IdentifyTool').hidden){ // TODO: better
+                        showTooltip(response.responseText); 
+                    }
                 }
              });
          }

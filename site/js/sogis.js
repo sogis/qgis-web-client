@@ -46,9 +46,9 @@ function setProjectSettings() {
 */
 function initSOGISProjects() {
 
+    Ext.getCmp("sogistooltip").toggle(false);
     removeButtons(); //remove all buttons
     setProjectSettings(); //set settings from GISProjectlisting.js
-
 
     //reset search field for projectspecifig search
     Ext.getCmp('qgissearchcombo').destroy();

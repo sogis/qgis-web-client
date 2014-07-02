@@ -25,7 +25,7 @@ var showMetaDataInLegend = false;
 
 // show maptips when mouse is over object, set to false if you just want to click and show results
 // if set to true every mouse position over feature of queriable layers is GetFeatureInfo request on server
-var enableHoverPopup = true;
+var enableHoverPopup = false;
 
 // use geodesic measures, i.e. not planar measures
 // this is useful if a projection with high distortion of length/area is used, eg.g. GoogleMercator
@@ -415,6 +415,6 @@ var sketchSymbolizersMeasureControls = {
     strokeOpacity: 1,
     strokeColor: "#FF0000",
     fillColor: "#FFFFFF",
-    fillOpacity: 0.3
+    fillOpacity: 0.4
   }
 };

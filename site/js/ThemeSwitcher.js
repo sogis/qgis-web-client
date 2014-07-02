@@ -298,7 +298,7 @@ ThemeSwitcher.prototype.changeTheme = function (dataView, index, node, evt) {
 		 }
 
         //SOGIS has individual projects
-        initSOGISProjects();
+        //initSOGISProjects();
 		
 		//switch off GetFeatureInfo if active
 		if (identifyToolActive) {
