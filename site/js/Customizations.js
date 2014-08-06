@@ -126,7 +126,7 @@ function customMapToolbarHandler(btn, evt) {
          }
      }
 
-    if (btn.id != "sogistooltip"){
+    if (btn.id != "sogistooltip" && btn.id != "IdentifyTool"){
         if (!btn.pressed) {
             Ext.getCmp("sogistooltip").toggle(true);
         }
