@@ -126,7 +126,7 @@ ThemeSwitcher.prototype.openOrInitialize = function () {
 
 ThemeSwitcher.prototype.initialize = function () {
 	me = this;
-	var template = themeSwitcherTemplate?themeSwitcherTemplate:new Ext.XTemplate('<ul>', '<tpl for=".">', '<li class="project">', '<img width="300" height="200" class="thumbnail" src="thumbnails/{thumbnail}" title="{tooltip}" />', '<tpl if="pwprotected==\'yes\'">', '<img class="pwProtected" src="gis_icons/lockIcon.png" width="32" height="32" />','</tpl>','<strong>{projname}', '<tpl if="pwprotected==\'yes\'">', ' - ' + themeSwitcherTooltipPwProtectedString[lang], '</tpl>', '</strong>', '</li>', '</tpl>', '</ul>');
+	var template = themeSwitcherTemplate?themeSwitcherTemplate:new Ext.XTemplate('<ul>', '<tpl for=".">', '<li class="project">', '<img width="150" height="100" class="thumbnail" src="thumbnails/{thumbnail}" title="{tooltip}" />', '<tpl if="pwprotected==\'yes\'">', '<img class="pwProtected" src="gis_icons/lockIcon.png" width="32" height="32" />','</tpl>','<strong>{projname}', '<tpl if="pwprotected==\'yes\'">', ' - ' + themeSwitcherTooltipPwProtectedString[lang], '</tpl>', '</strong>', '</li>', '</tpl>', '</ul>');
 
 	//add data view for grid thumbnails view
 	this.projectDataView = new Ext.DataView({
@@ -172,7 +172,7 @@ ThemeSwitcher.prototype.initialize = function () {
 			region: 'west',
 			collapsible: false,
 			boxMinWidth: 200,
-			boxMaxWidth: 400,
+			boxMaxWidth: 350,
 			split: true,
 			headerAsText: false,
 			id: 'topicsListPanel',
@@ -209,7 +209,7 @@ ThemeSwitcher.prototype.initialize = function () {
 					text: themeSwitcherFilterLabelString[lang]
 				}, {
 					xtype: 'textfield',
-					width: '250',
+					width: '150',
 					id: 'themeSearchField',
 					//plugins: new Ext.ux.form.field.ClearButton({hideClearButtonWhenMouseOut: false}),
 					//the ClearButton only works with ExtJS4
