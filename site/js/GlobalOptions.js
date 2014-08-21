@@ -242,7 +242,7 @@ var MapOptions = {
   fallThrough: false,
   //numZoomLevels:ZOOM_LEVELS,
   //fractionalZoom: enableBGMaps ? false : true,
-  fractionalZoom: false,
+  fractionalZoom: false, // with tiles to guarantee correct zoom level
   transitionEffect:"resize",
   controls: []
 };
