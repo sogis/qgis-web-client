@@ -231,6 +231,8 @@ var MapOptions = {
   moveDelay: 10,
   maxResolution: 250,
   minResolution: 0.05,
+  //zoomOffset: 16,
+  //buffer: 0,
   resolutions: [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1, 0.05],
   numZoomLevels: 14,
   //maxScale:50,
@@ -239,7 +241,8 @@ var MapOptions = {
   //transitionEffect:"resize",
   fallThrough: false,
   //numZoomLevels:ZOOM_LEVELS,
-  fractionalZoom: enableBGMaps ? false : true,
+  //fractionalZoom: enableBGMaps ? false : true,
+  fractionalZoom: false,
   transitionEffect:"resize",
   controls: []
 };

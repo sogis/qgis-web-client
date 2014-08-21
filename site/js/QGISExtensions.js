@@ -383,19 +383,24 @@ Ext.extend(QGIS.PrintProvider, GeoExt.data.PrintProvider, {
 
     Ext.getBody().mask(printLoadingString[lang], 'x-mask-loading');
     this.fireEvent("afterprint", this, map, pages, options);
-
-    protocol.read({
-        callback: function(response) {
-                if(response.features.length > 0) {
-                    attributes = response.features[0].attributes;
-                     for (key in attributes){
-                        printUrl += '&' + key + '=' + encodeURIComponent(attributes[key]);
-                    }
-                }
-            this.download(printUrl);
-        },
-        scope: this
-    });
+        protocol.read({
+                callback: function(response) {
+                        try { // as some projects may have WFS disabled
+                            if(response.features != null) {
+                                if(response.features.length > 0) {
+                                    attributes = response.features[0].attributes;
+                                     for (key in attributes){
+                                        printUrl += '&' + key + '=' + encodeURIComponent(attributes[key]);
+                                    }
+                                }
+                            }
+                        } catch (e) {
+                            //console.log(e)
+                        }
+                    this.download(printUrl);
+                },
+                scope: this
+            });
   },
 
   download: function(url) {
