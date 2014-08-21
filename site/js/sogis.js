@@ -30,8 +30,10 @@ function setProjectSettings() {
 
     // build search hint
     strSearchHelpText = '<b>Suche</b><br/>';
+    strSearchHelpText += 'Zu einer Koordinate zoomen: <b>607890 228256</b><br/>';
+    strSearchHelpText += '<br/>'
     strSearchHelpText += 'Um nur in bestimmten Datenbereichen zu suchen,<br/>';
-    strSearchHelpText += 'können Sie Kürzel verwenden:<br/><br/>';
+    strSearchHelpText += 'können Sie Kürzel verwenden:<br/>';
     strSearchHelpText += '- Point of Interest: <b>poi</b><br/>';
     strSearchHelpText += '- Flurnamen: <b>flurname</b><br/>';
     strSearchHelpText += '- GB-Nummer: <b>gbnr</b><br/>';
