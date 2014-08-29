@@ -26,7 +26,7 @@ var gis_projects = {
   "thumbnails": "/thumbnails",
   "title": "SO!GIS",
   "topics": [{
-      "name": "Amtliche Vermessung",
+      "name": "Grundlagen und Planung",
       "projects": [{
           "name": "Ortsplan",
           "projectpath": "",
@@ -37,7 +37,7 @@ var gis_projects = {
           "updateInterval": "occasional",
           "responsible": "Amtliche Vermessung",
           "tags": "Ortsplan",
-          "switcher": true,
+          "switcher": false,
           "searchtables": "",
           "sogissearchhint": "",
           "sogistooltipwidth" : 300,
@@ -83,7 +83,7 @@ var gis_projects = {
           "sogisdefaultbutton" : "IdentifyTool",
           "sogismaxscale" : null
     },{
-          "name": "Grundbuchplan",
+          "name": "Grundbuchplan (wms)",
           "projectpath": "",
           "projectfile": "grundbuchplan",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
@@ -126,11 +126,11 @@ var gis_projects = {
           "projectfile": "hoheitsgrenzsteine",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Hoheitsgrenzsteine,Amtliche Vermessung (schwarz-weiss),Strassenkarte",
+          "visibleLayers": "Hoheitsgrenzsteine,Grundkarte farbig",
           "updateInterval": "occasional",
           "responsible": "Amtliche Vermessung",
           "tags": "Hoheitsgrenzsteine",
-          "switcher": false,
+          "switcher": true,
           "searchtables": "qwebclient.search_hgs",
           "sogissearchhint": "- Hoheitsgrenzsteine: <b>hgs</b>",
           "sogistooltipwidth" : 400,
@@ -138,9 +138,43 @@ var gis_projects = {
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null
+    },{
+          "name": "Nutzungszonen",
+          "projectpath": "",
+          "projectfile": "nutzungszonen",
+          "format": "image/jpeg", //only active after switching, initial def in GetUrlParams.js
+          "fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Nutzungszonen,Orthofoto,Gemeindegrenzen,Ortsplan",
+          "updateInterval": "occasional",
+          "responsible": "Amt für Raumplanung",
+          "tags": "Nutzungszonen",
+          "switcher": false,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 400,
+          "sogistooltipheight" : 300,
+          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool','ShowHelp'],
+          "sogisdefaultbutton" : "IdentifyTool",
+          "sogismaxscale" : null
+ 
+    },{
+          "name": "Inventarplan Wanderwege",
+          "projectpath": "",
+          "projectfile": "wanderwege",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Gemeindegrenzen,Grundkarte schwarz-weiss,Wanderwege",
+          "updateInterval": "occasional",
+          "responsible": "Amt für Raumplanung",
+          "tags": "Inventarplan Wanderwege",
+          "switcher": false,
+          "sogistooltipwidth" : "500",
+          "sogistooltipheight" : "350",
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip"
     }]
   },{
-    "name": "Amt für Umwelt",
+    "name": "Natur und Umwelt",
     "projects": [{
           "name": "Neophyten",
           "projectpath": "",
@@ -168,11 +202,11 @@ var gis_projects = {
           "projectfile": "grundwasserbewirtschaftung",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Orthofoto Kt. Solothurn",
+          "visibleLayers": "Basisplan,Gemeindegrenzen,Sondierung,Quellen",
           "updateInterval": "occasional",
           "responsible": "Amt für Umwelt",
           "tags": "Grundwasserbewirtschaftung",
-          "switcher": false,
+          "switcher": true,
           "searchtables": "",
           "sogissearchhint": "",
           "sogistooltipwidth" : 1000,
@@ -231,8 +265,8 @@ var gis_projects = {
           "switcher": false,
           "searchtables": "",
           "sogissearchhint": "",
-          "sogistooltipwidth" : 600,
-          "sogistooltipheight" : 400,
+          "sogistooltipwidth" : 940,
+          "sogistooltipheight" : 500,
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null
@@ -254,7 +288,7 @@ var gis_projects = {
           "sogisdefaultbutton" : "sogistooltip"
     }]  
   },{
-    "name": "Amt für Landwirtschaft",
+    "name": "Bevölkerung und Wirtschaft",
     "projects": [{
           "name": "Bienenstandorte",
           "projectpath": "",
@@ -273,47 +307,7 @@ var gis_projects = {
           "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool','ShowHelp'],
           "sogisdefaultbutton" : "IdentifyTool",
           "sogismaxscale" : null
-    }]  
-  },{
-    "name": "Amt für Raumplanung",
-    "projects": [{
-          "name": "Nutzungszonen",
-          "projectpath": "",
-          "projectfile": "nutzungszonen",
-          "format": "image/jpeg", //only active after switching, initial def in GetUrlParams.js
-          "fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Nutzungszonen,Orthofoto,Gemeindegrenzen,Ortsplan",
-          "updateInterval": "occasional",
-          "responsible": "Amt für Raumplanung",
-          "tags": "Nutzungszonen",
-          "switcher": false,
-          "searchtables": "",
-          "sogissearchhint": "",
-          "sogistooltipwidth" : 400,
-          "sogistooltipheight" : 300,
-          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool','ShowHelp'],
-          "sogisdefaultbutton" : "IdentifyTool",
-          "sogismaxscale" : null
- 
     },{
-          "name": "Inventarplan Wanderwege",
-          "projectpath": "",
-          "projectfile": "wanderwege",
-          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
-          //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Gemeindegrenzen,Grundkarte schwarz-weiss,Wanderwege",
-          "updateInterval": "occasional",
-          "responsible": "Amt für Raumplanung",
-          "tags": "Inventarplan Wanderwege",
-          "switcher": false,
-          "sogistooltipwidth" : "500",
-          "sogistooltipheight" : "350",
-          "sogisbuttons" : default_buttons_seperators,
-          "sogisdefaultbutton" : "sogistooltip"
-    }]
-  },{
-    "name": "Gemeinden",
-    "projects": [{
           "name": "Leitungskataster",
           "projectpath": "",
           "projectfile": "gemeindegis",
@@ -333,16 +327,13 @@ var gis_projects = {
           //"sogismaxscale" : 50000
           "sogismaxscale" : null
 
-    }]
-  },{
-    "name": "Amt für Verkehr und Tiefbau",
-    "projects": [{
-          "name": "Verkehrsmodell 2010",
+    },{
+          "name": "Gesamtverkehrsmodell 2010",
           "projectpath": "",
-          "projectfile": "verkehrsmodell2010",
+          "projectfile": "gesamtverkehrsmodell2010",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Gemeindegrenzen,Grundkarte",
+          "visibleLayers": "Gemeindegrenzen,Grundkarte,DTV 2010 gesamt",
           "updateInterval": "occasional",
           "responsible": "Amt für Verkehr und Tiefbau",
           "tags": "Meine Tags",

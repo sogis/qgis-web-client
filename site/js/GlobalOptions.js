@@ -275,10 +275,32 @@ var OverviewMapOptions = {
 };
 var OverviewMapSize = new OpenLayers.Size(200,200);
 var OverviewMapMaximized = true; // is the overview map opend or closed by default
-var overviewLayer = new OpenLayers.Layer.WMS("Uebersicht",
-  "http://www.sogis1.so.ch/wms/strassenkarte",
-  {layers:"Strassenkarte",format:"image/jpeg"},
-  {buffer:0,singleTile:true,transitionEffect:"resize"});
+//var overviewLayer = new OpenLayers.Layer.WMS("Uebersicht",
+//  "http://www.sogis1.so.ch/wms/strassenkarte",
+//  {layers:"Strassenkarte",format:"image/jpeg"},
+//  {buffer:0,singleTile:true,transitionEffect:"resize"});
+
+var overviewLayer = new OpenLayers.Layer.WMTS({
+    projection: new OpenLayers.Projection('EPSG:21781'),
+    name: "Strassenkarte_farbig",
+    url: "http://srsofaioi12288.ktso.ch/mapcache/wmts",
+    requestEncoding: 'REST',
+    buffer: 0,
+    zoomOffset: 16, 
+    transitionEffect: 'resize',
+    layer: "Strassenkarte_farbig",
+    matrixSet: "21781",
+    version: "1.0.0",
+    tileOrigin: new OpenLayers.LonLat(420000, 350000),
+    resolutions: [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
+    format: "image/png",
+    formatSuffix: "png",
+    style: "default",
+    //opacity: 0.7,
+    visibility: true,
+    isBaseLayer: true,
+    fractionalZoom: true // with tiles to guarantee correct zoom level
+  }); 
 
 // prevent the user from choosing a print resolution
 // if fixedPrintResolution = null, the user is allowed to choose the print resolution. 

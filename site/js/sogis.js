@@ -38,6 +38,7 @@ function setProjectSettings() {
     strSearchHelpText += '- Flurnamen: <b>flurname</b><br/>';
     strSearchHelpText += '- GB-Nummer: <b>gbnr</b><br/>';
     strSearchHelpText += '- EGID: <b>egid</b><br/>';
+    strSearchHelpText += '- BFS-Gemeindenummer: <b>gem_bfs</b>';
     strSOGISSearchHelpText = strSearchHelpText + strSOGISSearchHelpText;
 }
 
@@ -137,6 +138,7 @@ function initSOGISProjects() {
 * @param string with html
 */
 function showTooltip(str_html){
+    
     var str_message = str_html;
         /*
         Ext.Msg.show({
@@ -180,6 +182,7 @@ function showTooltip(str_html){
             autoScroll: true
         });
         tooltipWindow.show();
+
 }
 
 /**

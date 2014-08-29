@@ -49,6 +49,7 @@ function customAfterMapInit() {
      // Create a new map control based on Control Click Event
     openlayersClickEvent = new OpenLayers.Control.Click( {
          trigger: function(e) {
+             Ext.getBody().mask('Abfrage ist erfolgt...', 'x-mask-loading');
              var xy = geoExtMap.map.getLonLatFromViewPortPx(e.xy);
              var x = xy.lon;
              var y = xy.lat;
@@ -60,6 +61,7 @@ function customAfterMapInit() {
              var scale = Math.round(geoExtMap.map.getScale());
              
              Ext.Ajax.request({
+                isLoading: true,
                 url:  strSOGISTooltipURL + getProject() + '/', // URL to the SOGIS tooltip
                 params: {
                     'x': x, 
@@ -69,9 +71,13 @@ function customAfterMapInit() {
                     'visiblelayers': selectedLayers.toString()
                 },
                 method: 'GET',
+                failure: function(){
+                    Ext.getBody().unmask();
+                },
                 success: function(response){
                     if (Ext.getCmp('IdentifyTool').hidden){ // TODO: better
                         showTooltip(response.responseText); 
+                        Ext.getBody().unmask();
                     }
                 }
              });
