@@ -181,7 +181,7 @@ var gis_projects = {
           "projectfile": "neophyten",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "2011 Pflanzenliste,2012 Pflanzenliste,2013 Pflanzenliste,2014 Pflanzenliste,Gemeindegren    zen,Orthofoto",
+          "visibleLayers": "2011 Pflanzenliste,2012 Pflanzenliste,2013 Pflanzenliste,2014 Pflanzenliste,Gemeindegrenzen,Orthofoto",
           "format": "image/png; mode=8bit",
           "fullColorLayers" : "Orthofoto",
           "updateInterval": "occasional",
@@ -202,7 +202,10 @@ var gis_projects = {
           "projectfile": "grundwasserbewirtschaftung",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Basisplan,Gemeindegrenzen,Sondierung,Quellen",
+          "visibleLayers": "Bohrung,Bohrung mit Piezometer,Baggerschlitz,Gerammtes Piezometer,Sodbrunnen,\
+Horizontalfilterbrunnen,Vertikalfilterbrunnen,Quelle gefasst,Quelle ungefasst,Versickerungsschacht,\
+Erdsonde,Erdkollektor,Entnahmeschacht für eine Grundwasserwärmenutzung,Gemeindegrenzen,Grundwasser (HGW),\
+Fliessgewässer,Orthofoto",
           "updateInterval": "occasional",
           "responsible": "Amt für Umwelt",
           "tags": "Grundwasserbewirtschaftung",
