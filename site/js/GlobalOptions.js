@@ -7,7 +7,7 @@ var helpfile = "help_de.html";
 //Servername (optional) and path and name name of QGIS mapserver FCGI-file
 //either with or without server-name - without servername recommended for easier porting to other servers
 //do not add a ? or & after the .fcgi extension
-var serverAndCGI = "http://srsofaioi12288.ktso.ch/wmstest";
+var serverAndCGI = "http://www.sogis1.so.ch/wmstest";
 
 //Define whether you want to use the GetProjectSettings extension of QGIS Server
 //for more configuration options in the project.
@@ -35,8 +35,8 @@ var useGeodesicMeasurement = false;
 //enable to use GeoNames search
 var useGeoNamesSearchBox = false;
 //URL for custom search scripts
-var searchBoxQueryURL = "/wsgi/search.wsgi?query=";
-var searchBoxGetGeomURL = "/wsgi/getSearchGeom.wsgi";
+var searchBoxQueryURL = "/wsgi/search_test.wsgi?query=";
+var searchBoxGetGeomURL = "/wsgi/getSearchGeom_test.wsgi";
 
 // use QGIS WMS highlight for selected search result in search box
 var enableSearchBoxWmsHighlight = true;
@@ -185,7 +185,7 @@ var mapThemeSwitcherActive = true;
 var themeSwitcherTemplate = null;
 
 //first part of titlebar text
-var titleBarText = "GIS-Browser - "; // will be appended with project title
+var titleBarText = "WebGIS - "; // will be appended with project title
 
 // header logo image and link
 var headerLogoImg = null; // path to image, set null for no logo
@@ -370,7 +370,7 @@ var printCapabilities={
   // c. fill in the URL to the proxy "url_proxy":"http://www.urltoproxy/printpostget.wsgi?
   //
   "method":"POST", // POST or GET
-  "url_proxy": "http://srsofaioi12288.ktso.ch/wsgi/printpostget_test.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
+  "url_proxy": "http://www.sogis1.so.ch/wsgi/printpostget_test.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
 };
 
 // <------------ No changes should be needed below here ------------------>
