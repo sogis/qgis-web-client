@@ -139,7 +139,7 @@ var gis_projects = {
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null
     },{
-          "name": "Nutzungszonen",
+          "name": "Nutzungszonen im Siedlungsgebiet",
           "projectpath": "",
           "projectfile": "nutzungszonen",
           "format": "image/jpeg", //only active after switching, initial def in GetUrlParams.js
@@ -155,8 +155,57 @@ var gis_projects = {
           "sogistooltipheight" : 300,
           "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool','ShowHelp'],
           "sogisdefaultbutton" : "IdentifyTool",
-          "sogismaxscale" : null
- 
+          "sogismaxscale" : null,
+		  "wmtsLayers": [
+				{
+					// this WMS layer will be used for printing, feature info, legend and metadata
+					"wmsLayerName": "Orthofoto",
+					// WMTS base layer config
+					"wmtsConfig": {
+						"name": "Orthofoto",
+						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+                        "requestEncoding": "REST",
+						"layer": "Orthofoto",
+                        "visibility": "True",
+                        "isBaseLayer": "False",
+						"matrixSet": "21781",
+                        "zoomOffset": 16,
+						"format": "image/jpeg",
+                        "buffer": 0,
+                        "transitionEffect": "resize",
+						"style": "default",
+                        "projection" : new OpenLayers.Projection('EPSG:21781'),
+                        "version": "1.0.0",
+                        "tileOrigin": new OpenLayers.LonLat(420000, 350000),
+                        "resolutions": [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
+                        "visibility": true,
+                        "isBaseLayer": true,
+                        "formatSuffix": "jpeg"
+					}
+				},{
+					// this WMS layer will be used for printing, feature info, legend and metadata
+					"wmsLayerName": "< 1:20'000 Strassenkarte",
+					// WMTS base layer config
+					"wmtsConfig": {
+						"name": "Strassenkarte",
+						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+                        "requestEncoding": "REST",
+						"layer": "Strassenkarte_sw",
+                        "visibility": "True",
+                        "isBaseLayer": "False",
+						"matrixSet": "21781",
+                        "zoomOffset": 16,
+						"format": "image/jpeg",
+                        "buffer": 0,
+                        "transitionEffect": "resize",
+						"style": "default",
+                        "projection" : new OpenLayers.Projection('EPSG:21781'),
+                        "version": "1.0.0",
+                        "tileOrigin": new OpenLayers.LonLat(420000, 350000),
+                        "resolutions": [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
+                        "formatSuffix": "jpeg"
+                     }
+				}]
     },{
           "name": "Inventarplan Wanderwege",
           "projectpath": "",

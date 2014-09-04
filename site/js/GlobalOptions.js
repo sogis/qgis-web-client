@@ -4,7 +4,7 @@ var lang = "de"; //for available codes see array availableLanguages in file Glob
 //Help file (must be a local file)
 var helpfile = "help_de.html";
 
-//Servername (optional) and path and name name of QGIS mapserver FCGI-file
+//Servername (optional) and path and name name of QGIS Server FCGI-file
 //either with or without server-name - without servername recommended for easier porting to other servers
 //do not add a ? or & after the .fcgi extension
 var serverAndCGI = "http://www.sogis1.so.ch/wmstest";
@@ -34,12 +34,15 @@ var useGeodesicMeasurement = false;
 //search box for queries while typing
 //enable to use GeoNames search
 var useGeoNamesSearchBox = false;
+var geoNamesUserName = 'insert your geonames user name';
 //URL for custom search scripts
 var searchBoxQueryURL = "/wsgi/search_test.wsgi?query=";
 var searchBoxGetGeomURL = "/wsgi/getSearchGeom_test.wsgi";
 
 // use QGIS WMS highlight for selected search result in search box
 var enableSearchBoxWmsHighlight = true;
+// search result attribute to show as label if enableSearchBoxWmsHighlight is enabled
+var searchBoxWmsHighlightLabel = 'displaytext';
 
 // If set, will make sure that the layer for the search results is
 // visible. This feature will work out of the box if PHP scripts are
@@ -64,9 +67,12 @@ if (enableBingCommercialMaps) {
     var bingApiKey = "add Bing api key here"; // http://msdn.microsoft.com/en-us/library/ff428642.aspx
 }
 var enableGoogleCommercialMaps = false;
+
+var enableOSMMaps = false;
+
 var enableBGMaps = false;
-if (enableBingCommercialMaps || enableGoogleCommercialMaps) {
-enableBGMaps = true;
+if (enableBingCommercialMaps || enableOSMMaps || enableGoogleCommercialMaps) {
+	enableBGMaps = true;
 }
 if (enableBGMaps) {
 // enter the index of the backgroundLayer to be visible after loading,
@@ -74,6 +80,10 @@ if (enableBGMaps) {
 // this setting is overridden if a value for url-parameter visibleBackgroundLayer is passed
 var initialBGMap = 0;
 }
+
+// enable to use WMTS base layers
+var enableWmtsBaseLayers = true;
+// NOTE: also set MapOptions according to WMTS
 
 // media base URL to match media links in layer attributes
 var mediaurl = '';
@@ -216,12 +226,12 @@ var layerImageFormats = [
 //EPSG projection code of your QGIS project
 var authid = "EPSG:"+21781;
 
-//background transparency for the QGIS server generated layer (commercial background layers not effected)
+//background transparency for the QGIS Server generated layer (commercial background layers not effected)
 //set to true if you want the background to be transparent, layer image will be bigger (32 vs 24bit)
-var qgisLayerTransparency = false;
+var qgisLayerTransparency = true;
 
 //number of zoomlevels, uses main map layer and all base layers
-var ZOOM_LEVELS = 22;
+var ZOOM_LEVELS = 14;
 
 // OpenLayers global options
 // see http://dev.openlayers.org/releases/OpenLayers-2.10/doc/apidocs/files/OpenLayers/Map-js.html
@@ -230,11 +240,11 @@ var MapOptions = {
   units: "m",
   moveDelay: 10,
   maxResolution: 250,
-  minResolution: 0.05,
+  minResolution: 0.1,
   //zoomOffset: 16,
   //buffer: 0,
-  resolutions: [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1, 0.05],
-  numZoomLevels: 14,
+  resolutions: [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
+  maxExtent: new OpenLayers.Bounds(590000,210000,650000,270000),
   //maxScale:50,
   //minScale:750000,
   //fractionalZoom: enableBGMaps ? false : true,
@@ -243,6 +253,9 @@ var MapOptions = {
   //numZoomLevels:ZOOM_LEVELS,
   //fractionalZoom: enableBGMaps ? false : true,
   fractionalZoom: false, // with tiles to guarantee correct zoom level
+//  maxScale:50,
+//  minScale:40000000,
+  numZoomLevels:ZOOM_LEVELS,
   transitionEffect:"resize",
   controls: []
 };

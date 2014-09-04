@@ -1,9 +1,9 @@
 /*
  *
- * Translations.js -- part of Quantum GIS Web Client
+ * Translations.js -- part of QGIS Web Client
  *
  * Copyright (2010-2012), The QGIS Project All rights reserved.
- * Quantum GIS Web Client is released under a BSD license. Please see
+ * QGIS Web Client is released under a BSD license. Please see
  * https://github.com/qgis/qgis-web-client/blob/master/README
  * for the full text of the license and the list of contributors.
  *
@@ -1374,7 +1374,7 @@ searchNoRecordsFoundString["hu"] = "Hiba a keresés alatt"; // FIXME
 searchNoRecordsFoundString["ro"] = "Nu am găsit niciun rezultat (căutarea e case-sensitive)";
 searchNoRecordsFoundString["ru"] = "Записи не найдены"; 
 searchNoRecordsFoundString["si"] = "ni rezultatov"; 
-searchNoRecordsFoundString["ru"] = "Geen resultaten gevonden";
+searchNoRecordsFoundString["nl"] = "Geen resultaten gevonden";
 searchNoRecordsFoundString["pl"] = "Nie znaleziono szukanych atrybutów"; 
 searchNoRecordsFoundString["sv"] = "Hittar inga poster"; 
 
