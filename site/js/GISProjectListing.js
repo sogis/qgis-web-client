@@ -19,6 +19,133 @@ var strSOGISMinScale = null;
 var strSOGISMaxScale = null;
 var strSOGISSearchHelpText = '';
 
+// definition of WMTS-Layers
+var wmts_layer_orthofoto = 	{
+					// this WMS layer will be used for printing, feature info, legend and metadata
+					"wmsLayerName": "Orthofoto",
+					// WMTS base layer config
+					"wmtsConfig": {
+						"name": "Orthofoto",
+						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+                        "requestEncoding": "REST",
+						"layer": "Orthofoto",
+                        "visibility": "True",
+                        "isBaseLayer": "False",
+						"matrixSet": "21781",
+                        "zoomOffset": 16,
+						"format": "image/jpeg",
+                        "buffer": 0,
+                        "transitionEffect": "resize",
+						"style": "default",
+                        "projection" : new OpenLayers.Projection('EPSG:21781'),
+                        "version": "1.0.0",
+                        "tileOrigin": new OpenLayers.LonLat(420000, 350000),
+                        "resolutions": [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
+                        "visibility": true,
+                        "isBaseLayer": true,
+                        "formatSuffix": "jpeg"
+					}
+                }
+
+var wmts_layer_strassenkarte_sw = {
+					// this WMS layer will be used for printing, feature info, legend and metadata
+					"wmsLayerName": "< 1:20'000 Strassenkarte",
+					// WMTS base layer config
+					"wmtsConfig": {
+						"name": "Strassenkarte",
+						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+                        "requestEncoding": "REST",
+						"layer": "Strassenkarte_sw",
+                        "visibility": "True",
+                        "isBaseLayer": "False",
+						"matrixSet": "21781",
+                        "zoomOffset": 16,
+						"format": "image/jpeg",
+                        "buffer": 0,
+                        "transitionEffect": "resize",
+						"style": "default",
+                        "projection" : new OpenLayers.Projection('EPSG:21781'),
+                        "version": "1.0.0",
+                        "tileOrigin": new OpenLayers.LonLat(420000, 350000),
+                        "resolutions": [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
+                        "formatSuffix": "jpeg"
+                     }
+				}
+
+var wmts_layer_strassenkarte_farbig = {
+					// this WMS layer will be used for printing, feature info, legend and metadata
+					"wmsLayerName": "< 1:20'000 Strassenkarte",
+					// WMTS base layer config
+					"wmtsConfig": {
+						"name": "Strassenkarte",
+						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+                        "requestEncoding": "REST",
+						"layer": "Strassenkarte_farbig",
+                        "visibility": "True",
+                        "isBaseLayer": "False",
+						"matrixSet": "21781",
+                        "zoomOffset": 16,
+						"format": "image/jpeg",
+                        "buffer": 0,
+                        "transitionEffect": "resize",
+						"style": "default",
+                        "projection" : new OpenLayers.Projection('EPSG:21781'),
+                        "version": "1.0.0",
+                        "tileOrigin": new OpenLayers.LonLat(420000, 350000),
+                        "resolutions": [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
+                        "formatSuffix": "jpeg"
+                     }
+				}
+
+var wmts_layer_basisplan_sw = {
+					// this WMS layer will be used for printing, feature info, legend and metadata
+					"wmsLayerName": "> 1:20'000 Basisplan",
+					// WMTS base layer config
+					"wmtsConfig": {
+						"name": "Basisplan",
+						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+                        "requestEncoding": "REST",
+						"layer": "Basisplan_sw",
+                        "visibility": "True",
+                        "isBaseLayer": "False",
+						"matrixSet": "21781",
+                        "zoomOffset": 16,
+						"format": "image/png",
+                        "buffer": 0,
+                        "transitionEffect": "resize",
+						"style": "default",
+                        "projection" : new OpenLayers.Projection('EPSG:21781'),
+                        "version": "1.0.0",
+                        "tileOrigin": new OpenLayers.LonLat(420000, 350000),
+                        "resolutions": [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
+                        "formatSuffix": "png"
+                     }
+				}
+
+var wmts_layer_basisplan_farbig = {
+					// this WMS layer will be used for printing, feature info, legend and metadata
+					"wmsLayerName": "> 1:20'000 Basisplan",
+					// WMTS base layer config
+					"wmtsConfig": {
+						"name": "Basisplan",
+						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+                        "requestEncoding": "REST",
+						"layer": "Basisplan_farbig",
+                        "visibility": "True",
+                        "isBaseLayer": "False",
+						"matrixSet": "21781",
+                        "zoomOffset": 16,
+						"format": "image/png",
+                        "buffer": 0,
+                        "transitionEffect": "resize",
+						"style": "default",
+                        "projection" : new OpenLayers.Projection('EPSG:21781'),
+                        "version": "1.0.0",
+                        "tileOrigin": new OpenLayers.LonLat(420000, 350000),
+                        "resolutions": [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
+                        "formatSuffix": "png"
+                     }
+				}
 
 var gis_projects = {
   "path": "/maptest", /* DEPLOY !!! */
@@ -157,55 +284,10 @@ var gis_projects = {
           "sogisdefaultbutton" : "IdentifyTool",
           "sogismaxscale" : null,
 		  "wmtsLayers": [
-				{
-					// this WMS layer will be used for printing, feature info, legend and metadata
-					"wmsLayerName": "Orthofoto",
-					// WMTS base layer config
-					"wmtsConfig": {
-						"name": "Orthofoto",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
-                        "requestEncoding": "REST",
-						"layer": "Orthofoto",
-                        "visibility": "True",
-                        "isBaseLayer": "False",
-						"matrixSet": "21781",
-                        "zoomOffset": 16,
-						"format": "image/jpeg",
-                        "buffer": 0,
-                        "transitionEffect": "resize",
-						"style": "default",
-                        "projection" : new OpenLayers.Projection('EPSG:21781'),
-                        "version": "1.0.0",
-                        "tileOrigin": new OpenLayers.LonLat(420000, 350000),
-                        "resolutions": [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
-                        "visibility": true,
-                        "isBaseLayer": true,
-                        "formatSuffix": "jpeg"
-					}
-				},{
-					// this WMS layer will be used for printing, feature info, legend and metadata
-					"wmsLayerName": "< 1:20'000 Strassenkarte",
-					// WMTS base layer config
-					"wmtsConfig": {
-						"name": "Strassenkarte",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
-                        "requestEncoding": "REST",
-						"layer": "Strassenkarte_sw",
-                        "visibility": "True",
-                        "isBaseLayer": "False",
-						"matrixSet": "21781",
-                        "zoomOffset": 16,
-						"format": "image/jpeg",
-                        "buffer": 0,
-                        "transitionEffect": "resize",
-						"style": "default",
-                        "projection" : new OpenLayers.Projection('EPSG:21781'),
-                        "version": "1.0.0",
-                        "tileOrigin": new OpenLayers.LonLat(420000, 350000),
-                        "resolutions": [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
-                        "formatSuffix": "jpeg"
-                     }
-				}]
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+				]
     },{
           "name": "Inventarplan Wanderwege",
           "projectpath": "",
