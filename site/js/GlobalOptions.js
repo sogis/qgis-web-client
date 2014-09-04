@@ -36,8 +36,8 @@ var useGeodesicMeasurement = false;
 var useGeoNamesSearchBox = false;
 var geoNamesUserName = 'insert your geonames user name';
 //URL for custom search scripts
-var searchBoxQueryURL = "/wsgi/search_test.wsgi?query=";
-var searchBoxGetGeomURL = "/wsgi/getSearchGeom_test.wsgi";
+var searchBoxQueryURL = "/wsgi/search.wsgi?query=";
+var searchBoxGetGeomURL = "/wsgi/getSearchGeom.wsgi";
 
 // use QGIS WMS highlight for selected search result in search box
 var enableSearchBoxWmsHighlight = true;
