@@ -38,7 +38,7 @@ function setProjectSettings() {
     strSearchHelpText += '- Flurnamen: <b>flurname</b><br/>';
     strSearchHelpText += '- GB-Nummer: <b>gbnr</b><br/>';
     strSearchHelpText += '- EGID: <b>egid</b><br/>';
-    strSearchHelpText += '- BFS-Gemeindenummer: <b>gem_bfs</b>';
+    strSearchHelpText += '- BFS-Gemeindenummer: <b>bfsnr</b><br/>';
     strSOGISSearchHelpText = strSearchHelpText + strSOGISSearchHelpText;
 }
 
@@ -54,6 +54,7 @@ function initSOGISProjects() {
     setProjectSettings(); //set settings from GISProjectlisting.js
 
     //reset search field for projectspecifig search
+    Ext.getCmp('qgissearchcombo').clearSearchResult();
     Ext.getCmp('qgissearchcombo').destroy();
     qgisSearchCombo = new QGIS.SearchComboBox({
                         map: geoExtMap.map,
@@ -119,7 +120,8 @@ function initSOGISProjects() {
 
     }
 
-    if ( strSOGISDefaultButton == "sogistooltip" ) {
+    if ( strSOGISDefaultButton == "sogistooltip" ||
+         strSOGISDefaultButton == "" ) {
         Ext.getCmp("ObjectIdentificationText").hide();
         Ext.getCmp("sogistooltip").hide(); // TODO BETTER
         Ext.getCmp("ObjectIdentificationModeCombo").hide();   

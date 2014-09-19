@@ -316,6 +316,7 @@ MyViewportUi = Ext.extend(Ext.Viewport, {
 							mode: 'local',
 							displayField: 'name',
 							triggerAction: 'all',
+                            editable: false,
 							id: 'ObjectIdentificationModeCombo'
 						}, {
 							xtype: 'tbseparator',

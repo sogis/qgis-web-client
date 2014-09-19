@@ -391,7 +391,7 @@ Ext.extend(QGIS.PrintProvider, GeoExt.data.PrintProvider, {
       var wmtsLayers = getWmtsLayers();
       for (var i=0; i<wmtsLayers.length; i++) {
         var wmtsLayer = wmtsLayers[i];
-        if (wmtsLayer.getVisibility()) {
+        if (wmtsLayer.show) {
             printLayers.push(wmtsLayer.wmsLayerName);
         }
       }
@@ -466,7 +466,7 @@ Ext.extend(QGIS.PrintProvider, GeoExt.data.PrintProvider, {
             url : printCapabilities.url_proxy,
             method: printCapabilities.method,
             params : url + '&project=' + wmsMapName,
-            timeout: 240000,
+            timeout: 480000,
             success: function (response) {
                 if (printCapabilities.method == 'POST') {
                     var jsonResp = Ext.util.JSON.decode(response.responseText); // GET URL from proxy
@@ -588,6 +588,8 @@ QGIS.SearchComboBox = Ext.extend(Ext.form.ComboBox, {
   // private
   afterrenderHandler: function() {
     this.trigger["hide"]();
+    // SOGIS Tooltip 4 search
+    Ext.QuickTips.register({ target: this.getEl(), text: strSOGISSearchHelpText, dismissDelay: 20000 });
   },
 
   beforeselectHandler: function(combo,record,index) {
@@ -685,7 +687,7 @@ QGIS.SearchComboBox = Ext.extend(Ext.form.ComboBox, {
       url: this.geomUrl,
       success: this.showSearchGeometry,
       failure: function ( result, request) {
-        Ext.MessageBox.alert(errMessageSearchComboNetworkRequestFailureTitleString[lang], errMessageSearchComboNetworkRequestFailureString+result.responseText);
+        //Ext.MessageBox.alert(errMessageSearchComboNetworkRequestFailureTitleString[lang], errMessageSearchComboNetworkRequestFailureString+result.responseText);
       },
       scope: this,
       method: 'GET',
@@ -1047,7 +1049,6 @@ QGIS.SearchPanel = Ext.extend(Ext.Panel, {
         args.layer = this.selectionLayer;
         args.id = id;
       }
-
       this.fireEvent("featureselected", args);
     }
   }

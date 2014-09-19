@@ -7,7 +7,7 @@ var helpfile = "help_de.html";
 //Servername (optional) and path and name name of QGIS Server FCGI-file
 //either with or without server-name - without servername recommended for easier porting to other servers
 //do not add a ? or & after the .fcgi extension
-var serverAndCGI = "http://www.sogis1.so.ch/wmstest";
+var serverAndCGI = "http://srsofaioi12288.ktso.ch/wmstest";
 
 //Define whether you want to use the GetProjectSettings extension of QGIS Server
 //for more configuration options in the project.
@@ -212,6 +212,7 @@ var projectTitles = {
 // Optional list of layers that should be displayed in a different image format,
 // if the default image format is 8bit.
 // The formats are applied in the order of the list, from highest to lowest priority.
+/*
 var layerImageFormats = [
   {
     format: "image/png",
@@ -222,7 +223,7 @@ var layerImageFormats = [
     layers: ["Basisplan"]
   }
 ];
-
+*/
 //EPSG projection code of your QGIS project
 var authid = "EPSG:"+21781;
 
@@ -231,7 +232,7 @@ var authid = "EPSG:"+21781;
 var qgisLayerTransparency = true;
 
 //number of zoomlevels, uses main map layer and all base layers
-var ZOOM_LEVELS = 14;
+var ZOOM_LEVELS = 13;
 
 // OpenLayers global options
 // see http://dev.openlayers.org/releases/OpenLayers-2.10/doc/apidocs/files/OpenLayers/Map-js.html
@@ -239,24 +240,12 @@ var MapOptions = {
   projection: new OpenLayers.Projection(authid),
   units: "m",
   moveDelay: 10,
-  maxResolution: 250,
+  maxResolution: 250.0,
   minResolution: 0.1,
-  //zoomOffset: 16,
-  //buffer: 0,
-  resolutions: [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
-  maxExtent: new OpenLayers.Bounds(590000,210000,650000,270000),
-  //maxScale:50,
-  //minScale:750000,
-  //fractionalZoom: enableBGMaps ? false : true,
-  //transitionEffect:"resize",
   fallThrough: false,
-  //numZoomLevels:ZOOM_LEVELS,
-  //fractionalZoom: enableBGMaps ? false : true,
+  resolutions: [250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.25, 0.1],
+  maxExtent: new OpenLayers.Bounds(590000.0,210000.0,650000.0,270000.0),
   fractionalZoom: false, // with tiles to guarantee correct zoom level
-//  maxScale:50,
-//  minScale:40000000,
-  numZoomLevels:ZOOM_LEVELS,
-  transitionEffect:"resize",
   controls: []
 };
 
@@ -304,8 +293,8 @@ var overviewLayer = new OpenLayers.Layer.WMTS({
     layer: "Strassenkarte_farbig",
     matrixSet: "21781",
     version: "1.0.0",
-    tileOrigin: new OpenLayers.LonLat(420000, 350000),
-    resolutions: [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
+    tileOrigin: new OpenLayers.LonLat(420000.0, 350000.0),
+    resolutions: [250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.25, 0.1],
     format: "image/png",
     formatSuffix: "png",
     style: "default",
@@ -334,7 +323,7 @@ var printCapabilities={
     {"name":"1:10'000","value":"10000"},
     {"name":"1:12'000","value":"12000"},
     {"name":"1:15'000","value":"15000"},
-    {"name":"1:20'000","value":"20000"},
+    //{"name":"1:20'000","value":"20000"}, //SCALE BUG in QGIS-Server and Grundkarten ...
     {"name":"1:25'000","value":"25000"},
     {"name":"1:30'000","value":"30000"},
     {"name":"1:50'000","value":"50000"},
@@ -383,7 +372,7 @@ var printCapabilities={
   // c. fill in the URL to the proxy "url_proxy":"http://www.urltoproxy/printpostget.wsgi?
   //
   "method":"POST", // POST or GET
-  "url_proxy": "http://www.sogis1.so.ch/wsgi/printpostget_test.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
+  "url_proxy": "http://srsofaioi12288.ktso.ch/wsgi/printpostget_test.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
 };
 
 // <------------ No changes should be needed below here ------------------>

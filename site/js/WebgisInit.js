@@ -687,16 +687,16 @@ function postLoading() {
 
         //add OpenLayers map controls
         geoExtMap.map.addControl(new OpenLayers.Control.KeyboardDefaults());
-        geoExtMap.map.addControl(new OpenLayers.Control.Navigation());
+        //Begin SOGIS: No kinetics when paning
+        geoExtMap.map.addControl(new OpenLayers.Control.Navigation({ dragPanOptions: { enableKinetic: false}}));
+        //END SOGIS
+        //geoExtMap.map.addControl(new OpenLayers.Control.Navigation());
         geoExtMap.map.addControl(new OpenLayers.Control.Attribution());
         //to hide miles/feet in the graphical scale bar we need to adapt "olControlScaleLineBottom" in file /OpenLayers/theme/default/style.css: display:none;
         geoExtMap.map.addControl(new OpenLayers.Control.ScaleLine());
         geoExtMap.map.addControl(new OpenLayers.Control.PanZoomBar({zoomWorldIcon:true,forceFixedZoomLevel:false}));
 
-        //Begin SOGIS: No kinetics when paning
-        geoExtMap.map.addControl(new OpenLayers.Control.Navigation({ dragPanOptions: { enableKinetic: false}}));
-        //END SOGIS
-
+        
         //coordinate display
         coordinateTextField = Ext.getCmp('CoordinateTextField')
         geoExtMap.map.events.register('mousemove', this, function (evt) {
@@ -1272,7 +1272,7 @@ function postLoading() {
                             width: 100,
                             mode: 'local',
                             triggerAction: 'all',
-                            readonly: true,
+                            editable: false,
                             store: new Ext.data.JsonStore({
                                 // store configs
                                 data: printCapabilities,
@@ -1299,6 +1299,7 @@ function postLoading() {
                             width: 95,
                             mode: 'local',
                             triggerAction: 'all',
+                            editable: false,
                             store: new Ext.data.JsonStore({
                                 // store configs
                                 data: printCapabilities,
@@ -1328,6 +1329,7 @@ function postLoading() {
                             width: 70,
                             mode: 'local',
                             triggerAction: 'all',
+                            editable: false,
                             store: new Ext.data.JsonStore({
                                 // store configs
                                 data: printCapabilities,
