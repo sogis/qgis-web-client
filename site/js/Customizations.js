@@ -48,6 +48,7 @@ function customAfterMapInit() {
 
      // Create a new map control based on Control Click Event
     openlayersClickEvent = new OpenLayers.Control.Click( {
+         id: 'sogistooltipcontrol',
          trigger: function(e) {
              Ext.getBody().mask('Abfrage ist erfolgt...', 'x-mask-loading');
              var xy = geoExtMap.map.getLonLatFromViewPortPx(e.xy);
@@ -83,10 +84,17 @@ function customAfterMapInit() {
              });
          }
      });
+
+    // unregister tooltip after theme switching
+    for (var i=0;i<geoExtMap.map.controls.length; i++){
+        if ( geoExtMap.map.controls[i].id == "sogistooltipcontrol" ){
+            geoExtMap.map.controls[i].destroy();
+        }
+    }
  
-     geoExtMap.map.addControl(openlayersClickEvent);
-     initSOGISProjects(); //INIT SOGIS PROJECT
-     //geoExtMap.map.zoomTo(1); //initial zoom 
+    geoExtMap.map.addControl(openlayersClickEvent);
+    initSOGISProjects(); //INIT SOGIS PROJECT
+    //geoExtMap.map.zoomTo(1); //initial zoom
 }
 
 function customPostLoading() {

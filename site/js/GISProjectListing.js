@@ -620,7 +620,7 @@ Fliessgewässer,Orthofoto",
           "projectfile": "gemeindegis",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Grundkarte,Wasser,Abwasser,Elektro",
+          "visibleLayers": "Grundkarte,Wasser Leitungsbeschriftung,Wasser Leitung,Abwasser Leitung,Abwasser Leitungsbeschriftung,Elektro",
           "updateInterval": "occasional",
           "responsible": "Gemeinden Kanton SO",
           "tags": "Leitungskataster,GemeindeGIS",
