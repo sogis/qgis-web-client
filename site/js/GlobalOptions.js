@@ -4,10 +4,10 @@ var lang = "de"; //for available codes see array availableLanguages in file Glob
 //Help file (must be a local file)
 var helpfile = "help_de.html";
 
-//Servername (optional) and path and name name of QGIS mapserver FCGI-file
+//Servername (optional) and path and name name of QGIS Server FCGI-file
 //either with or without server-name - without servername recommended for easier porting to other servers
 //do not add a ? or & after the .fcgi extension
-var serverAndCGI = "http://www.sogis1.so.ch/wms";
+var serverAndCGI = "http://www.sogis1.so.ch/wmstest";
 
 //Define whether you want to use the GetProjectSettings extension of QGIS Server
 //for more configuration options in the project.
@@ -17,16 +17,37 @@ var useGetProjectSettings = true;
 // show the layerOrderTab in the GUI
 var showLayerOrderTab = false;
 
+// show layername in layerTree in gray when layer is outside visible scale
+var grayLayerNameWhenOutsideScale = true;
+
+// show the tab metadata in legend
+var showMetaDataInLegend = false;
+
+// show maptips when mouse is over object, set to false if you just want to click and show results
+// if set to true every mouse position over feature of queriable layers is GetFeatureInfo request on server
+var enableHoverPopup = false;
+
 // use geodesic measures, i.e. not planar measures
 // this is useful if a projection with high distortion of length/area is used, eg.g. GoogleMercator
-var useGeodesicMeasurement = false
+var useGeodesicMeasurement = false;
 
 //search box for queries while typing
 //enable to use GeoNames search
 var useGeoNamesSearchBox = false;
+var geoNamesUserName = 'insert your geonames user name';
 //URL for custom search scripts
 var searchBoxQueryURL = "/wsgi/search.wsgi?query=";
 var searchBoxGetGeomURL = "/wsgi/getSearchGeom.wsgi";
+
+// use QGIS WMS highlight for selected search result in search box
+var enableSearchBoxWmsHighlight = true;
+// search result attribute to show as label if enableSearchBoxWmsHighlight is enabled
+var searchBoxWmsHighlightLabel = 'displaytext';
+
+// If set, will make sure that the layer for the search results is
+// visible. This feature will work out of the box if PHP scripts are
+// used.
+var autoActivateSearchGeometryLayer = false;
 
 // Used to dynamically determine the project.
 var project_map = Ext.urlDecode(window.location.search.substring(1)).map;
@@ -39,23 +60,47 @@ var project_map = Ext.urlDecode(window.location.search.substring(1)).map;
 //use a URL shortener for your permalink function
 var permaLinkURLShortener = "/wsgi/createShortPermalink.wsgi";
 
-// enable to use commercial Google and Bing layers (also add BingApiKey in WebgisInit.js)
+// enable to use commercial Google and Bing layers (also add BingApiKey)
 var enableBingCommercialMaps = false;
+
+if (enableBingCommercialMaps) {
+    var bingApiKey = "add Bing api key here"; // http://msdn.microsoft.com/en-us/library/ff428642.aspx
+}
 var enableGoogleCommercialMaps = false;
+
+var enableOSMMaps = false;
+
 var enableBGMaps = false;
-if (enableBingCommercialMaps || enableGoogleCommercialMaps) {
+if (enableBingCommercialMaps || enableOSMMaps || enableGoogleCommercialMaps) {
 	enableBGMaps = true;
 }
+if (enableBGMaps) {
+// enter the index of the backgroundLayer to be visible after loading,
+// set to a value < 0 to not show any backgroundLayer
+// this setting is overridden if a value for url-parameter visibleBackgroundLayer is passed
+var initialBGMap = 0;
+}
 
+// enable to use WMTS base layers
+var enableWmtsBaseLayers = true;
+// NOTE: also set MapOptions according to WMTS
+
+// media base URL to match media links in layer attributes
+var mediaurl = '';
 // do not show fields in ObjectIdentification results that have null values
 var suppressEmptyValues = false;
 // hide geometry in ObjectIdentification results (should be only false if there is a good reason to do so)
 var suppressInfoGeometry = true;
 // do show field names in click-popup during object identification
 var showFieldNamesInClickPopup = true;
-// do show the layer title in the hover popup
-var showHoverLayerTitle = true;
+// show or hide the layer title in the feature info popup
+// can be overwritten on a per-project basis in GISProjectListing.js
+var showFeatureInfoLayerTitle = true;
 // max-width and max-height of the feature-info popup can be controlled in site/css/popup.css
+
+//config for QGIS.SearchPanel
+//Number of results: FEATURE_COUNT in WMS request
+var simpleWmsSearchMaxResults = 10;
 
 //config for QGIS.SearchPanel
 var simpleWmsSearch = {
@@ -76,6 +121,8 @@ var simpleWmsSearch = {
   gridColumns: [
     {header: 'Name', dataIndex: 'name', menuDisabled: 'true'}
   ],
+//  highlightFeature: true,
+//  highlightLabel: 'name',
   selectionLayer: 'Country',
   selectionZoom: 0,
   doZoomToExtent: true
@@ -102,6 +149,8 @@ var urlRewriteSearch = {
     {header: 'PKUID', dataIndex: 'pkuid', menuDisabled: 'true'},
     {header: 'Colour', dataIndex: 'colour', menuDisabled: 'true'}
   ],
+//  highlightFeature: true,
+//  highlightLabel: 'colour',
   selectionLayer: 'Hello',
   selectionZoom: 1
 };
@@ -146,7 +195,7 @@ var mapThemeSwitcherActive = true;
 var themeSwitcherTemplate = null;
 
 //first part of titlebar text
-var titleBarText = "GIS-Browser - "; // will be appended with project title
+var titleBarText = "WebGIS - "; // will be appended with project title
 
 // header logo image and link
 var headerLogoImg = null; // path to image, set null for no logo
@@ -170,29 +219,34 @@ var layerImageFormats = [
     layers: ["Orthofoto"]
   },
   {
-    format: "image/jpeg",
-    layers: ["Orthofoto"]
+    format: "image/png",
+    layers: ["Basisplan"]
   }
 ];
 */
-
 //EPSG projection code of your QGIS project
 var authid = "EPSG:"+21781;
 
-//background transparency for the QGIS server generated layer (commercial background layers not effected)
+//background transparency for the QGIS Server generated layer (commercial background layers not effected)
 //set to true if you want the background to be transparent, layer image will be bigger (32 vs 24bit)
 var qgisLayerTransparency = false;
+
+//number of zoomlevels, uses main map layer and all base layers
+var ZOOM_LEVELS = 13;
 
 // OpenLayers global options
 // see http://dev.openlayers.org/releases/OpenLayers-2.10/doc/apidocs/files/OpenLayers/Map-js.html
 var MapOptions = {
   projection: new OpenLayers.Projection(authid),
   units: "m",
-//  maxScale:50,
-//  minScale:40000000,
-//  numZoomLevels:20,
-  fractionalZoom: enableBGMaps ? false : true,
-  transitionEffect:"resize",
+  moveDelay: 10,
+  zoomDelay: 10,
+  maxResolution: 250.0,
+  minResolution: 0.1,
+  fallThrough: false,
+  resolutions: [250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.25, 0.1],
+  maxExtent: new OpenLayers.Bounds(590000.0,210000.0,650000.0,270000.0),
+  fractionalZoom: false, // with tiles to guarantee correct zoom level
   controls: []
 };
 
@@ -202,29 +256,55 @@ var LayerOptions = {
   buffer:0,
   singleTile:true,
   ratio:1,
-  transitionEffect:"resize",
   isBaseLayer: false,
+  fractionalZoom: false, // with tiles to guarantee correct zoom level
   projection:authid,
-  yx: {"EPSG:900913": false}
+  yx: {"EPSG:900913": false},
   // If your projection is known to have an inverse axis order in WMS 1.3 compared to WMS 1.1 enter true for yx.
   // For EPSG:900913 OpenLayers should know it by default but because of a bug in OL 2.12 we enter it here.
-	
+  tileOptions: {
+    // use POST for long URLs
+    maxGetUrlLength: 2048
+  }
 };
 
 //overview map settings - do not change variable names!
 var OverviewMapOptions = {
   projection: new OpenLayers.Projection(authid),
   units: "m",
-  maxScale:50,
-  minScale:1500000,
-  transitionEffect:"resize"
+  maxResolution: 500.0,
+  minResolution: 0.1,
+  fallThrough: false,
+  resolutions: [500.0, 250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.25, 0.1],
+  maxExtent: new OpenLayers.Bounds(570000.0,190000.0,670000.0,290000.0),
+  fractionalZoom: false // with tiles to guarantee correct zoom level
 };
+
 var OverviewMapSize = new OpenLayers.Size(200,200);
 var OverviewMapMaximized = true; // is the overview map opend or closed by default
-var overviewLayer = new OpenLayers.Layer.WMS("Uebersicht",
-  "http://www.sogis1.so.ch/wms/strassenkarte",
-  {layers:"Strassenkarte",format:"image/jpeg"},
-  {buffer:0,singleTile:true,transitionEffect:"resize"});
+//var overviewLayer = new OpenLayers.Layer.WMS("Uebersicht",
+//  "http://www.sogis1.so.ch/wms/strassenkarte",
+//  {layers:"Strassenkarte",format:"image/jpeg"},
+//  {buffer:0,singleTile:true,transitionEffect:"resize"});
+
+var overviewLayer = new OpenLayers.Layer.WMTS({
+    projection: new OpenLayers.Projection('EPSG:21781'),
+    name: "Strassenkarte_farbig",
+    url: "http://srsofaioi12288.ktso.ch/mapcache/wmts",
+    requestEncoding: 'REST',
+    buffer: 0,
+    zoomOffset: 15,
+    layer: "Strassenkarte_farbig",
+    matrixSet: "21781",
+    version: "1.0.0",
+    tileOrigin: new OpenLayers.LonLat(420000.0, 350000.0),
+    resolutions: [500.0, 250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.25, 0.1],
+    format: "image/png",
+    formatSuffix: "png",
+    style: "default",
+    visibility: true,
+    isBaseLayer: true,
+  }); 
 
 // prevent the user from choosing a print resolution
 // if fixedPrintResolution = null, the user is allowed to choose the print resolution. 
@@ -245,7 +325,7 @@ var printCapabilities={
     {"name":"1:10'000","value":"10000"},
     {"name":"1:12'000","value":"12000"},
     {"name":"1:15'000","value":"15000"},
-    {"name":"1:20'000","value":"20000"},
+    //{"name":"1:20'000","value":"20000"}, //SCALE BUG in QGIS-Server and Grundkarten ...
     {"name":"1:25'000","value":"25000"},
     {"name":"1:30'000","value":"30000"},
     {"name":"1:50'000","value":"50000"},
@@ -313,21 +393,33 @@ var symbolizersHighLightLayer = {
     pointRadius: 4,
     graphicName: "circle",
     fillColor: "#FF8C00",
-    fillOpacity: 0.3,
+    fillOpacity: 0.4,
     strokeWidth: 1,
     strokeColor: "#FF8C00"
   },
   "Line": {
-    strokeWidth: 3,
+    strokeWidth: 1,
     strokeOpacity: 1,
     strokeColor: "#FF8C00",
     strokeDashstyle: "dash"
   },
   "Polygon": {
-    strokeWidth: 2,
+    strokeWidth: 1,
     strokeColor: "#FF8C00",
-    fillColor: "none"
+    fillColor: "#FF8C00",
+    fillOpacity: 0.4
   }
+};
+
+// style for highlight labels of search results
+// font weight from 0 to 99 (Light: 25, Normal: 50, DemiBold: 63, Bold: 75, Black: 87)
+var highlightLabelStyle = {
+  font: "CadastraCondensed",
+  size: 10,
+//  weight: 75,
+  color: "#FF2800",
+  buffercolor: "#FFFFFF",
+  buffersize: 1
 };
 
 //styling for measure controls (distance and area)
@@ -352,6 +444,6 @@ var sketchSymbolizersMeasureControls = {
     strokeOpacity: 1,
     strokeColor: "#FF0000",
     fillColor: "#FFFFFF",
-    fillOpacity: 0.3
+    fillOpacity: 0.4
   }
 };

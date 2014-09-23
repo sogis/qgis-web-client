@@ -1,9 +1,9 @@
 /*
  *
- * GetUrlParams.js -- part of Quantum GIS Web Client
+ * GetUrlParams.js -- part of QGIS Web Client
  *
  * Copyright (2010-2012), The QGIS Project All rights reserved.
- * Quantum GIS Web Client is released under a BSD license. Please see
+ * QGIS Web Client is released under a BSD license. Please see
  * https://github.com/qgis/qgis-web-client/blob/master/README
  * for the full text of the license and the list of contributors.
  *
@@ -24,6 +24,7 @@ var format = "image/png"; //the default image format
 var origFormat = format; //the original default image format, format is temporarily changed
 var searchtables = null;
 var visibleLayers = null; //later an array of layer names that are initially visible
+var visibleBackgroundLayer = null; // later the name of the visibleBackgroundLayer
 var initialLayerOrder = null; //later an array containing the initialLayerOrder
 var fullColorLayers = new Array(); //layers that should be displayed in 24bit (JPEG) instead of 8bit PNG, only relevant if the project format is 8bit
 
@@ -77,6 +78,10 @@ if (urlArray.length > 1) {
 			visibleLayers = urlParams.visibleLayers.split(",");
 		}
 	}
+	if (enableBGMaps && (urlParams.visibleBackgroundLayer != null)) {
+		visibleBackgroundLayer = urlParams.visibleBackgroundLayer;
+	}
+	
 	if (urlParams.initialLayerOrder != null) {
 		if (urlParams.initialLayerOrder != "") {
 			initialLayerOrder = urlParams.initialLayerOrder.split(",");

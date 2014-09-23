@@ -1,9 +1,9 @@
 /*
  *
- * FeatureInfoDisplay.js -- part of Quantum GIS Web Client
+ * FeatureInfoDisplay.js -- part of QGIS Web Client
  *
  * Copyright (2010-2012), The QGIS Project All rights reserved.
- * Quantum GIS Web Client is released under a BSD license. Please see
+ * QGIS Web Client is released under a BSD license. Please see
  * https://github.com/qgis/qgis-web-client/blob/master/README
  * for the full text of the license and the list of contributors.
  *
@@ -65,6 +65,8 @@ function showFeatureInfo(evt) {
                     true,  // closeBox
                     onClickPopupClosed // closeBoxCallBackFunction
                     );
+                // For the displacement problem
+                clickPopup.panMapIfOutOfView = Ext.isGecko;
                 clickPopup.autoSize = true;
                 clickPopup.events.fallThrough = false;
                 map.addPopup(clickPopup); //*/
@@ -92,6 +94,15 @@ function showFeatureInfoHover(evt) {
         var layerNodes = xmlDoc.getElementsByTagName("Layer");
         var text = '';
         var result = false;
+        //test if we need to show the feature info layer title
+        //either from global setting or from project setting
+        var showFILayerTitle = showFeatureInfoLayerTitle;
+        if (mapThemeSwitcher) {
+            if (mapThemeSwitcher.activeProjectData != undefined) {
+                showFILayerTitle = mapThemeSwitcher.activeProjectData.showFeatureInfoLayerTitle;
+            }
+        }
+
         for (var i = layerNodes.length - 1; i > -1; --i) {
             //case vector layers
             var featureNodes = layerNodes[i].getElementsByTagName("Feature");
@@ -99,7 +110,7 @@ function showFeatureInfoHover(evt) {
             var tooltipAttributeName = wmsLoader.layerProperties[layerNodes[i].getAttribute("name")].displayField || "tooltip";
             for (var j = 0; j < featureNodes.length; ++j) {
                 if (j == 0) {
-                    if (showHoverLayerTitle) {
+                    if (showFILayerTitle) {
                         text += '<h2 class="hoverLayerTitle">' + wmsLoader.layerProperties[layerNodes[i].getAttribute("name")].title + '</h2>';
                     }
                     result = true;
@@ -163,7 +174,7 @@ function showFeatureInfoHover(evt) {
             }
             for (var j = 0; j < rasterAttributeNodes.length; ++j) {
                 if (j == 0) {
-                    if (showHoverLayerTitle) {
+                    if (showFILayerTitle) {
                         text += '<h2 class="hoverLayerTitle">' + wmsLoader.layerProperties[layerNodes[i].getAttribute("name")].title + '</h2>';
                     }
                     result = true;
@@ -225,7 +236,8 @@ function onHoverPopupClick(evt){
 function onClickPopupClosed(evt) {
     removeClickPopup();
     // enable the hover popup for the curent mosue position
-    WMSGetFInfoHover.activate();
+    if (enableHoverPopup)
+		WMSGetFInfoHover.activate();
     var map = geoExtMap.map; // gets OL map object
     evt.xy = map.events.getMousePosition(evt); // non api function of OpenLayers.Events
     map.events.triggerEvent("mousemove", evt);
@@ -248,32 +260,23 @@ function removeHoverPopup(){
     featureInfoHighlightLayer.removeAllFeatures();
 }
 
-function showFeatureSelected(args) {
-    // select feature in layer
-    thematicLayer.mergeNewParams({
-        "SELECTION": args["layer"] + ":" + args["id"]
-    });
-    if (args["doZoomToExtent"]){
-        geoExtMap.map.zoomToExtent(args["bbox"]);
-    }
-    else{
-        geoExtMap.map.setCenter(new OpenLayers.LonLat(args["x"], args["y"]), args["zoom"]);
-    }
-}
-
-function clearFeatureSelected() {
-    // clear selection
-    thematicLayer.mergeNewParams({
-        "SELECTION": null
-    });
-}
-
 function parseFIResult(node) {
     if (node.hasChildNodes()) {
+		//test if we need to show the feature info layer title
+		//either from global setting or from project setting
+		var showFILayerTitle = showFeatureInfoLayerTitle;
+		if (mapThemeSwitcher) {
+			if (mapThemeSwitcher.activeProjectData != undefined) {
+				showFILayerTitle = mapThemeSwitcher.activeProjectData.showFeatureInfoLayerTitle;
+			}
+		}
         if (node.hasChildNodes() && node.nodeName == "Layer") {
             var hasAttributes = false;
             var rasterData = false;
-            var htmlText = "<h2>" + wmsLoader.layerProperties[node.getAttribute("name")].title + "</h2>";
+            var htmlText = "";
+			if (showFILayerTitle) {
+				htmlText += "<h2>" + wmsLoader.layerProperties[node.getAttribute("name")].title + "</h2>";
+			}
             var geoms = new Array();
             var layerChildNode = node.firstChild;
             while (layerChildNode) {
@@ -298,19 +301,28 @@ function parseFIResult(node) {
                                         hasAttributes = true;
                                     }
                                 } else {
-                                    htmlText += "\n   <tr>";
-                                    if (showFieldNamesInClickPopup) {
-                                        htmlText += "<td>" + attName + ":</td>";
-                                    }
-                                    // add hyperlinks for URLs in attribute values
-                                    if (attValue != '' && /http:\/\/.+\..+/i.test(attValue)) {
-                                        if (! /\<a./i.test(attValue)) {
-                                            //do not reformat already formated tags
-                                            attValue = "<a class=\"popupLink\" href=\"" + attValue + "\" target=\"_blank\">" + attValue + "</a>";
-                                        }
-                                    }
-                                    htmlText += "<td>" + attValue + "</td></tr>";
-                                    hasAttributes = true;
+                                    if (attName !== "maptip") {
+                                      htmlText += "\n   <tr>";
+                                      if (showFieldNamesInClickPopup) {
+                                          htmlText += "<td>" + attName + ":</td>";
+                                      }
+                                      // add hyperlinks for URLs in attribute values
+                                      if (attValue != '' && /^((http|https|ftp):\/\/).+\..+/i.test(attValue)) {
+                                          if (! /\<a./i.test(attValue)) {
+                                              //do not reformat already formated tags
+                                              attValue = "<a class=\"popupLink\" href=\"" + attValue + "\" target=\"_blank\">" + attValue + "</a>";
+                                          }
+                                      }
+                                      // add hyperlinks for URLs containing mediaurl pattern
+                                      if (mediaurl != ''){
+                                          var mediapattern = new RegExp(mediaurl,'i');
+                                          if (mediapattern.test(attValue)){
+                                              attValue = "<a href=\"/" + attValue + "\" target=\"_blank\">" + attValue + "</a>";
+                                          }
+                                      }
+                                      htmlText += "<td>" + attValue + "</td></tr>";
+                                      hasAttributes = true;
+                                  }
                                 }
                             }
                         }

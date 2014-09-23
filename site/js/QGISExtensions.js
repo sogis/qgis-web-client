@@ -1,20 +1,21 @@
 /*
  *
- * QGISExtensions.js -- part of Quantum GIS Web Client
+ * QGISExtensions.js -- part of QGIS Web Client
  *
  * Copyright (2010-2012), The QGIS Project All rights reserved.
- * Quantum GIS Web Client is released under a BSD license. Please see
+ * QGIS Web Client is released under a BSD license. Please see
  * https://github.com/qgis/qgis-web-client/blob/master/README
  * for the full text of the license and the list of contributors.
  *
-*/ 
+*/
 
-/* Five QGIS extensions:
+/* QGIS extensions:
 * QGIS.WMSCapabilitiesLoader
 * QGIS.PrintProvider
 * QGIS.SearchComboBox
 * QGIS.SearchPanel
 * QGIS.FeatureInfoParser
+* QGIS.Highlighter
 * QGIS.LayerOrderPanel
 */
 
@@ -33,9 +34,9 @@ Ext.extend(QGIS.WMSCapabilitiesLoader, GeoExt.tree.WMSCapabilitiesLoader, {
   projectSettings: null,
   //this list holds layer properties, indexed by layername
   layerProperties: new Array(),
-	//this list holds a mapping between title and layer name - the tree shows the title, the WMS requests need names
-	layerTitleNameMapping: new Array(),
-	initialVisibleLayers: new Array(),
+    //this list holds a mapping between title and layer name - the tree shows the title, the WMS requests need names
+    layerTitleNameMapping: new Array(),
+    initialVisibleLayers: new Array(),
   getParams: function(node) {
     return {
       SERVICE: 'WMS',
@@ -58,6 +59,7 @@ Ext.extend(QGIS.WMSCapabilitiesLoader, GeoExt.tree.WMSCapabilitiesLoader, {
         this.WMSCapabilities.loadXML(response.responseText);
       }
     }
+
     this.projectSettings = new OpenLayers.Format.WMSCapabilities({
       readers: {
         "wms": OpenLayers.Util.applyDefaults({
@@ -89,13 +91,13 @@ Ext.extend(QGIS.WMSCapabilitiesLoader, GeoExt.tree.WMSCapabilitiesLoader, {
 
           // based on OpenLayers.Format.WMSCapabilities.v1 parser
           "Layer": function(node, obj) {
-						var parentLayer, capability;
-						if (obj.capability) {
-								capability = obj.capability;
-								parentLayer = obj;
-						} else {
-								capability = obj;
-						}
+                        var parentLayer, capability;
+                        if (obj.capability) {
+                                capability = obj.capability;
+                                parentLayer = obj;
+                        } else {
+                                capability = obj;
+                        }
             var attrNode = node.getAttributeNode("queryable");
             var queryable = (attrNode && attrNode.specified) ?
               node.getAttribute("queryable") : null;
@@ -115,11 +117,11 @@ Ext.extend(QGIS.WMSCapabilitiesLoader, GeoExt.tree.WMSCapabilitiesLoader, {
             var noSubsets = node.getAttribute('noSubsets');
             var fixedWidth = node.getAttribute('fixedWidth');
             var fixedHeight = node.getAttribute('fixedHeight');
-						var parent = parentLayer || {},
-								extend = OpenLayers.Util.extend;
+                        var parent = parentLayer || {},
+                                extend = OpenLayers.Util.extend;
             var layer = {nestedLayers: [],
                     styles: parentLayer ? [].concat(parentLayer.styles) : [],
-                    srs: parentLayer ? extend({}, parent.srs) : {}, 
+                    srs: parentLayer ? extend({}, parent.srs) : {},
                     metadataURLs: [],
                     bbox: parentLayer ? extend({}, parent.bbox) : {},
                     llbbox: parent.llbbox,
@@ -127,49 +129,49 @@ Ext.extend(QGIS.WMSCapabilitiesLoader, GeoExt.tree.WMSCapabilitiesLoader, {
                     authorityURLs: parentLayer ? extend({}, parent.authorityURLs) : {},
                     identifiers: {},
                     keywords: [],
-                    queryable: (queryable && queryable !== "") ? 
+                    queryable: (queryable && queryable !== "") ?
                         (queryable === "1" || queryable === "true" ) :
                         (parent.queryable || false),
                     cascaded: (cascaded !== null) ? parseInt(cascaded) :
                         (parent.cascaded || 0),
-                    opaque: opaque ? 
+                    opaque: opaque ?
                         (opaque === "1" || opaque === "true" ) :
                         (parent.opaque || false),
-										//visible and displayField are QGIS extensions
-										visible: (visible && visible !== "") ?
-											( visible === "1" || visible === "true" ) : true,
-										displayField: displayField,
-										noSubsets: (noSubsets !== null) ? 
-												(noSubsets === "1" || noSubsets === "true" ) :
-												(parent.noSubsets || false),
-										fixedWidth: (fixedWidth != null) ? 
-												parseInt(fixedWidth) : (parent.fixedWidth || 0),
-										fixedHeight: (fixedHeight != null) ? 
-												parseInt(fixedHeight) : (parent.fixedHeight || 0),
-										minScale: parent.minScale,
-										maxScale: parent.maxScale,
-										attribution: parent.attribution
-								};
-            obj.nestedLayers.push(layer);
+                                        //visible and displayField are QGIS extensions
+                                        visible: (visible && visible !== "") ?
+                                            ( visible === "1" || visible === "true" ) : true,
+                                        displayField: displayField,
+                                        noSubsets: (noSubsets !== null) ?
+                                                (noSubsets === "1" || noSubsets === "true" ) :
+                                                (parent.noSubsets || false),
+                                        fixedWidth: (fixedWidth != null) ?
+                                                parseInt(fixedWidth) : (parent.fixedWidth || 0),
+                                        fixedHeight: (fixedHeight != null) ?
+                                                parseInt(fixedHeight) : (parent.fixedHeight || 0),
+                                        minScale: parent.minScale,
+                                        maxScale: parent.maxScale,
+                                        attribution: parent.attribution
+                                };
             layer.capability = capability;
             this.readChildNodes(node, layer);
-						delete layer.capability;
-                if(layer.name) {
-                    var parts = layer.name.split(":"),
-                        request = capability.request,
-                        gfi = request.getfeatureinfo;
-                    if(parts.length > 0) {
-                        layer.prefix = parts[0];
-                    }
-                    capability.layers.push(layer);
-                    if (layer.formats === undefined) {
-                        layer.formats = request.getmap.formats;
-                    }
-                    if (layer.infoFormats === undefined && gfi) {
-                        layer.infoFormats = gfi.formats;
-                    }
+            delete layer.capability;
+            obj.nestedLayers.push(layer);
+            if(layer.name) {
+                var parts = layer.name.split(":"),
+                    request = capability.request,
+                    gfi = request.getfeatureinfo;
+                if(parts.length > 0) {
+                    layer.prefix = parts[0];
                 }
-            },
+                capability.layers.push(layer);
+                if (layer.formats === undefined) {
+                    layer.formats = request.getmap.formats;
+                }
+                if (layer.infoFormats === undefined && gfi) {
+                    layer.infoFormats = gfi.formats;
+                }
+            }
+        },
 
           "Attributes": function(node, obj) {
             obj.attributes = [];
@@ -186,13 +188,39 @@ Ext.extend(QGIS.WMSCapabilitiesLoader, GeoExt.tree.WMSCapabilitiesLoader, {
             };
             obj.push(attribute);
           },
-					"SRS": function(node, obj) {
-							obj.srs[this.getChildValue(node)] = true;
-					}
+                    "SRS": function(node, obj) {
+                            obj.srs[this.getChildValue(node)] = true;
+                    }
         }, OpenLayers.Format.WMSCapabilities.v1_3.prototype.readers["wms"])
       }
     }).read(this.WMSCapabilities);
     this.processLayer(this.projectSettings.capability, this.projectSettings.capability.request.getmap.href, node);
+
+    // WMTS base layers
+    var wmtsLayers = [];
+    if (enableWmtsBaseLayers) {
+      // use root layer name from project settings as topic name on first load
+      var topicName = this.topicName || this.projectSettings.capability.nestedLayers[0].name;
+
+      // collect print layers for WMTS layers
+      var wmtsLayersConfig = getWmtsLayersConfig(topicName);
+      if (wmtsLayersConfig != null) {
+        for (var i=0; i<wmtsLayersConfig.length; i++) {
+          var config = wmtsLayersConfig[i];
+          wmtsLayers.push(config.wmsLayerName);
+        }
+      }
+
+      // prepend WMTS base layers in drawing order
+      var layerDrawingOrder = wmtsLayers.concat();
+      for (var i=0; i<this.projectSettings.capability.layerDrawingOrder.length; i++) {
+        var layer = this.projectSettings.capability.layerDrawingOrder[i];
+        if (wmtsLayers.indexOf(layer) == -1) {
+          layerDrawingOrder.push(layer);
+        }
+      }
+      this.projectSettings.capability.layerDrawingOrder = layerDrawingOrder;
+    }
 
     //fill the list of layer properties
     for (var i=0; i<this.projectSettings.capability.layers.length; i++) {
@@ -200,20 +228,23 @@ Ext.extend(QGIS.WMSCapabilitiesLoader, GeoExt.tree.WMSCapabilitiesLoader, {
       this.layerProperties[layer.name] = {
         name: layer.name,
         title: layer.title,
-				abstract: layer.abstract,
-				visible: layer.visible,
+        abstract: layer.abstract,
+        visible: layer.visible,
         opacity: 255,
         queryable: layer.queryable,
         displayField: layer.displayField,
         nrChildLayers: layer.nestedLayers.length,
-				attributes: layer.attributes,
-				srsList: layer.srs,
-				bbox: layer.llbbox
+        attributes: layer.attributes,
+        srsList: layer.srs,
+        bbox: layer.llbbox,
+        minScale: (layer.minScale != null) ? parseFloat(layer.minScale) : null,
+        maxScale: (layer.maxScale != null) ? parseFloat(layer.maxScale) : null,
+        wmtsLayer: (wmtsLayers.indexOf(layer.name) != -1) // mark WMTS base layers
       };
-			this.layerTitleNameMapping[layer.title] = layer.name;
-			if (layer.visible) {
-				this.initialVisibleLayers.push(layer.name);
-			}
+      this.layerTitleNameMapping[layer.title] = layer.name;
+      if (layer.visible) {
+        this.initialVisibleLayers.push(layer.name);
+      }
     }
 
     // defaults for GetCapabilities
@@ -234,7 +265,7 @@ Ext.extend(QGIS.WMSCapabilitiesLoader, GeoExt.tree.WMSCapabilitiesLoader, {
           formats: layer.formats[0],
           layers: layer.name
         },
-				this.layerParams),
+                this.layerParams),
         OpenLayers.Util.extend({
           minScale: layer.minScale,
           queryable: layer.queryable,
@@ -299,52 +330,52 @@ Ext.extend(QGIS.PrintProvider, GeoExt.data.PrintProvider, {
     var mapScale = printExtent.page.scale.get("value");
     var grid_interval = 10;
     if (mapScale > 100 && mapScale <= 250) {
-      grid_interval = 25;
+    grid_interval = 25;
     }
     else if (mapScale > 250 && mapScale <= 500) {
-      grid_interval = 50;
+    grid_interval = 50;
     }
     else if (mapScale > 500 && mapScale <= 1000) {
-      grid_interval = 100;
-    }    
+    grid_interval = 100;
+    }
     else if (mapScale > 1000 && mapScale <= 2500) {
-      grid_interval = 200;
+    grid_interval = 200;
     }
     else if (mapScale > 2500 && mapScale <= 5000) {
-      grid_interval = 500;
+    grid_interval = 500;
     }
     else if (mapScale > 5000 && mapScale <= 12000) {
-      grid_interval = 1000;
+    grid_interval = 1000;
     }
     else if (mapScale > 12000 && mapScale <= 25000) {
-      grid_interval = 2000;
+    grid_interval = 2000;
     }
     else if (mapScale > 25000 && mapScale <= 50000) {
-      grid_interval = 2000;
+    grid_interval = 2000;
     }
     else if (mapScale > 50000 && mapScale <= 100000) {
-      grid_interval = 5000;
+    grid_interval = 5000;
     }
     else if (mapScale > 100000 && mapScale <= 500000) {
-      grid_interval = 10000;
+    grid_interval = 10000;
     }
     else if (mapScale > 500000 && mapScale <= 1000000) {
-      grid_interval = 50000;
+    grid_interval = 50000;
     }
     else if (mapScale > 1000000 && mapScale <= 5000000) {
-      grid_interval = 100000;
+    grid_interval = 100000;
     }
     else if (mapScale > 5000000 && mapScale <= 10000000) {
-      grid_interval = 250000;
+    grid_interval = 250000;
     }
     else if (mapScale > 10000000 && mapScale <= 50000000) {
-      grid_interval = 2500000;
+    grid_interval = 2500000;
     }
     else if (mapScale > 50000000 && mapScale <= 100000000) {
-      grid_interval = 5000000;
+    grid_interval = 5000000;
     }
     else if (mapScale > 100000000) {
-      grid_interval = 10000000;
+    grid_interval = 10000000;
     }
 
     // if the var fixedPrintResolution of GlobalOptions.js is set, the print resolution will be this value
@@ -354,12 +385,33 @@ Ext.extend(QGIS.PrintProvider, GeoExt.data.PrintProvider, {
         printResolution = this.dpi.get("value");
     }
 
-    var printUrl = this.url+'&SRS='+authid+'&DPI='+printResolution+'&TEMPLATE='+this.layout.get("name")+'&map0:extent='+printExtent.page.getPrintExtent(map).toBBOX(1,false)+'&map0:rotation='+(printExtent.page.rotation * -1)+'&map0:scale='+mapScale+'&map0:grid_interval_x='+grid_interval+'&map0:grid_interval_y='+grid_interval+'&LAYERS='+encodeURIComponent(thematicLayer.params.LAYERS);
+    var layers = thematicLayer.params.LAYERS;
+
+    if (enableWmtsBaseLayers) {
+      // collect print layers for visible WMTS layers
+      var printLayers = [];
+      var wmtsLayers = getWmtsLayers();
+      for (var i=0; i<wmtsLayers.length; i++) {
+        var wmtsLayer = wmtsLayers[i];
+        if (wmtsLayer.show) {
+            printLayers.push(wmtsLayer.wmsLayerName);
+        }
+      }
+      if (printLayers.length > 0) {
+        // prepend WMTS print layers
+        layers = printLayers.join(',') + "," + layers;
+      }
+    }
+
+    var printUrl = this.url+'&SRS='+authid+'&DPI='+printResolution+'&TEMPLATE='+this.layout.get("name")+'&map0:extent='+printExtent.page.getPrintExtent(map).toBBOX(1,false)+'&map0:rotation='+(printExtent.page.rotation * -1)+'&map0:scale='+mapScale+'&map0:grid_interval_x='+grid_interval+'&map0:grid_interval_y='+grid_interval+'&LAYERS='+encodeURIComponent(layers);
     if (thematicLayer.params.OPACITIES) {
       printUrl += '&OPACITIES='+encodeURIComponent(thematicLayer.params.OPACITIES);
     }
-    if (thematicLayer.params.SELECTION) {
-      printUrl += '&SELECTION='+encodeURIComponent(thematicLayer.params.SELECTION);
+
+    // add highlight
+    var highlightParams = highlighter.printParams("map0");
+    if (highlightParams != null) {
+      printUrl += "&" + Ext.urlEncode(highlightParams);
     }
 
     // makes spatial query from map to use the attributes in the print template (more in README chap 4.5)
@@ -369,9 +421,9 @@ Ext.extend(QGIS.PrintProvider, GeoExt.data.PrintProvider, {
         type: OpenLayers.Filter.Spatial.INTERSECTS,
         value: mapCenter
     });
-
+    Ext.getBody().mask(printLoadingString[lang], 'x-mask-loading');
     var protocol = new OpenLayers.Protocol.WFS({
-            url: serverAndCGI + '/'+ wmsMapName,
+            url: wmsURI,
             featureType: 'print',
             geometryName: 'geometry',
             srsName: authid,
@@ -380,75 +432,84 @@ Ext.extend(QGIS.PrintProvider, GeoExt.data.PrintProvider, {
     });
 
     Ext.getBody().mask(printLoadingString[lang], 'x-mask-loading');
-    protocol.read({
-        callback: function(response) {
-                if(response.features.length > 0) {
-                    attributes = response.features[0].attributes;
-                     for (key in attributes){
-                        printUrl += '&' + key + '=' + encodeURIComponent(attributes[key]);
+    this.fireEvent("afterprint", this, map, pages, options);
+        protocol.read({
+            callback: function(response) {
+                try { // SOGIS: as some projects may have WFS disabled
+                    if(response.features != null) {
+                        if(response.features.length > 0) {
+                            attributes = response.features[0].attributes;
+                            for (key in attributes){
+                                printUrl += '&' + key + '=' + encodeURIComponent(attributes[key]);
+                            }
+                        }
                     }
+                } catch (e) {
+                    //console.log(e)
                 }
             this.download(printUrl);
         },
         scope: this
     });
+
   },
 
+  //SOGIS: working with printpostgetproxy.wsgi
   download: function(url) {
     if (this.fireEvent("beforedownload", this, url) !== false) {
-      if ((printCapabilities.method == 'POST') && (printCapabilities.url_proxy != '')){
-          print_url = printCapabilities.url_proxy;
-      } else {
-          print_url = url;
-          img_src = url;
-      }
-      Ext.Ajax.request({
-        isLoading: true,
-        url : printCapabilities.url_proxy,
-        method: printCapabilities.method,
-        params :  url + '&project=' + wmsMapName,
-        timeout: 240000,
-        success: function (response) {
-            if (printCapabilities.method == 'POST') {
-                var jsonResp = Ext.util.JSON.decode(response.responseText); // GET URL from proxy
-                if (jsonResp.url) {
-                    img_src = jsonResp.url;
-                } else {
-                    Ext.getBody().unmask();
-                    Ext.Msg.alert('Fehler beim Drucken','Leider hat der Druckauftrag einen Fehler verursacht!');
-               }
-            }
+        if ((printCapabilities.method == 'POST') && (printCapabilities.url_proxy != '')){
+            print_url = printCapabilities.url_proxy;
+        } else {
+            print_url = url;
+            img_src = url;
+        }
+        Ext.Ajax.request({
+            isLoading: true,
+            url : printCapabilities.url_proxy,
+            method: printCapabilities.method,
+            params : url + '&project=' + wmsMapName,
+            timeout: 480000,
+            success: function (response) {
+                if (printCapabilities.method == 'POST') {
+                    var jsonResp = Ext.util.JSON.decode(response.responseText); // GET URL from proxy
+                    if (jsonResp.url) {
+                        img_src = jsonResp.url;
+                    } else {
+                        Ext.getBody().unmask();
+                        Ext.Msg.alert('Fehler beim Drucken','Leider hat der Druckauftrag einen Fehler verursacht!');
+                    }
+                }
 
-            //because of an IE bug one has to do it in two steps
-            var parentPanel = Ext.getCmp('geoExtMapPanel');
-            Ext.getBody().unmask();
-            var pdfWindow = new Ext.Window({
-                title: printWindowTitleString[lang],
-                width: Ext.getBody().getWidth() - 100,
-                height: Ext.getBody().getHeight() - 100,
-                resizable: true,
-                closable: true,
-                constrain: false,
-                constrainHeader: true,
-                x:50,
-                y:50,
-                html: '<object data="'+img_src+'" type="application/pdf" width="100%" height="100%">'+
-                      '<embeded src="'+img_src+'" type="application/pdf" />'+
-                      '<a href="'+img_src+'" target="_blank">'+img_src+'</a>'+
-                      '</object>'
+                //because of an IE bug one has to do it in two steps
+                var parentPanel = Ext.getCmp('geoExtMapPanel');
+                Ext.getBody().unmask();
+                var pdfWindow = new Ext.Window({
+                    title: printWindowTitleString[lang],
+                    width: Ext.getBody().getWidth() - 100,
+                    height: Ext.getBody().getHeight() - 100,
+                    resizable: true,
+                    closable: true,
+                    constrain: false,
+                    constrainHeader: true,
+                    x:50,
+                    y:50,
+                    html: '<object data="'+img_src+'" type="application/pdf" width="100%" height="100%">'+
+                          '<embeded src="'+img_src+'" type="application/pdf" />'+
+                          '<a href="'+img_src+'" target="_blank">'+img_src+'</a>'+
+                          '</object>'
+                });
+                pdfWindow.show();
+            },
+            failure: function (response) {
+                        Ext.getBody().unmask();
+                        Ext.Msg.alert("Fehler beim Drucken",'Leider hat der Druckauftrag einen Fehler verursacht! ' + jsonResp.error);
+                    }
             });
-            pdfWindow.show();
-        },
-        failure: function (response) {
-                  Ext.getBody().unmask();
-                  Ext.Msg.alert("Fehler beim Drucken",'Leider hat der Druckauftrag einen Fehler verursacht! ' + jsonResp.error);
-            }
-      });
-    }
-    this.fireEvent("print", this, url);
+        }
+        this.fireEvent("print", this, url);
   }
-}
-);
+});
+
 
 
 /* ************************** QGIS.SearchComboBox ************************** */
@@ -459,6 +520,10 @@ QGIS.SearchComboBox = Ext.extend(Ext.form.ComboBox, {
   map: null,
   highlightLayerName: null,
   highlightLayer: null,
+  useWmsHighlight: false,
+  wmsHighlightLabelAttribute: searchBoxWmsHighlightLabel, //SOGIS
+  wmsHighlightLabel: null,
+  highlighter: null,
   hasReverseAxisOrder: false,
 
   /** config
@@ -479,10 +544,14 @@ QGIS.SearchComboBox = Ext.extend(Ext.form.ComboBox, {
     this.emptyText = OpenLayers.i18n(searchFieldDefaultTextString[lang]);
     this.triggerConfig = { // we use a default clear trigger here
               tag: "img", src: Ext.BLANK_IMAGE_URL, cls:'x-form-trigger x-form-clear-trigger'
-            }; 
+            };
     this.on("keyUp", this.keyUpHandler);
     this.on("afterrender", this.afterrenderHandler);
     this.on("beforeselect", this.beforeselectHandler);
+    var fields = ['searchtable', 'displaytext', 'bbox', 'showlayer', 'selectable'];
+    if (this.useWmsHighlight && fields.indexOf(this.wmsHighlightLabelAttribute) == -1) {
+      fields.push(this.wmsHighlightLabelAttribute);
+    }
     this.store = new Ext.data.JsonStore({
       proxy: new Ext.data.ScriptTagProxy({
         url: this.url,
@@ -495,7 +564,7 @@ QGIS.SearchComboBox = Ext.extend(Ext.form.ComboBox, {
         searchtables: this.getSearchTables()
       },
       root: 'results',
-      fields: ['searchtable', 'displaytext', 'bbox']
+      fields: fields
     });
     this.tpl = new Ext.XTemplate(
       '<tpl for="."><div class="x-combo-list-item {service}">',
@@ -521,17 +590,16 @@ QGIS.SearchComboBox = Ext.extend(Ext.form.ComboBox, {
   // private
   afterrenderHandler: function() {
     this.trigger["hide"]();
-  // SOGIS Tooltip 4 search
-  Ext.QuickTips.register({ target: this.getEl(), text: strSOGISSearchHelpText, dismissDelay: 20000 });
+    // SOGIS Tooltip 4 search
+    Ext.QuickTips.register({ target: this.getEl(), text: strSOGISSearchHelpText, dismissDelay: 20000 });
   },
 
   beforeselectHandler: function(combo,record,index) {
-    if (index > 0) { //user made a selection in combo
+    if (record.get('selectable') == "1") {
       this.collapse();
-      // if index == 0: user pressed enter while entering search term
     }
   },
-  
+
   keyUpHandler: function(cmp, e) {
     //reset if user deleted last sign
     this.checkTrigger();
@@ -543,83 +611,144 @@ QGIS.SearchComboBox = Ext.extend(Ext.form.ComboBox, {
       this.collapse();
     }
   },
-  
+
   checkTrigger: function() {
     // show trigger only if there is any input
     if (this.rendered) {
       this.trigger[!Ext.isEmpty(this.getValue()) ? 'show': 'hide']();
     }
   },
-    
+
   onTriggerClick: function() {
     // reimplements default onTriggerClick function (which does nothing)
     this.resetSearch();
     this.checkTrigger();
     this.focus();
   },
-  
+
   onSelect: function(record, index){
     if(this.fireEvent('beforeselect', this, record, index) !== false){
-      if (record.get('searchtable') != null) {
+      if (record.get('selectable') == "1") {
         this.setValue(record.get('displaytext'));
         this.fireEvent('select', this, record, index);
       }
     }
   },
-  
+
   resetSearch: function(){
     this.collapse();
     this.clearSearchResult();
   },
-  
+
+  /**
+   * Activated on selection of the search result item.
+   * An AJAX call retrieves the geometry from the server
+   * and highights it on the map.
+   *
+   * @param object combo
+   * @param object record
+   * @param int index
+   */
   recordSelected: function(combo, record, index) {
-    var extent = OpenLayers.Bounds.fromArray(record.get('bbox'), this.hasReverseAxisOrder);
-    //make sure that map extent is not too small for point data
-    //need to improve this for units other than "m", e.g. degrees
-    var extWidth = extent.getWidth();
-    var extHeight = extent.getHeight();
-    if (extWidth < 50) {
-      centerX = extent.left + extWidth * 0.5;
-      extent.left = centerX - 25;
-      extent.right = centerX + 25;
+    var bbox = record.get('bbox');
+    
+    if (bbox != null) {
+        var extent = OpenLayers.Bounds.fromArray(bbox, this.hasReverseAxisOrder);
+        //make sure that map extent is not too small for point data
+        //need to improve this for units other than "m", e.g. degrees
+        var extWidth = extent.getWidth();
+        var extHeight = extent.getHeight();
+        if (extWidth < 50) {
+          centerX = extent.left + extWidth * 0.5;
+          extent.left = centerX - 25;
+          extent.right = centerX + 25;
+        }
+        else {
+          extent.left -= extWidth * 0.05;
+          extent.right += extWidth * 0.05;
+        }
+        if (extHeight < 50) {
+          centerY = extent.bottom + extHeight * 0.5;
+          extent.bottom = centerY - 25;
+          extent.top = centerY + 25;
+        }
+        else {
+          extent.bottom -= extHeight = 0.05;
+          extent.top += extHeight = 0.05;
+        }
+        //need to check if extent is too small
+        this.map.zoomToExtent(extent);
     }
-    else {
-      extent.left -= extWidth * 0.05;
-      extent.right += extWidth * 0.05;
-    }
-    if (extHeight < 50) {
-      centerY = extent.bottom + extHeight * 0.5;
-      extent.bottom = centerY - 25;
-      extent.top = centerY + 25;
-    }
-    else {
-      extent.bottom -= extHeight = 0.05;
-      extent.top += extHeight = 0.05;
-    }
-    //need to check if extent is too small
-    this.map.zoomToExtent(extent);
-    if (this.highlightLayer) {
+    if (this.highlightLayer || (this.useWmsHighlight && this.highlighter)) {
+      if (this.useWmsHighlight) {
+        // set highlight label text
+        this.wmsHighlightLabel = record.get(this.wmsHighlightLabelAttribute) + ""; //SOGIS
+      }
       //network request to get real wkt geometry of search object
       Ext.Ajax.request({
       url: this.geomUrl,
       success: this.showSearchGeometry,
       failure: function ( result, request) {
-        Ext.MessageBox.alert(errMessageSearchComboNetworkRequestFailureTitleString[lang], errMessageSearchComboNetworkRequestFailureString+result.responseText);
+        //Ext.MessageBox.alert(errMessageSearchComboNetworkRequestFailureTitleString[lang], errMessageSearchComboNetworkRequestFailureString+result.responseText);
       },
+      scope: this,
       method: 'GET',
-      params: { searchtable: record.get('searchtable'), displaytext: record.get('displaytext') }
+      params: {
+          searchtable: record.get('searchtable'),
+          showlayer: record.get('showlayer'),
+          displaytext: record.get('displaytext')
+        }
       });
     }
   },
+  // This event is called after a successfull retrieval of the geometry
+  // from the server. If the requested 'searchtable' is a valid layer
+  // name and if the autoActivateSearchGeometryLayer = true, then the layer
+  // is made visible.
+  // This should work out of the box if you are using PHP scripts.
   showSearchGeometry: function(result, request) {
-    this.highlightLayer.removeAllFeatures();
-    var feature = new OpenLayers.Feature.Vector(OpenLayers.Geometry.fromWKT(result.responseText));
-    this.highlightLayer.addFeatures([feature]);
+    // Check if we need to activate the layer and the layers exists...
+    var showLayerName = request.params.showlayer ? request.params.showlayer: request.params.searchtable;
+    if( typeof autoActivateSearchGeometryLayer != 'undefined'
+        && autoActivateSearchGeometryLayer
+        && allLayers.indexOf(showLayerName) != -1 )
+    {
+        var found = false;
+        layerTree.root.cascade(function(n){
+            if(n.text==showLayerName){
+                found=n;
+            }
+        });
+        if(found){
+            // Bring it up!
+            found.getUI().toggleCheck(true);
+            // Spread the word ...
+            layerTree.fireEvent("leafschange");
+        }
+    }
+    // highlight feature
+    if (this.useWmsHighlight) {
+      // use QGIS WMS highlight
+      this.highlighter.highlightFeature({
+        geom: result.responseText,
+        labelstring: this.wmsHighlightLabel
+      });
+    }
+    else {
+      // add OpenLayers vector feature
+      this.highlightLayer.removeAllFeatures();
+      var feature = new OpenLayers.Feature.Vector(OpenLayers.Geometry.fromWKT(result.responseText));
+      this.highlightLayer.addFeatures([feature]);
+    }
   },
   clearSearchResult: function() {
     this.setValue("");
+    this.wmsHighlightLabel = null;
     if (this.highlightLayer) {
       this.highlightLayer.removeAllFeatures();
+    }
+    if (this.highlighter) {
+      this.highlighter.unhighlightFeature();
     }
   },
   getSearchTables: function() {
@@ -671,7 +800,7 @@ QGIS.SearchPanel = Ext.extend(Ext.Panel, {
   * zoom level for feature selection
   */
   selectionZoom: 4,
-  
+
 
   constructor: function (config) {
     config = config || {};
@@ -743,16 +872,19 @@ QGIS.SearchPanel = Ext.extend(Ext.Panel, {
     if (this.store != null) {
       this.store.removeAll();
     }
-    if (this.resultsGrid != null) {
+    // Moved to try/catch because of wierd error in popup implementation
+    // when submitting from different search panel.
+    try {
         this.resultsGrid.hide();
+    } catch (e) {
+        // Logging?
     }
     this.fireEvent("featureselectioncleared");
     this.fireEvent("searchformsubmitted");
     this.el.mask(pleaseWaitString[lang], 'x-mask-loading');
     if (this.useWmsRequest) {
       this.submitGetFeatureInfo();
-    }
-    else {
+    } else {
       this.submitForm();
     }
   },
@@ -775,7 +907,7 @@ QGIS.SearchPanel = Ext.extend(Ext.Panel, {
         filter.push("\"" + key + "\" "+ filterOp +" " + valueQuotes + fieldValues[key] + valueQuotes);
         fieldsValidate &= field.validate();
       }
-    }    
+    }
 
     if (fieldsValidate) {
       filter = this.queryLayer + ":" + filter.join(' AND ');
@@ -787,7 +919,7 @@ QGIS.SearchPanel = Ext.extend(Ext.Panel, {
           'REQUEST': 'GetFeatureInfo',
           'LAYERS': this.queryLayer,
           'QUERY_LAYERS': this.queryLayer,
-          'FEATURE_COUNT': 10,
+          'FEATURE_COUNT': (typeof simpleWmsSearchMaxResults != 'undefined' ? simpleWmsSearchMaxResults : 10),
           'INFO_FORMAT': 'text/xml',
           'SRS': authid,
           'FILTER': filter
@@ -889,7 +1021,37 @@ QGIS.SearchPanel = Ext.extend(Ext.Panel, {
       if (this.hasOwnProperty('doZoomToExtent')){
         doZoomToExtent = this.doZoomToExtent;
       }
-      this.fireEvent("featureselected", {"layer":this.selectionLayer, "id":id, "x":x, "y":y, "bbox":new OpenLayers.Bounds(bbox.minx,bbox.miny,bbox.maxx,bbox.maxy), "zoom":this.selectionZoom, "doZoomToExtent":doZoomToExtent});
+
+      var highlightFeature = false;
+      if (this.hasOwnProperty('highlightFeature')){
+        highlightFeature = this.highlightFeature;
+      }
+
+      var args = {
+        doZoomToExtent: doZoomToExtent
+      };
+      // zoom settings
+      if (doZoomToExtent) {
+        args.bbox = new OpenLayers.Bounds(bbox.minx,bbox.miny,bbox.maxx,bbox.maxy);
+      }
+      else {
+        args.x = x;
+        args.y = y;
+        args.zoom = this.selectionZoom;
+      }
+
+      // highlight or selection
+      if (highlightFeature) {
+        args.geom = record.data.geometry;
+        if (this.hasOwnProperty('highlightLabel')) {
+          args.labelstring = record.data[this.highlightLabel];
+        }
+      }
+      else {
+        args.layer = this.selectionLayer;
+        args.id = id;
+      }
+      this.fireEvent("featureselected", args);
     }
   }
 });
@@ -1022,7 +1184,7 @@ Ext.override(Ext.ToolTip, {
           this.anchor = this.origAnchor;
       }
       this.showAt(this.getTargetXY());
-      
+
       if(this.anchor){
           this.anchorEl.show();
           this.syncAnchor();
@@ -1048,6 +1210,203 @@ Ext.override(Ext.ToolTip, {
       }
    }
 });
+
+
+/************************** QGIS.Highlighter ************************ */
+// highlight feature of selected search result
+QGIS.Highlighter = Ext.extend(Object, {
+  map: null,
+  layer: null,
+  symbols: null,
+  highlightParams: null,
+
+  constructor: function(map, wmsLayer) {
+    this.map = map;
+    this.layer = wmsLayer;
+
+    this.createSymbols();
+  },
+
+  clear: function() {
+    this.highlightParams = null;
+    this.layer.mergeNewParams({
+      HIGHLIGHT_GEOM: null,
+      HIGHLIGHT_SYMBOL: null,
+      HIGHLIGHT_LABELSTRING: null,
+      HIGHLIGHT_LABELFONT: null,
+      HIGHLIGHT_LABELSIZE: null,
+      HIGHLIGHT_LABELWEIGHT: null,
+      HIGHLIGHT_LABELCOLOR: null,
+      HIGHLIGHT_LABELBUFFERCOLOR: null,
+      HIGHLIGHT_LABELBUFFERSIZE: null,
+      SELECTION: null
+    });
+  },
+
+  // highlight and optionally zoom to feature
+  highlightFeature: function(args) {
+    // highlight feature
+    if (args.geom) {
+      // QGIS WMS highlight
+      var symbol = null;
+      if (args.geom.match(/POINT/)) {
+        symbol = this.symbols.point;
+      }
+      else if (args.geom.match(/LINESTRING/)) {
+        symbol = this.symbols.line;
+      }
+      else if (args.geom.match(/POLYGON/)) {
+        symbol = this.symbols.polygon;
+      }
+
+      this.highlightParams = {
+        HIGHLIGHT_GEOM: args.geom,
+        HIGHLIGHT_SYMBOL: symbol
+      };
+      if (args.labelstring) {
+        this.highlightParams.HIGHLIGHT_LABELSTRING = args.labelstring;
+        this.highlightParams = OpenLayers.Util.extend(this.highlightParams, this.symbols.label);
+      }
+      this.layer.mergeNewParams(this.highlightParams);
+    }
+    else {
+      // QGIS WMS selection
+      this.layer.mergeNewParams({
+        SELECTION: args.layer + ":" + args.id
+      });
+    }
+
+    // zoom to feature
+    if (args.doZoomToExtent){
+      this.map.zoomToExtent(args.bbox);
+    }
+    else if (args.x != undefined && args.y != undefined) {
+      this.map.setCenter(new OpenLayers.LonLat(args.x, args.y), args.zoom);
+    }
+  },
+
+  unhighlightFeature: function() {
+    this.clear();
+  },
+
+  // return parameters for print
+  printParams: function(mapId) {
+    var params = null;
+    if (this.highlightParams != null) {
+      params = {};
+      // add map id prefix
+      for (param in this.highlightParams) {
+        params[mapId + ":" + param] = this.highlightParams[param];
+      }
+      return params;
+    }
+    else if (this.layer.params.SELECTION) {
+      params = {
+        SELECTION: encodeURIComponent(this.layer.params.SELECTION)
+      };
+    }
+    return params;
+  },
+
+  // create SLD symbols and label style from config
+  createSymbols: function() {
+    this.symbols = {};
+    var symbol;
+
+    // point
+    var point = symbolizersHighLightLayer.Point;
+    symbol =  '<StyledLayerDescriptor>';
+    symbol +=   '<UserStyle>';
+    symbol +=     '<Name>Highlight</Name>';
+    symbol +=       '<FeatureTypeStyle>';
+    symbol +=         '<Rule>';
+    symbol +=           '<Name>Symbol</Name>';
+    symbol +=           '<PointSymbolizer>';
+    symbol +=             '<Graphic>';
+    symbol +=               '<Mark>';
+    if (point.graphicName != null) { symbol += '<WellKnownName>' + point.graphicName +'</WellKnownName>'; }
+    symbol +=                 '<Fill>';
+    if (point.fillColor != null) { symbol += '<SvgParameter name="fill">' + point.fillColor +'</SvgParameter>'; }
+    if (point.fillOpacity != null) { symbol += '<SvgParameter name="fill-opacity">' + point.fillOpacity +'</SvgParameter>'; }
+    symbol +=                 '</Fill>';
+    symbol +=                 '<Stroke>';
+    if (point.strokeColor != null) { symbol += '<SvgParameter name="stroke">' + point.strokeColor +'</SvgParameter>'; }
+    if (point.strokeOpacity != null) { symbol += '<SvgParameter name="stroke-opacity">' + point.strokeOpacity +'</SvgParameter>'; }
+    if (point.strokeWidth != null) { symbol += '<SvgParameter name="stroke-width">' + point.strokeWidth +'</SvgParameter>'; }
+    symbol +=                 '</Stroke>';
+    symbol +=               '</Mark>';
+    if (point.pointRadius != null) { symbol += '<Size>' + point.pointRadius + '</Size>'; }
+    if (point.rotation != null) { symbol += '<Rotation>' + point.rotation + '</Rotation>'; }
+    symbol +=             '</Graphic>';
+    symbol +=           '</PointSymbolizer>';
+    symbol +=        '</Rule>';
+    symbol +=     '</FeatureTypeStyle>';
+    symbol +=   '</UserStyle>';
+    symbol += '</StyledLayerDescriptor>';
+    this.symbols.point = symbol;
+
+    // line
+    var line = symbolizersHighLightLayer.Line;
+    symbol =  '<StyledLayerDescriptor>';
+    symbol +=   '<UserStyle>';
+    symbol +=     '<Name>Highlight</Name>';
+    symbol +=       '<FeatureTypeStyle>';
+    symbol +=         '<Rule>';
+    symbol +=           '<Name>Symbol</Name>';
+    symbol +=           '<LineSymbolizer>';
+    symbol +=             '<Stroke>';
+    if (line.strokeColor != null) { symbol += '<SvgParameter name="stroke">' + line.strokeColor + '</SvgParameter>'; }
+    if (line.strokeOpacity != null) { symbol += '<SvgParameter name="stroke-opacity">' + line.strokeOpacity + '</SvgParameter>'; }
+    if (line.strokeWidth != null) { symbol += '<SvgParameter name="stroke-width">' + line.strokeWidth + '</SvgParameter>'; }
+    if (line.strokeLinecap != null) { symbol += '<SvgParameter name="stroke-linecap">' + line.strokeLinecap + '</SvgParameter>'; }
+    if (line.strokeDashstyle != null && line.strokeDashstyle.match(/\S+\s+\S+/)) { symbol += '<SvgParameter name="stroke-dasharray">' + line.strokeDashstyle + '</SvgParameter>'; }
+    symbol +=             '</Stroke>';
+    symbol +=           '</LineSymbolizer>';
+    symbol +=        '</Rule>';
+    symbol +=     '</FeatureTypeStyle>';
+    symbol +=   '</UserStyle>';
+    symbol += '</StyledLayerDescriptor>';
+    this.symbols.line = symbol;
+
+    // polygon
+    var polygon = symbolizersHighLightLayer.Polygon;
+    symbol =  '<StyledLayerDescriptor>';
+    symbol +=   '<UserStyle>';
+    symbol +=     '<Name>Highlight</Name>';
+    symbol +=       '<FeatureTypeStyle>';
+    symbol +=         '<Rule>';
+    symbol +=           '<Name>Symbol</Name>';
+    symbol +=           '<PolygonSymbolizer>';
+    symbol +=             '<Fill>';
+    if (polygon.fillColor != null) { symbol += '<SvgParameter name="fill">' + polygon.fillColor + '</SvgParameter>'; }
+    if (polygon.fillOpacity != null) { symbol += '<SvgParameter name="fill-opacity">' + polygon.fillOpacity + '</SvgParameter>'; }
+    symbol +=             '</Fill>';
+    symbol +=             '<Stroke>';
+    if (polygon.strokeColor != null) { symbol += '<SvgParameter name="stroke">' + polygon.strokeColor + '</SvgParameter>'; }
+    if (polygon.strokeOpacity != null) { symbol += '<SvgParameter name="stroke-opacity">' + polygon.strokeOpacity + '</SvgParameter>'; }
+    if (polygon.strokeWidth != null) { symbol += '<SvgParameter name="stroke-width">' + polygon.strokeWidth + '</SvgParameter>'; }
+    if (polygon.strokeLinecap != null) { symbol += '<SvgParameter name="stroke-linecap">' + polygon.strokeLinecap + '</SvgParameter>'; }
+    if (polygon.strokeDashstyle != null && polygon.strokeDashstyle.match(/\S+\s+\S+/)) { symbol += '<SvgParameter name="stroke-dasharray">' + polygon.strokeDashstyle + '</SvgParameter>'; }
+    symbol +=             '</Stroke>';
+    symbol +=           '</PolygonSymbolizer>';
+    symbol +=        '</Rule>';
+    symbol +=     '</FeatureTypeStyle>';
+    symbol +=   '</UserStyle>';
+    symbol += '</StyledLayerDescriptor>';
+    this.symbols.polygon = symbol;
+
+    // label
+    this.symbols.label = {
+      HIGHLIGHT_LABELFONT: highlightLabelStyle.font,
+      HIGHLIGHT_LABELSIZE: highlightLabelStyle.size,
+      HIGHLIGHT_LABELWEIGHT: highlightLabelStyle.weight,
+      HIGHLIGHT_LABELCOLOR: highlightLabelStyle.color,
+      HIGHLIGHT_LABELBUFFERCOLOR: highlightLabelStyle.buffercolor,
+      HIGHLIGHT_LABELBUFFERSIZE: highlightLabelStyle.buffersize
+    };
+  }
+});
+
 
 /* *************************** QGIS.LayerOrderPanel **************************** */
 // extends Ext.Panel with a list of the active layers that can be ordered by the user
@@ -1148,7 +1507,7 @@ QGIS.LayerOrderPanel = Ext.extend(Ext.Panel, {
                 buttonEl.toggleClass('action-invisible');
 
                 var rec = this.store.getAt(rowIndex);
-								//set sprite of button
+                                //set sprite of button
                 this.fireEvent('layerVisibilityChange', rec.get('layer'));
               },
               scope: this
@@ -1234,10 +1593,10 @@ QGIS.LayerOrderPanel = Ext.extend(Ext.Panel, {
     this.store.insert(0, rec);
     // add opacity slider
     this.addOpacitySlider(layer);
-		//set visibility
-		if (visibleLayers.indexOf(layer) == -1) {
-			this.toggleLayerVisibility(layer);
-		}
+        //set visibility
+        if (visibleLayers.indexOf(layer) == -1) {
+            this.toggleLayerVisibility(layer);
+        }
   },
 
   clearLayers: function() {
@@ -1247,32 +1606,32 @@ QGIS.LayerOrderPanel = Ext.extend(Ext.Panel, {
   hasLayer: function(layer) {
     return this.store.getById(layer) != undefined;
   },
-	
-	toggleLayerVisibility: function(layer) {
-			// toggle icon
-			if (this.hasLayer(layer)) {
-				var layerId = this.escapeString(layer);
-				var buttonEl = Ext.select('img.layerOptions_' + layerId).first().next();
-				buttonEl.toggleClass('action-visible');
-				buttonEl.toggleClass('action-invisible');
-			}
-	},
-	
-	//return if a layer is visible (true) or not (false)
-	//TODO:
-	//maybe there is a more elegant solution to check the visibility of a layer in the layer order panel?
-	layerVisible: function(layer) {
-			var returnVal = undefined;
-			if (this.hasLayer(layer)) {
-				var layerId = this.escapeString(layer);
-				var buttonEl = Ext.select('img.layerOptions_' + layerId).first().next();
-				returnVal = true;
-				if (buttonEl.dom.className.match(/action-invisible/)) {
-					returnVal = false;
-				}
-			}
-			return returnVal;
-	},
+
+    toggleLayerVisibility: function(layer) {
+            // toggle icon
+            if (this.hasLayer(layer)) {
+                var layerId = this.escapeString(layer);
+                var buttonEl = Ext.select('img.layerOptions_' + layerId).first().next();
+                buttonEl.toggleClass('action-visible');
+                buttonEl.toggleClass('action-invisible');
+            }
+    },
+
+    //return if a layer is visible (true) or not (false)
+    //TODO:
+    //maybe there is a more elegant solution to check the visibility of a layer in the layer order panel?
+    layerVisible: function(layer) {
+            var returnVal = undefined;
+            if (this.hasLayer(layer)) {
+                var layerId = this.escapeString(layer);
+                var buttonEl = Ext.select('img.layerOptions_' + layerId).first().next();
+                returnVal = true;
+                if (buttonEl.dom.className.match(/action-invisible/)) {
+                    returnVal = false;
+                }
+            }
+            return returnVal;
+    },
 
   orderedLayers: function() {
     var layers = [];
@@ -1367,3 +1726,5 @@ Ext.override(Ext.dd.DragTracker, {
     this.fireEvent('drag', this, e);
   }
 });
+
+

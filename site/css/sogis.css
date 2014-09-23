@@ -138,6 +138,9 @@ body {
 }
 
 /* SOGIS TOOLTIP */
+.sogisTooltip {
+    margin: 2px;
+}
 .sogisTooltip h3 {
    	font-size : 11pt;
 	font-family : Verdana, Arial, Helvetica;
@@ -291,7 +294,7 @@ body {
 	}
 
 .sogisTooltip input[type=button] {
-  background-color : #EBEBEB;
+    background-color : #EBEBEB;
 	width: 100px;
 	border-color : #003366;
 	border-style : solid;
@@ -301,12 +304,35 @@ body {
 
 .sogisTooltip textarea {
 	FONT-FAMILY : Verdana, Arial, Helvetica; 
-	FONT-SIZE: 11px;
+	FONT-SIZE : 11px;
 	color : #000000;
 }
 
 .sogisTooltip select {
-	FONT-FAMILY : Verdana, Arial, Helvetica; 
-	FONT-SIZE: 11px;
-	WIDTH:120px;
+    FONT-FAMILY : Verdana, Arial, Helvetica; 
+    FONT-SIZE : 11px;
+    WIDTH : 120px;
 }
+
+/* SOGIS Wait-Mask */
+ .sogisMask {
+    opacity : 0.0;
+    -moz-opacity : 0.0;
+    opacity : .0;
+    filter : alpha(opacity=0);
+}
+
+.ext-el-mask {
+    opacity : 0.0;
+    -moz-opacity : 0.0;
+    opacity : .0;
+    filter : alpha(opacity=0);
+}
+
+.ext-el-mask-msg {
+    opacity : 1;
+    -moz-opacity : 1;
+    opacity : 1.0;
+    filter : alpha(opacity=100);
+}
+

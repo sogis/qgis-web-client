@@ -1,34 +1,106 @@
-var servername = "http://"+location.href.split(/\/+/)[1];
+var servername = "http://" + location.href.split(/\/+/)[1];
 var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip/'; // URL to the SOGIS tooltip
 
-//search tooltip
-strSOGISSearchHelpText = '<b>Suche</b><br/>';
-strSOGISSearchHelpText += 'Um nur in bestimmten Datenbereichen zu suchen,<br/>';
-strSOGISSearchHelpText += 'können Sie Kürzel verwenden:<br/><br/>';
-strSOGISSearchHelpText += '- Point of Interest: <b>poi</b><br/>';
-strSOGISSearchHelpText += '- Flurnamen: <b>flurname</b><br/>';
-strSOGISSearchHelpText += '- GB-Nummer: <b>gbnr</b><br/>';
-strSOGISSearchHelpText += '- EGID: <b>egid</b><br/>';
+function setProjectSettings() {
+    strSOGISSearchHelpText = '';
+    //get sogis settings
+    for (var i=0;i<gis_projects.topics.length; i++){
+        for (var j=0;j<gis_projects.topics[i].projects.length; j++){
+            if ( gis_projects.topics[i].projects[j].projectfile == getProject() ){
+                SOGISSettings = gis_projects.topics[i].projects[j]
+                intSOGISTooltipWidth = SOGISSettings.sogistooltipwidth;
+                intSOGISTooltipHeight = SOGISSettings.sogistooltipheight;
+                arr_SOGISButtons = SOGISSettings.sogisbuttons;
+                strSOGISDefaultButton = SOGISSettings.sogisdefaultbutton;
+                strSOGISMaxScale = SOGISSettings.sogismaxscale;
+                searchtables = SOGISSettings.searchtables;
+                strSOGISSearchHelpText = SOGISSettings.sogissearchhint;
+            }
+        }
+    }
+    
+    // additional searchtables from url (GET)
+    if (urlParams.searchtables) {
+        if (searchtables.trim() == '') {
+            searchtables = urlParams.searchtables;
+        } else {
+            searchtables += ',' + urlParams.searchtables;
+        }
+    }
+
+    // build search hint
+    strSearchHelpText = '<b>Suche</b><br/>';
+    strSearchHelpText += 'Zu einer Koordinate zoomen: <b>607890 228256</b><br/>';
+    strSearchHelpText += '<br/>'
+    strSearchHelpText += 'Um nur in bestimmten Datenbereichen zu suchen,<br/>';
+    strSearchHelpText += 'können Sie Kürzel verwenden:<br/>';
+    strSearchHelpText += '- Point of Interest: <b>poi</b><br/>';
+    strSearchHelpText += '- Flurnamen: <b>flurname</b><br/>';
+    strSearchHelpText += '- GB-Nummer: <b>gbnr</b><br/>';
+    strSearchHelpText += '- EGID: <b>egid</b><br/>';
+    strSearchHelpText += '- BFS-Gemeindenummer: <b>bfsnr</b><br/>';
+    strSOGISSearchHelpText = strSearchHelpText + strSOGISSearchHelpText;
+}
+
 
 /**
 * @desc initialises the individual sogis projects
 * 
 */
-function initSOGISProjects(){
+function initSOGISProjects() {
 
-    //get sogis settings
-    for (var i=0;i<gis_projects.topics.length; i++){
-        for (var j=0;j<gis_projects.topics[i].projects.length; j++){
-            if ( gis_projects.topics[i].projects[j].projectfile == getProject() ){
-                intSOGISTooltipWidth = gis_projects.topics[i].projects[j].sogistooltipwidth;
-                intSOGISTooltipHeight = gis_projects.topics[i].projects[j].sogistooltipheight;
-                arr_SOGISButtons = gis_projects.topics[i].projects[j].sogisbuttons;
-                strSOGISDefaultButton = gis_projects.topics[i].projects[j].sogisdefaultbutton;
-            }
+    Ext.getCmp("sogistooltip").toggle(false);
+    removeButtons(); //remove all buttons
+    setProjectSettings(); //set settings from GISProjectlisting.js
+
+    //reset search field for projectspecifig search
+    Ext.getCmp('qgissearchcombo').clearSearchResult();
+    Ext.getCmp('qgissearchcombo').destroy();
+    qgisSearchCombo = new QGIS.SearchComboBox({
+                        map: geoExtMap.map,
+                        highlightLayerName: 'attribHighLight',
+                        hasReverseAxisOrder: false,
+                        useWmsHighlight: enableSearchBoxWmsHighlight,
+                        highlighter: highlighter,
+                        id: 'qgissearchcombo',
+                        width: 300,
+                        searchtables: searchtables
+                    });
+     myTopToolbar = Ext.getCmp('myTopToolbar');
+     myTopToolbar.insert(myTopToolbar.items.length, qgisSearchCombo);
+     myTopToolbar.doLayout();
+
+
+    //TODO
+    MapOptions.maxScale = strSOGISMaxScale;
+    geoExtMap.map.setOptions(MapOptions);
+
+    geoExtMap.map.events.on({ "zoomend": function (e) {
+
+        //if zoom inside sogisMaxScale zoom back
+        if (geoExtMap.map.getScale() < parseInt(strSOGISMaxScale) && strSOGISMaxScale != null) {
+            geoExtMap.map.zoomToScale(strSOGISMaxScale);
+            //Ext.MessageBox.alert("Masstabsbeschränkung", "Bei diesem Projekt darf nicht weiter hineingezoomt werden\n als 1:"+strSOGISMaxScale);  
+            mainStatusText.setText('<p style="color:#ff0000;">Bei diesem Projekt darf nicht weiter hineingezoomt werden\n als 1:'+strSOGISMaxScale + '</p>');
+            //auto-hide message afer 2 sec.
+            Ext.defer(function() {
+                //Ext.MessageBox.hide();
+                mainStatusText.setText(modeNavigationString[lang]);
+            }, 4000);
         }
     }
-    
-    removeButtons(); // remove all buttons
+    });
+
+
+    //close tooltip window, if opened
+    if (typeof(Ext.getCmp('tooltipWindow')) != 'undefined'){
+            Ext.getCmp('tooltipWindow').destroy();
+        }
+
+    //close permalink window, if opened
+    if (typeof(Ext.getCmp('permalinkWindow')) != 'undefined'){
+        Ext.getCmp('permalinkWindow').destroy();
+    }
 
     
     /* EXCEPTION SOVOTE */
@@ -48,8 +120,10 @@ function initSOGISProjects(){
 
     }
 
-    if ( strSOGISDefaultButton == "sogistooltip") {
+    if ( strSOGISDefaultButton == "sogistooltip" ||
+         strSOGISDefaultButton == "" ) {
         Ext.getCmp("ObjectIdentificationText").hide();
+        Ext.getCmp("sogistooltip").hide(); // TODO BETTER
         Ext.getCmp("ObjectIdentificationModeCombo").hide();   
         Ext.getCmp("CenterPanel").doLayout(); 
         return true;
@@ -66,6 +140,7 @@ function initSOGISProjects(){
 * @param string with html
 */
 function showTooltip(str_html){
+    
     var str_message = str_html;
         /*
         Ext.Msg.show({
@@ -109,6 +184,7 @@ function showTooltip(str_html){
             autoScroll: true
         });
         tooltipWindow.show();
+
 }
 
 /**
@@ -149,7 +225,7 @@ function getProject(){
 * @desc removes all buttons from the map
 */
 function removeButtons(){
-arr_buttons_seperators = ['measureDistance',
+    arr_buttons_seperators = ['measureDistance',
                             'measureArea',
                             'PrintMap',
                             'IdentifyTool',
@@ -179,7 +255,6 @@ function addButtons(arr_buttons_seperators){
           Ext.getCmp(arr_buttons_seperators[i]).show();
         }
     }
-
 }
 
 /**
@@ -205,7 +280,7 @@ function openPermaLink(permalink) {
         border      : false,
         defaultType : 'field',
         frame       : false,
-        bodyStyle: 'background:#ffffff;border-width:0px;border-color:#ffffff;',
+        bodyStyle: 'border-width:0px;',
         items       : [
             {
                 xtype: 'textfield',
@@ -229,16 +304,16 @@ function openPermaLink(permalink) {
         title: 'Permalink',
         minWidth: 615,
         width: 615,
-        minHeight: 120,
-        height: 120,
+        minHeight: 80,
+        height: 80,
         layout: 'auto',
-        bodyStyle: 'background:#ffffff;',
-        floating: true,
+        //bodyStyle: 'background:#ffffff;',
+        //floating: true,
         id: 'permalinkWindow',
         items: [formPanel],
         renderTo: document.body,
         buttonAlign: 'center',
-        html: '<p align="center" style="color:#888888;vertical-align:bottom;"><br/>Mit diesem Link kann die jetzige Kartenansicht jederzeit wieder hergestellt werden. <br/>Kopieren: Ctrl+C</p>',
+        html: '<p align="left" style="vertical-align:bottom;margin:5px;">Mit diesem Link kann die jetzige Kartenansicht jederzeit wieder hergestellt werden. Kopieren: Ctrl+C</p>',
         /*buttons : [
             {
                 text: 'OK',

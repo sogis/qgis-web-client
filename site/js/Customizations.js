@@ -31,6 +31,16 @@ function customInit() {
 
 // called before map initialization
 function customBeforeMapInit() {
+    setProjectSettings();
+}
+
+// called before print
+function customBeforePrint() {
+}
+
+// called when printing is launched
+function customAfterPrint() {
+    // do something. e.g. rearrange your layers
 }
 
 // called after map initialization
@@ -38,7 +48,9 @@ function customAfterMapInit() {
 
      // Create a new map control based on Control Click Event
     openlayersClickEvent = new OpenLayers.Control.Click( {
+         id: 'sogistooltipcontrol',
          trigger: function(e) {
+             Ext.getBody().mask('Abfrage ist erfolgt...', 'x-mask-loading');
              var xy = geoExtMap.map.getLonLatFromViewPortPx(e.xy);
              var x = xy.lon;
              var y = xy.lat;
@@ -50,6 +62,7 @@ function customAfterMapInit() {
              var scale = Math.round(geoExtMap.map.getScale());
              
              Ext.Ajax.request({
+                isLoading: true,
                 url:  strSOGISTooltipURL + getProject() + '/', // URL to the SOGIS tooltip
                 params: {
                     'x': x, 
@@ -59,15 +72,29 @@ function customAfterMapInit() {
                     'visiblelayers': selectedLayers.toString()
                 },
                 method: 'GET',
+                failure: function(){
+                    Ext.getBody().unmask();
+                },
                 success: function(response){
-                    showTooltip(response.responseText);  
+                    if (Ext.getCmp('IdentifyTool').hidden){ // TODO: better
+                        showTooltip(response.responseText); 
+                        Ext.getBody().unmask();
+                    }
                 }
              });
          }
      });
+
+    // unregister tooltip after theme switching
+    for (var i=0;i<geoExtMap.map.controls.length; i++){
+        if ( geoExtMap.map.controls[i].id == "sogistooltipcontrol" ){
+            geoExtMap.map.controls[i].destroy();
+        }
+    }
  
-     geoExtMap.map.addControl(openlayersClickEvent);
-     initSOGISProjects(); /* INIT SOGIS PROJECT */
+    geoExtMap.map.addControl(openlayersClickEvent);
+    initSOGISProjects(); //INIT SOGIS PROJECT
+    //geoExtMap.map.zoomTo(1); //initial zoom
 }
 
 function customPostLoading() {
@@ -96,6 +123,8 @@ function customToolbarLoad() {
     Ext.getCmp('sogistooltip').toggleHandler = mapToolbarHandler;
 }
 
+
+
 // called when an event on toolbar is invoked
 function customMapToolbarHandler(btn, evt) {
      // Check if the button is pressed or unpressed
@@ -110,4 +139,11 @@ function customMapToolbarHandler(btn, evt) {
               openlayersClickEvent.deactivate();
          }
      }
+
+    if (btn.id != "sogistooltip" && btn.id != "IdentifyTool"){
+        if (!btn.pressed) {
+            Ext.getCmp("sogistooltip").toggle(true);
+        }
+    }
 }
+

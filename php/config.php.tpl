@@ -4,7 +4,8 @@
 
     Configuration for the search scripts
 
-    @copyright: 2014 by Alessandro Pasotti - ItOpen (http://www.itopen.it) <apasotti@gmail.com>
+    @copyright: 2014 by Alessandro Pasotti -
+       ItOpen (http://www.itopen.it) <apasotti@gmail.com>
     @license: GNU AGPL, see COPYING for details.
 */
 
@@ -21,7 +22,7 @@
 
 /**************************************
  * search configuration
- */ 
+ */
 // Configuration for searchable layers
 $searchlayers_config = array(
     // Key is layer name
@@ -35,6 +36,11 @@ $searchlayers_config = array(
 define('DEFAULT_SEARCH_LAYERS', 'Country');
 // Limit search results
 define('SEARCH_LIMIT', 100);
+// make themes choosable in search combo
+define('THEMES_CHOOSABLE', false);
+// zoom to this bbox if a layer is chosen in the search combo [minx, miny, maxx, maxy]
+// set to null if extent should not be changed
+define('MAX_BBOX', null);
 
 
 /**************************************

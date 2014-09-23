@@ -1,9 +1,9 @@
 /*
  *
- * LegendAndMetadataDisplay.js -- part of Quantum GIS Web Client
+ * LegendAndMetadataDisplay.js -- part of QGIS Web Client
  *
  * Copyright (2010-2013), The QGIS Project All rights reserved.
- * Quantum GIS Web Client is released under a BSD license. Please see
+ * QGIS Web Client is released under a BSD license. Please see
  * https://github.com/qgis/qgis-web-client/blob/master/README
  * for the full text of the license and the list of contributors.
  *
@@ -127,10 +127,11 @@ function showLegendAndMetadata(layertitle) {
 		FORMAT: "image/png",
 		EXCEPTIONS: "application/vnd.ogc.se_inimage",
 		BOXSPACE: 1,
-		LAYERSPACE: 2,
+		LAYERSPACE: 4,
 		SYMBOLSPACE: 1,
 		SYMBOLHEIGHT: 2,
 		LAYERFONTSIZE: 10,
+        LAYERFONTBOLD: 'TRUE',
 		ITEMFONTSIZE: 10,
 		LAYERS: layername,
 		DPI: screenDpi
@@ -192,6 +193,12 @@ function showLegendAndMetadata(layertitle) {
 	}
 	metadataText += '</div>'
 	metadataTab.update(metadataText);
+
+    //if no metadata shall be displayed, remove tab
+    //the var showMetaDataInLegend is defined in GlobalOptions.js
+    if (! showMetaDataInLegend ){
+        legendMetaTabPanel.remove('metadataTab', true);
+    }
 	
 	//create legend image
 	legendMetaTabPanel.activate(legendTab);
@@ -232,7 +239,7 @@ function setupLegendAndMetadataWindow() {
 			}
 		}
 	});
-	legendMetaTabPanel = Ext.getCmp('legendMetaTabPanel');
-	legendTab = Ext.getCmp('legendTab');
-	metadataTab = Ext.getCmp('metadataTab');
+    legendMetaTabPanel = Ext.getCmp('legendMetaTabPanel');
+    legendTab = Ext.getCmp('legendTab');
+    metadataTab = Ext.getCmp('metadataTab');
 }
