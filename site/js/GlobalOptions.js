@@ -330,6 +330,7 @@ var symbolizersHighLightLayer = {
   }
 };
 
+
 //styling for measure controls (distance and area)
 var sketchSymbolizersMeasureControls = {
   "Point": {
