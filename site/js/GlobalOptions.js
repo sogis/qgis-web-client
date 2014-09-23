@@ -290,7 +290,7 @@ var OverviewMapMaximized = true; // is the overview map opend or closed by defau
 var overviewLayer = new OpenLayers.Layer.WMTS({
     projection: new OpenLayers.Projection('EPSG:21781'),
     name: "Strassenkarte_farbig",
-    url: "http://srsofaioi12288.ktso.ch/mapcache/wmts",
+    url: "http://www.sogis1.so.ch/mapcache/wmts",
     requestEncoding: 'REST',
     buffer: 0,
     zoomOffset: 15,
