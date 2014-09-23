@@ -109,11 +109,14 @@ var gis_projects = {
           "projectfile": "grundwasserbewirtschaftung",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Orthofoto Kt. Solothurn",
+          "visibleLayers": "Bohrung,Bohrung mit Piezometer,Baggerschlitz,Gerammtes Piezometer,Sodbrunnen,\
+Horizontalfilterbrunnen,Vertikalfilterbrunnen,Quelle gefasst,Quelle ungefasst,Versickerungsschacht,\
+Erdsonde,Erdkollektor,Entnahmeschacht für eine Grundwasserwärmenutzung,Gemeindegrenzen,Grundwasser (HGW),\
+Fliessgewässer,Orthofoto",
           "updateInterval": "occasional",
           "responsible": "Amt für Umwelt",
           "tags": "Grundwasserbewirtschaftung",
-          "switcher": false,
+          "switcher": true,
           "sogistooltipwidth" : "1000",
           "sogistooltipheight" : "350",
           "sogisbuttons" : default_buttons_seperators,
@@ -237,12 +240,12 @@ var gis_projects = {
   },{
     "name": "Amt für Verkehr und Tiefbau",
     "projects": [{
-          "name": "Verkehrsmodell 2010",
+          "name": "Gesamtverkehrsmodell 2010",
           "projectpath": "",
-          "projectfile": "verkehrsmodell2010",
+          "projectfile": "gesamtverkehrsmodell2010",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Gemeindegrenzen,Grundkarte",
+          "visibleLayers": "DTV 2010 gesamt,Gemeindegrenzen,Grundkarte",
           "updateInterval": "occasional",
           "responsible": "Amt für Verkehr und Tiefbau",
           "tags": "Meine Tags",
