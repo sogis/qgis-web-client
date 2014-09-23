@@ -240,6 +240,7 @@ var MapOptions = {
   projection: new OpenLayers.Projection(authid),
   units: "m",
   moveDelay: 10,
+  zoomDelay: 10,
   maxResolution: 250.0,
   minResolution: 0.1,
   fallThrough: false,
@@ -255,8 +256,8 @@ var LayerOptions = {
   buffer:0,
   singleTile:true,
   ratio:1,
-  transitionEffect:"resize",
   isBaseLayer: false,
+  fractionalZoom: false, // with tiles to guarantee correct zoom level
   projection:authid,
   yx: {"EPSG:900913": false},
   // If your projection is known to have an inverse axis order in WMS 1.3 compared to WMS 1.1 enter true for yx.
@@ -268,7 +269,16 @@ var LayerOptions = {
 };
 
 //overview map settings - do not change variable names!
-var OverviewMapOptions = MapOptions;
+var OverviewMapOptions = {
+  projection: new OpenLayers.Projection(authid),
+  units: "m",
+  maxResolution: 500.0,
+  minResolution: 0.1,
+  fallThrough: false,
+  resolutions: [500.0, 250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.25, 0.1],
+  maxExtent: new OpenLayers.Bounds(570000.0,190000.0,670000.0,290000.0),
+  fractionalZoom: false // with tiles to guarantee correct zoom level
+};
 
 var OverviewMapSize = new OpenLayers.Size(200,200);
 var OverviewMapMaximized = true; // is the overview map opend or closed by default
@@ -283,13 +293,12 @@ var overviewLayer = new OpenLayers.Layer.WMTS({
     url: "http://srsofaioi12288.ktso.ch/mapcache/wmts",
     requestEncoding: 'REST',
     buffer: 0,
-    zoomOffset: 16, 
-    transitionEffect: 'resize',
+    zoomOffset: 15,
     layer: "Strassenkarte_farbig",
     matrixSet: "21781",
     version: "1.0.0",
     tileOrigin: new OpenLayers.LonLat(420000.0, 350000.0),
-    resolutions: [250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.25, 0.1],
+    resolutions: [500.0, 250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.25, 0.1],
     format: "image/png",
     formatSuffix: "png",
     style: "default",
