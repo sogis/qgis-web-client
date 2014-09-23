@@ -294,7 +294,7 @@ var printCapabilities={
   // c. fill in the URL to the proxy "url_proxy":"http://www.urltoproxy/printpostget.wsgi?
   //
   "method":"POST", // POST or GET
-  "url_proxy": "http://www.sogis1.so.ch/wsgi/printpostget.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
+  "url_proxy": "http://www.sogis1.so.ch/wsgi/printpostget_test.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
 };
 
 // <------------ No changes should be needed below here ------------------>
