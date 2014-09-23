@@ -7,7 +7,7 @@ var helpfile = "help_de.html";
 //Servername (optional) and path and name name of QGIS Server FCGI-file
 //either with or without server-name - without servername recommended for easier porting to other servers
 //do not add a ? or & after the .fcgi extension
-var serverAndCGI = "http://www.sogis1.so.ch/wmstest";
+var serverAndCGI = "http://www.sogis1.so.ch/wms";
 
 //Define whether you want to use the GetProjectSettings extension of QGIS Server
 //for more configuration options in the project.
@@ -229,7 +229,7 @@ var authid = "EPSG:"+21781;
 
 //background transparency for the QGIS Server generated layer (commercial background layers not effected)
 //set to true if you want the background to be transparent, layer image will be bigger (32 vs 24bit)
-var qgisLayerTransparency = false;
+var qgisLayerTransparency = true;
 
 //number of zoomlevels, uses main map layer and all base layers
 var ZOOM_LEVELS = 13;
@@ -290,7 +290,7 @@ var OverviewMapMaximized = true; // is the overview map opend or closed by defau
 var overviewLayer = new OpenLayers.Layer.WMTS({
     projection: new OpenLayers.Projection('EPSG:21781'),
     name: "Strassenkarte_farbig",
-    url: "http://srsofaioi12288.ktso.ch/mapcache/wmts",
+    url: "http://www.sogis1.so.ch/mapcache/wmts",
     requestEncoding: 'REST',
     buffer: 0,
     zoomOffset: 15,
