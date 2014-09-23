@@ -159,7 +159,7 @@ function showTooltip(str_html){
         }
 
         var tooltipWindow = new Ext.Window({
-            title: 'Tooltip ' + getProject(),
+            title: 'Abfrage', //getProject(),
             minWidth: intSOGISTooltipWidth,
             width: intSOGISTooltipWidth,
             minHeight: intSOGISTooltipHeight,
