@@ -7,7 +7,7 @@ var helpfile = "help_de.html";
 //Servername (optional) and path and name name of QGIS Server FCGI-file
 //either with or without server-name - without servername recommended for easier porting to other servers
 //do not add a ? or & after the .fcgi extension
-var serverAndCGI = "http://srsofaioi12288.ktso.ch/wmstest";
+var serverAndCGI = "http://www.sogis1.so.ch/wmstest";
 
 //Define whether you want to use the GetProjectSettings extension of QGIS Server
 //for more configuration options in the project.
@@ -268,13 +268,8 @@ var LayerOptions = {
 };
 
 //overview map settings - do not change variable names!
-var OverviewMapOptions = {
-  projection: new OpenLayers.Projection(authid),
-  //units: "m",
-  maxScale:50,
-  //minScale:1500000,
-  transitionEffect:"resize"
-};
+var OverviewMapOptions = MapOptions;
+
 var OverviewMapSize = new OpenLayers.Size(200,200);
 var OverviewMapMaximized = true; // is the overview map opend or closed by default
 //var overviewLayer = new OpenLayers.Layer.WMS("Uebersicht",
@@ -298,10 +293,8 @@ var overviewLayer = new OpenLayers.Layer.WMTS({
     format: "image/png",
     formatSuffix: "png",
     style: "default",
-    //opacity: 0.7,
     visibility: true,
     isBaseLayer: true,
-    fractionalZoom: true // with tiles to guarantee correct zoom level
   }); 
 
 // prevent the user from choosing a print resolution
@@ -372,7 +365,7 @@ var printCapabilities={
   // c. fill in the URL to the proxy "url_proxy":"http://www.urltoproxy/printpostget.wsgi?
   //
   "method":"POST", // POST or GET
-  "url_proxy": "http://srsofaioi12288.ktso.ch/wsgi/printpostget_test.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
+  "url_proxy": "http://www.sogis1.so.ch/wsgi/printpostget_test.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
 };
 
 // <------------ No changes should be needed below here ------------------>
