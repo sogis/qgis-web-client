@@ -799,7 +799,7 @@ function postLoading() {
 
     //navigation actions
     if (!initialLoadDone) {
-        var myTopToolbar = Ext.getCmp('myTopToolbar');
+        var myTopToolbar = Ext.getCmp('mytoptoolbar');
         //zoom box
         var zoomBoxAction = new GeoExt.Action({
             icon: 'gis_icons/mActionZoomBox.png',
@@ -2208,20 +2208,23 @@ function updateWmtsBaseLayers(topicName, visibleWmtsLayers) {
         // create WMTS layers for current topic
         var wmtsLayers = [];
         for (var i=0; i<wmtsLayersConfig.length; i++) {
-            wmtsLayers.push(
-                new OpenLayers.Layer.WMTS(
-                    OpenLayers.Util.extend(
-                        wmtsLayersConfig[i].wmtsConfig,
-                        {
-                            visibility: false,
-                            isBaseLayer: false,
-                            // custom attributes
-                            isWmtsLayer: true,
-                            wmsLayerName: wmtsLayersConfig[i].wmsLayerName
-                        }
+            //SOGIS: bugfix IE8
+            if (typeof(wmtsLayersConfig[i]) != 'undefined'){
+                wmtsLayers.push(
+                    new OpenLayers.Layer.WMTS(
+                        OpenLayers.Util.extend(
+                            wmtsLayersConfig[i].wmtsConfig,
+                            {
+                                visibility: false,
+                                isBaseLayer: false,
+                                // custom attributes
+                                isWmtsLayer: true,
+                                wmsLayerName: wmtsLayersConfig[i].wmsLayerName
+                            }
+                        )
                     )
-                )
-            );
+                );
+            }
         }
         wmtsLayers = wmtsLayers.reverse();
 

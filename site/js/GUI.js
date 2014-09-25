@@ -289,7 +289,7 @@ MyViewportUi = Ext.extend(Ext.Viewport, {
 					tbar: {
 						xtype: 'toolbar',
 						autoHeight: true,
-						id: 'myTopToolbar',
+						id: 'mytoptoolbar',
 						items: [{
 							xtype: 'tbseparator',
                             id: 'separator1'

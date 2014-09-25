@@ -66,7 +66,7 @@ function initSOGISProjects() {
                         width: 300,
                         searchtables: searchtables
                     });
-     myTopToolbar = Ext.getCmp('myTopToolbar');
+     myTopToolbar = Ext.getCmp('mytoptoolbar');
      myTopToolbar.insert(myTopToolbar.items.length, qgisSearchCombo);
      myTopToolbar.doLayout();
 

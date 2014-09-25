@@ -207,7 +207,10 @@ Ext.extend(QGIS.WMSCapabilitiesLoader, GeoExt.tree.WMSCapabilitiesLoader, {
       if (wmtsLayersConfig != null) {
         for (var i=0; i<wmtsLayersConfig.length; i++) {
           var config = wmtsLayersConfig[i];
-          wmtsLayers.push(config.wmsLayerName);
+          //SOGIS: Bugfix IE8
+          if (typeof(config) != 'undefined'){
+              wmtsLayers.push(config.wmsLayerName);
+          }
         }
       }
 

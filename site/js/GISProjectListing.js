@@ -147,8 +147,8 @@ var wmts_layer_basisplan_farbig = {
 				}
 
 var gis_projects = {
-  "path": "/maptest", /* DEPLOY !!! */
-  "mapserver": "/wmstest",
+  "path": "/map", /* DEPLOY !!! */
+  "mapserver": "/wms",
   "thumbnails": "/thumbnails",
   "title": "SO!GIS",
   "topics": [{
@@ -160,8 +160,8 @@ var gis_projects = {
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Hoheitsgrenzen,Ortsplan",
-          "updateInterval": "occasional",
-          "responsible": "Amtliche Vermessung",
+          "updateInterval": "",
+          "responsible": "Amt für Geoinformation",
           "tags": "Ortsplan",
           "switcher": false,
           "searchtables": "",
@@ -179,8 +179,8 @@ var gis_projects = {
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Hoheitsgrenzsteine,Grundkarte farbig",
-          "updateInterval": "occasional",
-          "responsible": "Amtliche Vermessung",
+          "updateInterval": "",
+          "responsible": "Amt für Geoinformation",
           "tags": "Hoheitsgrenzsteine",
           "switcher": true,
           "searchtables": "qwebclient.search_hgs",
@@ -204,7 +204,7 @@ var gis_projects = {
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Gemeindegrenzen,Übersichtsplan,Orthofoto 2006,Grundnutzung,Überlagerte Nutzung",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amtliche Vermessung",
           "tags": "Richtplan",
           "switcher": false,
@@ -221,9 +221,9 @@ var gis_projects = {
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Gemeindegrenzen",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amtliche Vermessung",
-          "tags": "mocheckso",
+          "tags": "Mocheckso",
           "switcher": false,
           "searchtables": "",
           "sogissearchhint": "",
@@ -244,9 +244,9 @@ var gis_projects = {
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Grundkarte,Geländenamen (AV),Flurnamen (AV)",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amtliche Vermessung",
-          "tags": "nomenklatur",
+          "tags": "Nomenklatur",
           "switcher": false,
           "searchtables": "",
           "sogissearchhint": "",
@@ -266,7 +266,7 @@ var gis_projects = {
           "projectfile": "nutzungszonen",
           "fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Nutzungszonen,Orthofoto,Gemeindegrenzen,Ortsplan",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amt für Raumplanung",
           "tags": "Nutzungszonen",
           "switcher": true,
@@ -290,7 +290,7 @@ var gis_projects = {
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Baulinien,Amtliche Vermessung (schwarz-weiss),Strassenkarte",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amtliche Vermessung",
           "tags": "Grundbuchplan",
           "switcher": false,
@@ -307,7 +307,7 @@ var gis_projects = {
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Baulinien,Amtliche Vermessung (schwarz-weiss),Strassenkarte",
-          "updateInterval": "occasional",
+          "updateInterval": "täglich",
           "responsible": "Amtliche Vermessung",
           "tags": "Grundbuchplan",
           "switcher": true,
@@ -405,7 +405,7 @@ var gis_projects = {
 Horizontalfilterbrunnen,Vertikalfilterbrunnen,Quelle gefasst,Quelle ungefasst,Versickerungsschacht,\
 Erdsonde,Erdkollektor,Entnahmeschacht für eine Grundwasserwärmenutzung,Gemeindegrenzen,Grundwasser (HGW),\
 Fliessgewässer,Orthofoto",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Grundwasserbewirtschaftung",
           "switcher": true,
@@ -451,7 +451,7 @@ Fliessgewässer,Orthofoto",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Gemeindegrenze,Baugrundklassen,Übersichtsplan,Strassenkarte",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Baugrundklassen",
           "switcher": false,
@@ -470,7 +470,7 @@ Fliessgewässer,Orthofoto",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Überflutungsgebiete,sehr flache Talböden ausserhalb der modellierten Überflutungsbereiche: Überflutung kann nicht ausgeschlossen werden,Übersarung / Schwemmkegel,Murgang,bekannte Ereignisse ausserhalb des modellierten Steinschlaggebietes,Steinschlag,Doline,tatsächliche Ereignisse,Übersichtsplan,Strassenkarte mit Relief,Orthofoto",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Naturgefahrenhinweiskarte",
           "switcher": false,
@@ -488,7 +488,7 @@ Fliessgewässer,Orthofoto",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Naturgefahren",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Naturgefahren",
           "switcher": false,
@@ -507,7 +507,7 @@ Fliessgewässer,Orthofoto",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Gemeindegrenzen,Grundkarte,Ingeso Objekte/ Geotope",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Inventar der geowissenschaftlich schützenswerten Objekte Kanton Solothurn Ingeso",
           "switcher": true,
@@ -527,7 +527,7 @@ Fliessgewässer,Orthofoto",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Gemeindegrenzen,Grundkarte,Wanderwege,Grundstücke",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amt für Raumplanung",
           "tags": "Inventarplan Wanderwege",
           "switcher": true,
@@ -548,7 +548,7 @@ Fliessgewässer,Orthofoto",
           "visibleLayers": "2011 Pflanzenliste,2012 Pflanzenliste,2013 Pflanzenliste,2014 Pflanzenliste,Gemeindegrenzen,Orthofoto",
           "format": "image/png; mode=8bit",
           "fullColorLayers" : "Orthofoto",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amt für Umwel",
           "tags": "Neophyten",
           "switcher": true,
@@ -574,7 +574,7 @@ Fliessgewässer,Orthofoto",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Bienenstandorte,Sperrgebiete aktuelles Jahr,Streptomycineinsatz,Feuerbrand Schutzobjekte,Gemeindegrenzen,Grundkarte,Grundstücke,Feuerbrand Schutzperimeter (inkl. Streptomycinbewilligungen)",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amt für Landwirtschaft",
           "tags": "Bienenstandorte",
           "switcher": true,
@@ -598,9 +598,9 @@ Fliessgewässer,Orthofoto",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Gemeindegrenzen,Grundkarte,DTV 2010 gesamt",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amt für Verkehr und Tiefbau",
-          "tags": "Meine Tags",
+          "tags": "Gesamtverkehrsmodell 2010",
           "switcher": true,
           "searchtables": "",
           "sogissearchhint": "",
@@ -621,7 +621,7 @@ Fliessgewässer,Orthofoto",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Grundkarte,Wasser Leitungsbeschriftung,Wasser Leitung,Abwasser Leitung,Abwasser Leitungsbeschriftung,Elektro",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Gemeinden Kanton SO",
           "tags": "Leitungskataster,GemeindeGIS",
           "switcher": true,
@@ -646,9 +646,9 @@ Fliessgewässer,Orthofoto",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Gemeindegrenzen,Grundkarte,Netzbetreiber Ebene 3",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amt für Wirtschaft und Arbeit",
-          "tags": "Meine Tags",
+          "tags": "Strom",
           "switcher": true,
           "searchtables": "",
           "sogissearchhint": "",
@@ -669,9 +669,9 @@ Fliessgewässer,Orthofoto",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Gemeindegrenzen,Grundkarte,Zoneneinteilung",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amt für Militär und Bevölkerungsschutz",
-          "tags": "Meine Tags",
+          "tags": "Notfallplan KKW",
           "switcher": true,
           "searchtables": "",
           "sogissearchhint": "",
@@ -692,9 +692,9 @@ Fliessgewässer,Orthofoto",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Gemeindegrenzen,Grundkarte,Erschliessungsgüte,Haltestellen",
-          "updateInterval": "occasional",
+          "updateInterval": "",
           "responsible": "Amt für Raumplanung",
-          "tags": "Meine Tags",
+          "tags": "ÖV Gueteklassen",
           "switcher": true,
           "searchtables": "",
           "sogissearchhint": "",
