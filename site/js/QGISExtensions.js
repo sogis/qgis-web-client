@@ -22,6 +22,7 @@
 /* ************************** QGIS.WMSCapabilitiesLoader ************************** */
 // parse GetProjectSettings from QGIS Mapserver
 // extends GeoExt.tree.WMSCapabilitiesLoader in order to expose the WMSCapabilities Tree to later read out settings from the tree
+
 QGIS.WMSCapabilitiesLoader = function(config) {
   Ext.apply(this, config);
   QGIS.WMSCapabilitiesLoader.superclass.constructor.call(this,config);
@@ -173,7 +174,7 @@ Ext.extend(QGIS.WMSCapabilitiesLoader, GeoExt.tree.WMSCapabilitiesLoader, {
         },
 
           "Attributes": function(node, obj) {
-            obj.attributes = []
+            obj.attributes = [];
             this.readChildNodes(node, obj.attributes);
           },
           "Attribute": function(node, obj) {
@@ -314,6 +315,7 @@ QGIS.PrintProvider = function(config) {
 };
 
 Ext.extend(QGIS.PrintProvider, GeoExt.data.PrintProvider, {
+    
   print: function(map, pages, options) {
     if (map instanceof GeoExt.MapPanel) {
         map = map.map;

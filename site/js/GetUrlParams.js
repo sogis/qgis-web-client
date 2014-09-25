@@ -20,6 +20,7 @@ var olBoundsRegexp = /^-*[\d\.]+,-*[\d\.]+,-*[\d\.]+,-*[\d\.]+$/; //regExp to ch
 var urlString = "";
 var format = "image/png"; //the default image format
 //var format = "image/png; mode=8bit"; //the default image format
+//var format = "image/png; mode=8bit"; //the default image format
 var origFormat = format; //the original default image format, format is temporarily changed
 var searchtables = null;
 var visibleLayers = null; //later an array of layer names that are initially visible

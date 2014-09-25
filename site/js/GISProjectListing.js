@@ -286,7 +286,7 @@ var gis_projects = {
     },{
           "name": "Grundbuchplan (wms)",
           "projectpath": "",
-          "projectfile": "grundbuchplan",
+          "projectfile": "grundbuchplan-nf",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Baulinien,Amtliche Vermessung (schwarz-weiss),Strassenkarte",
