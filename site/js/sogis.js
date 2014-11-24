@@ -1,5 +1,6 @@
 var servername = "http://" + location.href.split(/\/+/)[1];
 var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip/'; // URL to the SOGIS tooltip
+var origPrintCapabilities = printCapabilities;
 
 function setProjectSettings() {
     strSOGISSearchHelpText = '';
@@ -15,6 +16,7 @@ function setProjectSettings() {
                 strSOGISMaxScale = SOGISSettings.sogismaxscale;
                 searchtables = SOGISSettings.searchtables;
                 strSOGISSearchHelpText = SOGISSettings.sogissearchhint;
+                bolSOGISWMSServiceInfo = SOGISSettings.sogiswmsserviceinfo;
             }
         }
     }
@@ -71,18 +73,18 @@ function initSOGISProjects() {
      myTopToolbar.doLayout();
 
 
-    //TODO
+    // if a max scale has been set
     MapOptions.maxScale = strSOGISMaxScale;
     geoExtMap.map.setOptions(MapOptions);
-
+    
     geoExtMap.map.events.on({ "zoomend": function (e) {
 
-        //if zoom inside sogisMaxScale zoom back
+        // if zoom inside sogisMaxScale zoom back
         if (geoExtMap.map.getScale() < parseInt(strSOGISMaxScale) && strSOGISMaxScale != null) {
             geoExtMap.map.zoomToScale(strSOGISMaxScale);
             //Ext.MessageBox.alert("Masstabsbeschränkung", "Bei diesem Projekt darf nicht weiter hineingezoomt werden\n als 1:"+strSOGISMaxScale);  
             mainStatusText.setText('<p style="color:#ff0000;">Bei diesem Projekt darf nicht weiter hineingezoomt werden\n als 1:'+strSOGISMaxScale + '</p>');
-            //auto-hide message afer 2 sec.
+            // auto-hide message afer 4 sec.
             Ext.defer(function() {
                 //Ext.MessageBox.hide();
                 mainStatusText.setText(modeNavigationString[lang]);
@@ -90,6 +92,15 @@ function initSOGISProjects() {
         }
     }
     });
+
+    // if service info from wms has to be displayed
+    if (bolSOGISWMSServiceInfo == true && showWMSServiceInfoTab == true) {
+        Ext.getCmp('WMSServiceInfoPanel').setVisible(true);
+        Ext.getCmp('WMSServiceInfoPanel').loadServiceInfo();
+    } else {
+        Ext.getCmp('WMSServiceInfoPanel').setVisible(false);
+    }
+    Ext.getCmp('LeftPanel').doLayout();
 
 
     //close tooltip window, if opened
@@ -101,6 +112,8 @@ function initSOGISProjects() {
     if (typeof(Ext.getCmp('permalinkWindow')) != 'undefined'){
         Ext.getCmp('permalinkWindow').destroy();
     }
+
+    
 
     
     /* EXCEPTION SOVOTE */
@@ -120,6 +133,53 @@ function initSOGISProjects() {
 
     }
 
+
+    // ============================================
+    // BEGIN handle print when switching themes - handling different max-scales
+    // ============================================
+    // reset var printCapabilities
+    if (parseInt(strSOGISMaxScale) > 0) {
+        var scales = []
+        for (var values in origPrintCapabilities.scales){
+            if ( parseInt(origPrintCapabilities.scales[values].value) >= parseInt(strSOGISMaxScale) ) {
+                scales.push(origPrintCapabilities.scales[values]);
+            }
+        }
+
+        printCapabilities = { "scales": scales,
+             "dpis": origPrintCapabilities.dpis,
+             "layouts": origPrintCapabilities.layouts,
+             "method": origPrintCapabilities.method, 
+             "url_proxy": origPrintCapabilities.url_proxy
+        };
+
+
+    } else {
+        printCapabilities = origPrintCapabilities;
+    }
+
+    // create new JsonStore for PrintCapabilities Combobox
+    var SOGISprintCapabilities = new Ext.data.JsonStore({
+                                // store configs
+                                data: printCapabilities,
+                                storeId: 'sogisprintcapabilities',
+                                // reader configs
+                                root: 'scales',
+                                fields: [{
+                                    name: 'name',
+                                    type: 'string'
+                                }, {
+                                    name: 'value',
+                                    type: 'int'
+                                }]
+                            })
+    Ext.getCmp('PrintScaleCombobox').bindStore('sogisprintcapabilities');
+
+    // ============================================
+    // END handle print when switching themes - handling different max-scales
+    // ============================================
+
+
     if ( strSOGISDefaultButton == "sogistooltip" ||
          strSOGISDefaultButton == "" ) {
         Ext.getCmp("ObjectIdentificationText").hide();
@@ -133,6 +193,9 @@ function initSOGISProjects() {
         Ext.getCmp("CenterPanel").doLayout(); 
         return false;
     }
+
+    
+
 }
 
 /**
@@ -185,6 +248,35 @@ function showTooltip(str_html){
         });
         tooltipWindow.show();
 
+}
+
+/**
+* @desc this function opens a new tooltip-window and stores the old content to be able to switch back
+*/
+var prior_content; // global var to store the prior content of the tooltip-window
+function showTooltipFromSite(url, params={}){
+    prior_content = Ext.get('tooltipWindow').dom.getElementsByClassName('sogisTooltip')[0].outerHTML
+    Ext.Ajax.request({
+                isLoading: true,
+                url:  strSOGISTooltipURL + getProject() + '/' + url,
+                params: params,
+                method: 'GET',
+                failure: function(){
+                    Ext.getBody().unmask();
+                },
+                success: function(response){
+                    if (Ext.getCmp('IdentifyTool').hidden){ // TODO: better
+                        content = response.responseText;
+                        content += '<p align="center"><a href="javascript:showPriorTooltip();">zurück</a>'; 
+                        showTooltip(content); 
+                        Ext.getBody().unmask();
+                    }
+                }
+             });
+}
+
+function showPriorTooltip(){
+    showTooltip(prior_content);
 }
 
 /**
@@ -330,6 +422,21 @@ function openPermaLink(permalink) {
     Ext.getCmp('permalinkfield').focus(false, 100);
 }
 
+/*
+* @desc sets a ideal scale when pushing the print-button (id=PrintMap)
+        as there are different max-scales this function had to be integrated withing the PrintMap-Button in WebGIS.js 
+*/
+function setPrintScaleCombobox(printExtentPageScaleDataValue) { 
+    // Set default value of
+    if (printCapabilities.scales[0].value > printExtentPageScaleDataValue && parseInt(strSOGISMaxScale) > 0) {
+        theScale = printCapabilities.scales[0].value;
+    } else {
+        theScale = printExtentPageScaleDataValue;
+    }
+    return theScale;
+}
+
+
 //Send permalink. Overwrite from Translation.js
 var sendPermalinkTooltipString = new Array();
 sendPermalinkTooltipString["en"] = "Permalink";
@@ -341,6 +448,33 @@ sendPermalinkTooltipString["pt_PT"] = "Permalink";
 sendPermalinkTooltipString["uk"] = "Permalink"; //FIXME
 sendPermalinkTooltipString["hu"] = "Permalink";
 sendPermalinkTooltipString["ro"] = "Permalink";
+
+
+var leftPanelTitleString = new Array();
+leftPanelTitleString["en"] = "";
+leftPanelTitleString["es"] = "";
+leftPanelTitleString["de"] = "";
+leftPanelTitleString["fr"] = "";
+leftPanelTitleString["it"] = "";
+leftPanelTitleString["pt_PT"] = "";
+leftPanelTitleString["uk"] = "";
+leftPanelTitleString["hu"] = "";
+leftPanelTitleString["ro"] = "";
+
+
+var mapThemeButtonTitleString = new Array();
+mapThemeButtonTitleString["en"] = "Weitere Karten";
+mapThemeButtonTitleString["es"] = "Weitere Karten";
+mapThemeButtonTitleString["de"] = "Weitere Karten";
+mapThemeButtonTitleString["fr"] = "Weitere Karten";
+mapThemeButtonTitleString["it"] = "Weitere Karten";
+mapThemeButtonTitleString["pt_PT"] = "Weitere Karten";
+mapThemeButtonTitleString["uk"] = "Weitere Karten";
+mapThemeButtonTitleString["hu"] = "Weitere Karten";
+mapThemeButtonTitleString["ro"] = "Weitere Karten";
+
+
+mapPanelTitleString["de"] = "";
 
 //mode string for attribute data detailed
 var modeObjectIdentificationString = new Array();

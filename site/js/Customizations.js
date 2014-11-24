@@ -27,6 +27,7 @@ function customInit() {
                  );
          }
      });
+
 }
 
 // called before map initialization
@@ -95,6 +96,15 @@ function customAfterMapInit() {
     geoExtMap.map.addControl(openlayersClickEvent);
     initSOGISProjects(); //INIT SOGIS PROJECT
     //geoExtMap.map.zoomTo(1); //initial zoom
+
+
+     // show ThemeSwitcher when variable - value showThemeSwitcher=true
+    if (urlParams.showThemeSwitcher != null){
+        if ( urlParams.showThemeSwitcher == 'true' || urlParams.showThemeSwitcher == 'True' ) {
+            mapThemeSwitcher.initialize();
+            urlParams.showThemeSwitcher = 'false'; // to prevent after theme has been swichted
+        }
+    }
 }
 
 function customPostLoading() {
