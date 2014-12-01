@@ -1,5 +1,6 @@
 var servername = "http://" + location.href.split(/\/+/)[1];
 var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip/'; // URL to the SOGIS tooltip
+var origPrintCapabilities = printCapabilities;
 
 function setProjectSettings() {
     strSOGISSearchHelpText = '';
@@ -15,10 +16,11 @@ function setProjectSettings() {
                 strSOGISMaxScale = SOGISSettings.sogismaxscale;
                 searchtables = SOGISSettings.searchtables;
                 strSOGISSearchHelpText = SOGISSettings.sogissearchhint;
+                bolSOGISWMSServiceInfo = SOGISSettings.sogiswmsserviceinfo;
             }
         }
     }
-    
+
     // additional searchtables from url (GET)
     if (urlParams.searchtables) {
         if (searchtables.trim() == '') {
@@ -45,7 +47,7 @@ function setProjectSettings() {
 
 /**
 * @desc initialises the individual sogis projects
-* 
+*
 */
 function initSOGISProjects() {
 
@@ -71,18 +73,18 @@ function initSOGISProjects() {
      myTopToolbar.doLayout();
 
 
-    //TODO
+    // if a max scale has been set
     MapOptions.maxScale = strSOGISMaxScale;
     geoExtMap.map.setOptions(MapOptions);
 
     geoExtMap.map.events.on({ "zoomend": function (e) {
 
-        //if zoom inside sogisMaxScale zoom back
+        // if zoom inside sogisMaxScale zoom back
         if (geoExtMap.map.getScale() < parseInt(strSOGISMaxScale) && strSOGISMaxScale != null) {
             geoExtMap.map.zoomToScale(strSOGISMaxScale);
-            //Ext.MessageBox.alert("Masstabsbeschränkung", "Bei diesem Projekt darf nicht weiter hineingezoomt werden\n als 1:"+strSOGISMaxScale);  
+            //Ext.MessageBox.alert("Masstabsbeschränkung", "Bei diesem Projekt darf nicht weiter hineingezoomt werden\n als 1:"+strSOGISMaxScale);
             mainStatusText.setText('<p style="color:#ff0000;">Bei diesem Projekt darf nicht weiter hineingezoomt werden\n als 1:'+strSOGISMaxScale + '</p>');
-            //auto-hide message afer 2 sec.
+            // auto-hide message afer 4 sec.
             Ext.defer(function() {
                 //Ext.MessageBox.hide();
                 mainStatusText.setText(modeNavigationString[lang]);
@@ -90,6 +92,15 @@ function initSOGISProjects() {
         }
     }
     });
+
+    // if service info from wms has to be displayed
+    if (bolSOGISWMSServiceInfo == true && showWMSServiceInfoTab == true) {
+        Ext.getCmp('WMSServiceInfoPanel').setVisible(true);
+        Ext.getCmp('WMSServiceInfoPanel').loadServiceInfo();
+    } else {
+        Ext.getCmp('WMSServiceInfoPanel').setVisible(false);
+    }
+    Ext.getCmp('LeftPanel').doLayout();
 
 
     //close tooltip window, if opened
@@ -102,7 +113,9 @@ function initSOGISProjects() {
         Ext.getCmp('permalinkWindow').destroy();
     }
 
-    
+
+
+
     /* EXCEPTION SOVOTE */
     if ((getProject().indexOf('ea_') != -1 ||
         getProject().indexOf('ka_') != -1) &&
@@ -120,19 +133,67 @@ function initSOGISProjects() {
 
     }
 
+
+    // ============================================
+    // BEGIN handle print when switching themes - handling different max-scales
+    // ============================================
+    // reset var printCapabilities
+    if (parseInt(strSOGISMaxScale) > 0) {
+        var scales = [];
+        for (var values in origPrintCapabilities.scales){
+            if ( parseInt(origPrintCapabilities.scales[values].value) >= parseInt(strSOGISMaxScale) ) {
+                scales.push(origPrintCapabilities.scales[values]);
+            }
+        }
+
+        printCapabilities = { "scales": scales,
+             "dpis": origPrintCapabilities.dpis,
+             "layouts": origPrintCapabilities.layouts,
+             "method": origPrintCapabilities.method,
+             "url_proxy": origPrintCapabilities.url_proxy
+        };
+
+
+    } else {
+        printCapabilities = origPrintCapabilities;
+    }
+
+    // create new JsonStore for PrintCapabilities Combobox
+    var SOGISprintCapabilities = new Ext.data.JsonStore({
+                                // store configs
+                                data: printCapabilities,
+                                storeId: 'sogisprintcapabilities',
+                                // reader configs
+                                root: 'scales',
+                                fields: [{
+                                    name: 'name',
+                                    type: 'string'
+                                }, {
+                                    name: 'value',
+                                    type: 'int'
+                                }]
+                            });
+    Ext.getCmp('PrintScaleCombobox').bindStore('sogisprintcapabilities');
+
+    // ============================================
+    // END handle print when switching themes - handling different max-scales
+    // ============================================
+
+
     if ( strSOGISDefaultButton == "sogistooltip" ||
          strSOGISDefaultButton == "" ) {
         Ext.getCmp("ObjectIdentificationText").hide();
         Ext.getCmp("sogistooltip").hide(); // TODO BETTER
-        Ext.getCmp("ObjectIdentificationModeCombo").hide();   
-        Ext.getCmp("CenterPanel").doLayout(); 
+        Ext.getCmp("ObjectIdentificationModeCombo").hide();
+        Ext.getCmp("CenterPanel").doLayout();
         return true;
     } else {
         Ext.getCmp("ObjectIdentificationText").show();
-        Ext.getCmp("ObjectIdentificationModeCombo").show();   
-        Ext.getCmp("CenterPanel").doLayout(); 
+        Ext.getCmp("ObjectIdentificationModeCombo").show();
+        Ext.getCmp("CenterPanel").doLayout();
         return false;
     }
+
 }
 
 /**
@@ -140,7 +201,7 @@ function initSOGISProjects() {
 * @param string with html
 */
 function showTooltip(str_html){
-    
+
     var str_message = str_html;
         /*
         Ext.Msg.show({
@@ -153,7 +214,7 @@ function showTooltip(str_html){
         autoScroll: true
         //icon: Ext.MessageBox.INFO
         });
-        */ 
+        */
         if (typeof(Ext.getCmp('tooltipWindow')) != 'undefined'){
             Ext.getCmp('tooltipWindow').destroy();
         }
@@ -176,7 +237,7 @@ function showTooltip(str_html){
                 text: 'OK',
                 handler: function(){
                     tooltipWindow.close();
-                }                
+                }
         }
             ],
             */
@@ -188,9 +249,38 @@ function showTooltip(str_html){
 }
 
 /**
+* @desc this function opens a new tooltip-window and stores the old content to be able to switch back
+*/
+var prior_content = ''; // global var to store the prior content of the tooltip-window
+function showTooltipFromSite(url){
+    prior_content = Ext.get('tooltipWindow').dom.getElementsByClassName('sogisTooltip')[0].outerHTML;
+    Ext.Ajax.request({
+                isLoading: true,
+                url:  strSOGISTooltipURL + getProject() + '/' + url,
+                //params: params,
+                method: 'GET',
+                failure: function(){
+                    Ext.getBody().unmask();
+                },
+                success: function(response){
+                    if (Ext.getCmp('IdentifyTool').hidden){ // TODO: better
+                        content = response.responseText;
+                        content += '<p align="center"><a href="javascript:showPriorTooltip();">zurück</a>';
+                        showTooltip(content);
+                        Ext.getBody().unmask();
+                    }
+                }
+             });
+}
+
+function showPriorTooltip(){
+    showTooltip(prior_content);
+}
+
+/**
 * @desc returns a comma-separated string with the visible layers
 * @return string with the visible layers
-* 
+*
 */
 function showVisibleLayers(){
     visibleLayers = getVisibleLayers([],layerTree.root.firstChild);
@@ -206,7 +296,7 @@ function showVisibleLayers(){
 function getProject(){
     str_return = wmsMapName.replace("/", "");
     /* EXCEPTION legacy communes  */
-    if (str_return == "gempen" || 
+    if (str_return == "gempen" ||
     str_return == "zuchwil" ||
     str_return == "grindel" ||
     str_return == "haerkingen" ||
@@ -217,7 +307,7 @@ function getProject(){
     str_return == "schnottwil" ||
     str_return == "dulliken"){
         str_return = "gemeindegis";
-    }    
+    }
     return str_return;
 }
 
@@ -232,7 +322,7 @@ function removeButtons(){
                             'ShowHelp',
                             'navZoomBoxButton',
                             'zoomNext',
-                            'zoomLast',    
+                            'zoomLast',
                             'SendPermalink', // button SendEmail
                             'separator1',
                             'separator2',
@@ -247,7 +337,7 @@ function removeButtons(){
 
 /**
 * @desc adds buttons to the map
-* 
+*
 */
 function addButtons(arr_buttons_seperators){
     for (var i=0; i<arr_buttons_seperators.length; i++){
@@ -299,7 +389,7 @@ function openPermaLink(permalink) {
     if (typeof(Ext.getCmp('permalinkWindow')) != 'undefined'){
         Ext.getCmp('permalinkWindow').destroy();
     }
-    
+
     var permalinkWindow = new Ext.Window({
         title: 'Permalink',
         minWidth: 615,
@@ -330,28 +420,47 @@ function openPermaLink(permalink) {
     Ext.getCmp('permalinkfield').focus(false, 100);
 }
 
-//Send permalink. Overwrite from Translation.js
-var sendPermalinkTooltipString = new Array();
-sendPermalinkTooltipString["en"] = "Permalink";
-sendPermalinkTooltipString["es"] = "Permalink"; //FIXME
-sendPermalinkTooltipString["de"] = "Permalink";
-sendPermalinkTooltipString["fr"] = "Permalink";
-sendPermalinkTooltipString["it"] = "Permalink"; //FIXME
-sendPermalinkTooltipString["pt_PT"] = "Permalink";
-sendPermalinkTooltipString["uk"] = "Permalink"; //FIXME
-sendPermalinkTooltipString["hu"] = "Permalink";
-sendPermalinkTooltipString["ro"] = "Permalink";
+/*
+* @desc sets a ideal scale when pushing the print-button (id=PrintMap)
+        as there are different max-scales this function had to be integrated withing the PrintMap-Button in WebGIS.js
+*/
+function setPrintScaleCombobox(printExtentPageScaleDataValue) {
+    // Set default value of
+    if (printCapabilities.scales[0].value > printExtentPageScaleDataValue && parseInt(strSOGISMaxScale) > 0) {
+        theScale = printCapabilities.scales[0].value;
+    } else {
+        theScale = printExtentPageScaleDataValue;
+    }
+    return theScale;
+}
 
-//mode string for attribute data detailed
-var modeObjectIdentificationString = new Array();
-modeObjectIdentificationString["en"] = "Mode: object identification. Move the mouse over an object to identify it, click it to view its attribute data.";
-modeObjectIdentificationString["es"] = "Modo: Identificación de objeto. Mueva el cursor sobre un objeto para identificarlo, haga click sobre él para ver sus atributos.";
+/*
+* @desc wird für die Abfrage in ÖV verwendet liefert korrektes HTML für showTooltip, das im Infobutton von ÖV noch mal aufgerufen wird.
+* @param string with html
+*/
+function httpGet(theUrl) {
+    var xmlHttp = null;
+
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false );
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
+/*
+ * Overwrite Translations.js
+*/
+
+sendPermalinkTooltipString["de"] = "Permalink";
+
+leftPanelTitleString["de"] = "";
+
+mapThemeButtonTitleString["de"] = "Weitere Karten";
+
+mapPanelTitleString["de"] = "";
+
+themeSwitcherWindowTitleString["de"] = "Kartenthemen";
+
 modeObjectIdentificationString["de"] = "Bewegen Sie die Maus über das Objekt, um es zu identifizeren, klicken Sie es an, um seine Attributdaten anzuzeigen.";
-modeObjectIdentificationString["fr"] = "Mode: identification d'objets. Déplacez la souris sur un objet pour l'identifier, cliquez dessus pour afficher les attributs.";
-modeObjectIdentificationString["it"] = "Modalità: identificazione di elementi. Identificare un elemento tramite il click.";
-modeObjectIdentificationString["pt_PT"] = "Modo: identificação do elemento. Ver atributos dos dados por meio de um clique do rato.";
-modeObjectIdentificationString["uk"] = "Режим: вибір об'єкта. Клацніть лівою кнопкою щоб побачити атрибути об'єкта.";
-modeObjectIdentificationString["hu"] = "Mód: térképi elem azonosítás. Mozgasd az egeret a kívánt térképi elem fölé, klikkelj rá.";
-modeObjectIdentificationString["ro"] = "Mod: identificare obiect. Pentru aceasta se pune mouse-ul pe el; se poate da click pentru a-i vizualiza atributele";
 
 

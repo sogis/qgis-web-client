@@ -2,7 +2,7 @@
 var lang = "de"; //for available codes see array availableLanguages in file GlobalOptions.js
 
 //Help file (must be a local file)
-var helpfile = "help_de.html";
+var helpfile = "help_sogis.html";
 
 //Servername (optional) and path and name name of QGIS Server FCGI-file
 //either with or without server-name - without servername recommended for easier porting to other servers
@@ -16,6 +16,9 @@ var useGetProjectSettings = true;
 
 // show the layerOrderTab in the GUI
 var showLayerOrderTab = false;
+
+// show the WMSServiceInfoTab in the GUI
+var showWMSServiceInfoTab = true;
 
 // show layername in layerTree in gray when layer is outside visible scale
 var grayLayerNameWhenOutsideScale = true;
@@ -36,7 +39,7 @@ var useGeodesicMeasurement = false;
 var useGeoNamesSearchBox = false;
 var geoNamesUserName = 'insert your geonames user name';
 //URL for custom search scripts
-var searchBoxQueryURL = "/wsgi/search.wsgi?query=";
+var searchBoxQueryURL = "/wsgi/search.wsgi?";
 var searchBoxGetGeomURL = "/wsgi/getSearchGeom.wsgi";
 
 // use QGIS WMS highlight for selected search result in search box
@@ -246,6 +249,7 @@ var MapOptions = {
   fallThrough: false,
   resolutions: [250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.25, 0.1],
   maxExtent: new OpenLayers.Bounds(590000.0,210000.0,650000.0,270000.0),
+  //maxExtent: new OpenLayers.Bounds(570000.0,190000.0,670000.0,290000.0),
   fractionalZoom: false, // with tiles to guarantee correct zoom level
   controls: []
 };
@@ -325,7 +329,7 @@ var printCapabilities={
     {"name":"1:10'000","value":"10000"},
     {"name":"1:12'000","value":"12000"},
     {"name":"1:15'000","value":"15000"},
-    //{"name":"1:20'000","value":"20000"}, //SCALE BUG in QGIS-Server and Grundkarten ...
+    {"name":"1:20'000","value":"20000"},
     {"name":"1:25'000","value":"25000"},
     {"name":"1:30'000","value":"30000"},
     {"name":"1:50'000","value":"50000"},
@@ -392,22 +396,22 @@ var symbolizersHighLightLayer = {
   "Point": {
     pointRadius: 4,
     graphicName: "circle",
-    fillColor: "#FF8C00",
+    fillColor: "#FF2800",
     fillOpacity: 0.4,
     strokeWidth: 1,
-    strokeColor: "#FF8C00"
+    strokeColor: "#FF2800"
   },
   "Line": {
-    strokeWidth: 1,
+    strokeWidth: 0.8,
     strokeOpacity: 1,
-    strokeColor: "#FF8C00",
+    strokeColor: "#FF2800",
     strokeDashstyle: "dash"
   },
   "Polygon": {
-    strokeWidth: 1,
-    strokeColor: "#FF8C00",
-    fillColor: "#FF8C00",
-    fillOpacity: 0.4
+    strokeWidth: 0.8,
+    strokeColor: "#FF2800",
+    fillColor: "#FF2800",
+    fillOpacity: 0.0
   }
 };
 

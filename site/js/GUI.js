@@ -7,7 +7,7 @@
  * https://github.com/qgis/qgis-web-client/blob/master/README
  * for the full text of the license and the list of contributors.
  *
-*/ 
+*/
 
 //this file contains the main gui definition (viewport) as edited through extjs designer
 //source file for ext designer
@@ -45,6 +45,7 @@ objectIdentificationModes = Ext.extend(Ext.data.JsonStore, {
 });
 new objectIdentificationModes();
 
+// BEGIN SOGIS: Menu
 // Define header menu. Can be nested one level deep.
     var sogis_menu = [
         {'url': 'http://www.so.ch/departemente/bau-und-justiz/amt-fuer-geoinformation/sogis-koordination.html', 'title': 'SO!GIS', 'class': 'sogis-aktiv', 'target':'_blank', 'submenu' : [
@@ -101,6 +102,7 @@ new objectIdentificationModes();
         menuString += '</ul>';
         return menuString;
     }
+// END SOGIS
 
 //definition of main GUI
 var layoutHeaderCfg = {
@@ -165,8 +167,8 @@ if (headerLogoImg != null) {
  * Right and Bottom panel are hidden by default but can be enabled on
  * request, see an example in Customizations.js: function
  * customAfterMapInit()
- * 
- */ 
+ *
+ */
 MyViewportUi = Ext.extend(Ext.Viewport, {
 	layout: 'fit',
 	initComponent: function () {
@@ -192,6 +194,16 @@ MyViewportUi = Ext.extend(Ext.Viewport, {
 				split: true,
 				collapseMode: 'standard',
 				id: 'LeftPanel',
+                // BEGIN SOGIS resize correct
+                listeners: {
+                    resize: {
+                        fn: function(el) {
+                            Ext.getCmp('WMSServiceInfoPanel').setWidth(Ext.getCmp('LeftPanel').getWidth());
+                            Ext.getCmp('mapThemeButton').setSize(Ext.getCmp('LeftPanel').getWidth(), '2em');
+                        }
+                    }
+                },
+                // END SOGIS
 				items: [{
 					xtype: 'button',
 					height: '1.5em',
@@ -243,6 +255,7 @@ MyViewportUi = Ext.extend(Ext.Viewport, {
 							split: true,
 							region: 'center',
 							collapsible: true,
+							collapsible: false, // SOGIS
 							rootVisible: false,
 							autoScroll: true,
 							containerScroll: true,
@@ -269,7 +282,24 @@ MyViewportUi = Ext.extend(Ext.Viewport, {
 							frame: false
 						}] // map items
 					}] // accordion items
-				}] // left panel items
+				}
+                // BEGIN SOGIS: wms service information
+                ,{
+                        xtype: 'qgis_wmsserviceinfopanel',
+                        id: 'WMSServiceInfoPanel',
+                        split: true,
+                        flex: 0.5,
+                        width: 'auto',
+                        layout: 'auto',
+                        maxHeight: 250,
+                        minHeight: 150,
+                        height: 200,
+                        autoScroll: true,
+                        border: false,
+                        frame: false
+                }
+                //END SOGIS
+            ] // left panel items
 			}, {
 				xtype: 'panel',
                 border: false,
@@ -410,6 +440,7 @@ MyViewportUi = Ext.extend(Ext.Viewport, {
 							allowNegative: false,
 							allowDecimals: false,
 							width: 75,
+                            readOnly: true, // SOGIS
 							enableKeyEvents: true,
 							id: 'ScaleNumberField'
 						}]
@@ -419,22 +450,22 @@ MyViewportUi = Ext.extend(Ext.Viewport, {
             {
                 xtype: 'panel',
                 id: 'RightPanel',
-                region: 'east',                
+                region: 'east',
                 split: true,
                 collapsible: true,
-                collapsed: true,    
+                collapsed: true,
                 hidden: true,
                 width: 200
             },
             {
                 xtype: 'panel',
-                id: 'BottomPanel',        
+                id: 'BottomPanel',
                 region: 'south',
                 split: true,
                 collapsible: true,
-                collapsed: true,    
+                collapsed: true,
                 hidden: true,
-                height: 100 
+                height: 100
             }]
 		}];
 
