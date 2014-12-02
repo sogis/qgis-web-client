@@ -475,12 +475,12 @@ var gis_projects = {
 				}
 				]
     },{
-          "name": "Richtplan Stand Januar 2013",
+          "name": "Richtplankarte",
           "projectpath": "",
           "projectfile": "richtplan",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Gemeindegrenzen,Grundkarte",
+          "visibleLayers": "Gemeindegrenzen,Grundnutzung,Überlagerte Nutzung,Einzelobjekte,Grundkarte",
           "updateInterval": "",
           "responsible": "Amtliche für Raumplanung",
           "tags": "Richtplan",
@@ -536,7 +536,7 @@ var gis_projects = {
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Gewässerschutzkarte, Grundwasserkarte",
-          "switcher": false,
+          "switcher": true,
           "searchtables": "",
 	  "sogiswmsserviceinfo": true,
           "sogissearchhint": "",
@@ -653,7 +653,7 @@ Fliessgewässer,Orthofoto",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Kataster der belasteten Standorte",
-          "switcher": true,
+          "switcher": false,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",

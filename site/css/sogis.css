@@ -80,6 +80,11 @@ body {
 	top: 26px;
 }
 
+/* the left panel was with IE9+ on top of the sogis menu */
+#LeftPanel-xsplit {
+    z-index: 1 !important;
+}
+
 .sogis-headernav ul li:hover ul { 
 	display: block; 
 }
