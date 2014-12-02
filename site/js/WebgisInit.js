@@ -650,7 +650,7 @@ function postLoading() {
         thematicLayer.events.register('loadstart', this, function() {
             mapIsLoading = true;
             // show the loadMask with a delay of one second, no need to show it for quick changes
-            setTimeout("displayLoadMask()", 1000);
+            setTimeout("displayLoadMask()", 5000);
         });
 
         thematicLayer.events.register('loadend', this, function() {
@@ -1587,11 +1587,22 @@ function mapToolbarHandler(btn, evt) {
                 printExtent.addPage();
                 printExtent.page.lastScale = Math.round(printExtent.page.scale.data.value);
                 printExtent.page.lastRotation = 0;
-                Ext.getCmp('PrintScaleCombobox').setValue(printExtent.page.lastScale);
+                // BEGIN SOGIS
+                //Ext.getCmp('PrintScaleCombobox').setValue(printExtent.page.lastScale);
+                theScale = setPrintScaleCombobox(printExtent.page.lastScale); // defined in sogis.js
+                Ext.getCmp('PrintScaleCombobox').setValue(theScale);
+                // END SOGIS
+
                 //listener when page scale changes from page extent widget
                 printExtent.page.on('change', function (page, modifications) {
                     if (page.scale.data.value != printExtent.page.lastScale) {
-                        Ext.getCmp('PrintScaleCombobox').setValue(page.scale.data.value);
+                        //Ext.getCmp('PrintScaleCombobox').setValue(theScale); // SOGIS
+                        // BEGIN SOGIS
+                        //Ext.getCmp('PrintScaleCombobox').setValue(page.scale.data.value);
+                        theScale = setPrintScaleCombobox(page.scale.data.value); // defined in sogis.js
+                        Ext.getCmp('PrintScaleCombobox').setValue(theScale);
+                        // END SOGIS
+
                         printExtent.page.lastScale = page.scale.data.value;
                     }
                     if (Math.round(page.rotation) != printExtent.page.lastRotation) {

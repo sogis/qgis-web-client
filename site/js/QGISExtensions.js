@@ -16,6 +16,7 @@
 * QGIS.SearchPanel
 * QGIS.FeatureInfoParser
 * QGIS.Highlighter
+* QGIS.WMSServiceInfoPanel
 * QGIS.LayerOrderPanel
 */
 
@@ -1407,6 +1408,40 @@ QGIS.Highlighter = Ext.extend(Object, {
   }
 });
 
+// BEGIN SOGIS
+/* *************************** QGIS.WMSServiceInfoPanel **************************** */
+// extends Ext.Panel with a list of the active layers that can be ordered by the user
+QGIS.WMSServiceInfoPanel = Ext.extend(Ext.Panel, {
+    title: 'Information zur Karte',
+    loadServiceInfo: function() {
+        var html;
+        var person = wmsLoader.projectSettings.service.contactInformation.personPrimary.person;
+        var organization = wmsLoader.projectSettings.service.contactInformation.personPrimary.organization;
+        var phone = wmsLoader.projectSettings.service.contactInformation.phone;
+        var email = wmsLoader.projectSettings.service.contactInformation.email;
+
+        html = '<div class="sogisHinweis">';
+        html += '<p class="sogisHinweisTitleGross">' + wmsLoader.projectSettings.service.title + '</p>';
+        html += '<p class="sogisHinweisText">' + wmsLoader.projectSettings.service.abstract + '</p>';
+        if ((person + organization + phone + email).trim().length > 0){
+            html += '<p class="sogisHinweisTitle">' + 'Kontakt:' + '</p>';
+        }
+        html += '<p class="sogisHinweisText">' + person + '</p>';
+        html += '<p class="sogisHinweisText">' + organization + '</p>';
+        html += '<p class="sogisHinweisText">' + phone + '</p>';
+        html += '<p class="sogisHinweisText"><a href="mailto:' + email + '">' + email + '</a></p>';
+        html += '<p class="sogisHinweisText">&nbsp;</p>';
+        html += '<p class="sogisHinweisText">Für Fragen, Lob oder Verbesserungsvorschläge senden Sie bitte ein Mail an: <a href="mail:michael.pfeiffer@bd.so.ch">michael.pfeiffer@bd.so.ch</a></p>';
+        html += '</div>';
+
+        this.update(html);
+    }
+});
+
+
+/** api: xtype = wmsserviceinfopanel */
+Ext.reg('qgis_wmsserviceinfopanel', QGIS.WMSServiceInfoPanel);
+// BEGIN SOGIS
 
 /* *************************** QGIS.LayerOrderPanel **************************** */
 // extends Ext.Panel with a list of the active layers that can be ordered by the user

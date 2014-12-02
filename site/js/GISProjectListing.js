@@ -16,6 +16,7 @@ var intSOGISTooltipHeight = 400;
 var arr_SOGISButtons = ['measureDistance','measureArea','PrintMap','SendPermalink','IdentifyTool','ShowHelp'];
 var strSOGISDefaultButton = 'IdentifyTool';
 var strSOGISMinScale = null;
+var bolSOGISWMSServiceInfo = false;
 var strSOGISMaxScale = null;
 var strSOGISSearchHelpText = '';
 
@@ -144,7 +145,7 @@ var wmts_layer_basisplan_farbig = {
                         "resolutions": [250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.25, 0.1],
                         "formatSuffix": "png"
                      }
-				}
+				};
 
 var gis_projects = {
   "path": "/maptest", /* DEPLOY !!! */
@@ -178,7 +179,7 @@ var gis_projects = {
           "projectfile": "hoheitsgrenzsteine",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Hoheitsgrenzsteine,Grundkarte farbig",
+          "visibleLayers": "Hoheitsgrenzsteine,Grundkarte",
           "updateInterval": "occasional",
           "responsible": "Amtliche Vermessung",
           "tags": "Hoheitsgrenzsteine",
@@ -409,6 +410,7 @@ Fliessgewässer,Orthofoto",
           "responsible": "Amt für Umwelt",
           "tags": "Grundwasserbewirtschaftung",
           "switcher": true,
+          "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
           "sogistooltipwidth" : 1000,
@@ -464,7 +466,7 @@ Fliessgewässer,Orthofoto",
           "sogismaxscale" : null
 
     },{
-          "name": "Naturgefahrenhinweiskarte",
+          "name": "Naturgefahren Hinweiskarte",
           "projectpath": "",
           "projectfile": "natgef",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
@@ -472,7 +474,7 @@ Fliessgewässer,Orthofoto",
           "visibleLayers": "Überflutungsgebiete,sehr flache Talböden ausserhalb der modellierten Überflutungsbereiche: Überflutung kann nicht ausgeschlossen werden,Übersarung / Schwemmkegel,Murgang,bekannte Ereignisse ausserhalb des modellierten Steinschlaggebietes,Steinschlag,Doline,tatsächliche Ereignisse,Übersichtsplan,Strassenkarte mit Relief,Orthofoto",
           "updateInterval": "occasional",
           "responsible": "Amt für Umwelt",
-          "tags": "Naturgefahrenhinweiskarte",
+          "tags": "Naturgefahren Hinweiskarte",
           "switcher": false,
           "searchtables": "",
           "sogissearchhint": "",
@@ -480,7 +482,13 @@ Fliessgewässer,Orthofoto",
           "sogistooltipheight" : 300,
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
-          "sogismaxscale" : null
+          "sogismaxscale" : null,
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+				]
+
     },{
           "name": "Naturgefahren",
           "projectpath": "",
@@ -631,8 +639,8 @@ Fliessgewässer,Orthofoto",
           "sogistooltipheight" : 300,
           "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','IdentifyTool','ShowHelp'],
           "sogisdefaultbutton" : "IdentifyTool",
-          //"sogismaxscale" : 50000
-          "sogismaxscale" : null,
+          "sogismaxscale" : 50000,
+          //"sogismaxscale" : null,
           "name": "Leitungskataster",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
