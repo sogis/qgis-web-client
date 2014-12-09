@@ -498,7 +498,27 @@ var gis_projects = {
                 wmts_layer_strassenkarte_sw,
                 wmts_layer_basisplan_sw
 				]
+   },{
+          "name": "Lidar",
+          "projectpath": "",
+          "projectfile": "lidar",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Gemeindegrenzen,Grundnutzung,Überlagerte Nutzung,Einzelobjekte,Grundkarte",
+          "updateInterval": "",
+          "responsible": "Amtliche für Raumplanung",
+          "tags": "Lidar",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 600,
+          "sogistooltipheight" : 300,
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null
    }
+
 ]
   },{
     "name": "Natur und Umwelt",
