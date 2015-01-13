@@ -1,5 +1,5 @@
 body {
-	background-image: url(../img/contbg.gif);
+	background-image: url(../img/white.gif);
 	background-repeat: repeat-x;
 }
 
@@ -8,21 +8,28 @@ body {
 	overflow: visible;
 	height: 108px;
 	border: none;
-	background-image: url(../img/keyvisual_global.jpg);
+	background-image: url(../img/white.gif);
 	background-repeat: no-repeat;
 	background-position: center 14px ;
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: #ccc;
 }
 
 .sogis-header-logo {
-	background-image: url(../img/logo_so.gif);
-	width: 190px;
-	height: 21px;
-	left: 20px;
-	top: 30px;
+	background: url(../img/logo.png) no-repeat scroll 0 0 / 340px 32px transparent;
+	width: 340px;
+	height: 32px;
+	right: 20px;
+	top: 26px;
 	position: absolute;
 }
 
 .sogis-header-text {
+    font-family: "Frutiger LT Com 55 Roman",Arial,sans,sans-serif;
+    color: #656d78;
+    font-size: 16px;
+    font-weight:900;
 	right: 36px;
 	top: 98px;
 	position: absolute;
@@ -33,7 +40,7 @@ body {
 	padding: 0px 15px;
 	clear: both;
 	height: 27px;
-	background: url(../img/headnavbg.gif) repeat-x bottom;
+	background: url(../img/white.gif) repeat-x bottom;
 }
 
 .sogis-headernav ul li {
@@ -47,26 +54,28 @@ body {
 }
 
 .sogis-headernav ul a {
-	border-right: 1px solid #CCC;
+	border-right: 0px solid #CCC;
 	display: block;
 	padding: 5px 10px 3px;
 	margin-top: 3px;
-	border-right: 1px solid #CCC;
-	color: #333;
+	color: #656d78;
 	text-decoration: none;
-	font-weight: bold;
-	font-size: 11px;
-	font-family: tahoma,arial,verdana,sans-serif;
+	font-weight: 900;
+	font-size: 16px;
+	font-family: "Frutiger LT Com 55 Roman",Arial,sans,sans-serif;
 	background: url(../img/white.gif) repeat-y;
 }
 
+.sogis-headernav ul a:hover {
+    color: #C00;
+}
+
 .sogis-headernav ul a.sogis-first {
-	border-left: 1px solid #CCC;
+	border-left: 0px solid #CCC;
 }
 
 .sogis-headernav ul a.sogis-aktiv {
-	color: #C00;
-	border-top: 1px solid #CCC;
+	border-top: 0px solid #CCC;
 	background-color: #fff;
 	margin-top: 0;
 	padding-top: 7px;
@@ -76,7 +85,7 @@ body {
 	position: absolute; 
 	z-index: 2; 
 	display: none; 
-	left: -1px;
+	/*left: -1px;*/
 	top: 26px;
 }
 
@@ -90,21 +99,24 @@ body {
 }
 
 .sogis-headernav ul ul li {
-	border: 1px solid #CCC;
-	background-color: white;
+	border: none;
+	background-color: #E8E8E8;
 	float: none;
-	border-width: 0px 1px 1px;
 	white-space: nowrap;
-    	width: 190px;
+    width: 190px;
 }
 
 .sogis-headernav ul ul a.sogis-first {
-	border-top: 1px solid #CCC;
+	border-top: 0px solid #CCC;
+    border: none;
 }
 
 .sogis-headernav ul ul a {
+    border: none;
 	margin: 0;
-	border: none;
+    font-size: 13px;
+    font-weight: 400;
+    color: #333;
 }
 
 .olControlOverviewMap {
@@ -214,7 +226,7 @@ body {
 }
 
 .sogisTooltip a:hover { 
-  font-family : Verdana, Arial, Helvetica;
+    font-family : Verdana, Arial, Helvetica;
 	text-decoration	:	underline; 
 	color		:	#FF0000;
 }

@@ -24,7 +24,7 @@ var showWMSServiceInfoTab = true;
 var grayLayerNameWhenOutsideScale = true;
 
 // show the tab metadata in legend
-var showMetaDataInLegend = false;
+var showMetaDataInLegend = true;
 
 // show maptips when mouse is over object, set to false if you just want to click and show results
 // if set to true every mouse position over feature of queriable layers is GetFeatureInfo request on server
@@ -396,21 +396,22 @@ var symbolizersHighLightLayer = {
   "Point": {
     pointRadius: 4,
     graphicName: "circle",
-    fillColor: "#FF2800",
+    fillColor: "#0000FF",
     fillOpacity: 0.4,
     strokeWidth: 1,
-    strokeColor: "#FF2800"
+    strokeColor: "#0000FF"
   },
   "Line": {
-    strokeWidth: 0.8,
-    strokeOpacity: 1,
-    strokeColor: "#FF2800",
+    strokeWidth: 1.5,
+    strokeOpacity: 0.5,
+    strokeColor: "#0000FF",
     strokeDashstyle: "dash"
   },
   "Polygon": {
-    strokeWidth: 0.8,
-    strokeColor: "#FF2800",
-    fillColor: "#FF2800",
+    strokeWidth: 1.5,
+    strokeOpacity: 0.5,
+    strokeColor: "#0000FF",
+    fillColor: "#0000FF",
     fillOpacity: 0.0
   }
 };
@@ -421,7 +422,7 @@ var highlightLabelStyle = {
   font: "CadastraCondensed",
   size: 10,
 //  weight: 75,
-  color: "#FF2800",
+  color: "#0000FF",
   buffercolor: "#FFFFFF",
   buffersize: 1
 };
