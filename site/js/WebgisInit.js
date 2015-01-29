@@ -197,34 +197,38 @@ Ext.onReady(function () {
 });
 
 function loadWMSConfig(topicName) {
-    loadMask = new Ext.LoadMask(Ext.getCmp('MapPanel').body, {
-        msg: mapLoadingString[lang]
-    });
-    loadMask.show();
-    //load getCapabilities info in treeview
-    wmsLoader = new QGIS.WMSCapabilitiesLoader({
-        url: wmsURI,
-        useGetProjectSettings: useGetProjectSettings,
-        layerOptions: {
-            buffer: 0,
-            singleTile: true,
-            ratio: 1
-        },
-        layerParams: {
-            'TRANSPARENT': 'TRUE'
-        },
-        // customize the createNode method to add a checkbox to nodes and the ui provider
-        createNode: function (attr) {
-            attr.checked = false;
-            return QGIS.WMSCapabilitiesLoader.prototype.createNode.apply(this, [attr]);
-        },
-        baseAttrs: {
-            uiProvider: Ext.tree.TriStateNodeUI
-        },
-        topicName: topicName
-    });
+	loadMask = new Ext.LoadMask(Ext.getCmp('MapPanel').body, {
+		msg: mapLoadingString[lang]
+	});
+	loadMask.show();
+	//load getCapabilities info in treeview
+	wmsLoader = new QGIS.WMSCapabilitiesLoader({
+		url: wmsURI,
+		useGetProjectSettings: useGetProjectSettings,
+		layerOptions: {
+			buffer: 0,
+			singleTile: true,
+			ratio: 1
+		},
+		layerParams: {
+			'TRANSPARENT': 'TRUE'
+		},
+		// customize the createNode method to add a checkbox to nodes and the ui provider
+		createNode: function (attr) {
+			attr.checked = false;
+			if (!attr.layer.metadata.showCheckbox) {
+				// hide checkbox
+				attr.cls = 'layer-checkbox-hidden';
+			}
+			return QGIS.WMSCapabilitiesLoader.prototype.createNode.apply(this, [attr]);
+		},
+		baseAttrs: {
+			uiProvider: Ext.tree.TriStateNodeUI
+		},
+		topicName: topicName
+	});
 
-    var root = new Ext.tree.AsyncTreeNode({
+	var root = new Ext.tree.AsyncTreeNode({
         id: 'wmsNode',
         text: 'WMS',
             loader: wmsLoader,
@@ -367,204 +371,204 @@ function postLoading() {
         } else {
             Ext.getCmp('SendPermalink').handler = mapToolbarHandler;
         }
-        Ext.getCmp('ShowHelp').handler = mapToolbarHandler;
+		Ext.getCmp('ShowHelp').handler = mapToolbarHandler;
 
-        // Add custom buttons (Customizations.js)
-        customToolbarLoad();
+		// Add custom buttons (Customizations.js)
+		customToolbarLoad();
 
-        //combobox listeners
-        var ObjectIdentificationModeCombobox = Ext.getCmp('ObjectIdentificationModeCombo');
-        ObjectIdentificationModeCombobox.setValue("topMostHit");
-        identificationMode = "topMostHit";
-        ObjectIdentificationModeCombobox.on("select", function (combobox, record, index) {
-            identificationMode = record.get("value");
-            //need to updated active selected layers or all selected layers
-            layerTree.fireEvent("leafschange");
-        });
-    }
+		//combobox listeners
+		var ObjectIdentificationModeCombobox = Ext.getCmp('ObjectIdentificationModeCombo');
+		ObjectIdentificationModeCombobox.setValue("topMostHit");
+		identificationMode = "topMostHit";
+		ObjectIdentificationModeCombobox.on("select", function (combobox, record, index) {
+			identificationMode = record.get("value");
+			//need to updated active selected layers or all selected layers
+			layerTree.fireEvent("leafschange");
+		});
+	}
 
-    //test if max extent was set from URL or project settings
-    //if not, set map parameters from GetProjectSettings/GetCapabilities
-    //get values from first layer group (root) of project settings
-    if (maxExtent instanceof OpenLayers.Bounds == false) {
-        var boundingBox = wmsLoader.projectSettings.capability.nestedLayers[0].bbox;
-        //iterate over bbox - there should be only one entry
-        for (var key in boundingBox) {
-            if (key.match(/^EPSG:*/)) {
-                var bboxArray = boundingBox[key].bbox;
-                var srs = boundingBox[key].srs;
-                // dummyLayer is created only to check if reverseAxisOrder is true
-                var dummyLayer = new OpenLayers.Layer.WMS("dummy",
-                    wmsURI, {
-                        VERSION: "1.3.0"
-                    },
-                    LayerOptions
-                );
-                dummyLayer.projection = new OpenLayers.Projection(authid);
-                var reverseAxisOrder = dummyLayer.reverseAxisOrder();
-                maxExtent = OpenLayers.Bounds.fromArray(bboxArray, reverseAxisOrder);
-            }
-        }
-    }
-    // never change the map extents when using WMTS base layers
-    if (!enableWmtsBaseLayers) {
-        MapOptions.maxExtent = maxExtent;
-    }
+	//test if max extent was set from URL or project settings
+	//if not, set map parameters from GetProjectSettings/GetCapabilities
+	//get values from first layer group (root) of project settings
+	if (maxExtent instanceof OpenLayers.Bounds == false) {
+		var boundingBox = wmsLoader.projectSettings.capability.nestedLayers[0].bbox;
+		//iterate over bbox - there should be only one entry
+		for (var key in boundingBox) {
+			if (key.match(/^EPSG:*/)) {
+				var bboxArray = boundingBox[key].bbox;
+				var srs = boundingBox[key].srs;
+				// dummyLayer is created only to check if reverseAxisOrder is true
+				var dummyLayer = new OpenLayers.Layer.WMS("dummy",
+					wmsURI, {
+						VERSION: "1.3.0"
+					},
+					LayerOptions
+				);
+				dummyLayer.projection = new OpenLayers.Projection(authid);
+				var reverseAxisOrder = dummyLayer.reverseAxisOrder();
+				maxExtent = OpenLayers.Bounds.fromArray(bboxArray, reverseAxisOrder);
+			}
+		}
+	}
+	// never change the map extents when using WMTS base layers
+	if (!enableWmtsBaseLayers) {
+		MapOptions.maxExtent = maxExtent;
+	}
 
-    //now collect all selected layers (with checkbox enabled in tree)
-    selectedLayers = Array();
-    selectedQueryableLayers = Array();
-    allLayers = Array();
-    var wmtsLayers = Array();
+	//now collect all selected layers (with checkbox enabled in tree)
+	selectedLayers = Array();
+	selectedQueryableLayers = Array();
+	allLayers = Array();
+	var wmtsLayers = Array();
 
-    layerTree.root.firstChild.cascade(
+	layerTree.root.firstChild.cascade(
 
-    function (n) {
-        if (n.isLeaf()) {
-            if (n.attributes.checked) {
-                if (!wmsLoader.layerProperties[wmsLoader.layerTitleNameMapping[n.text]].wmtsLayer) {
-                    selectedLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
-                }
-                else {
-                    wmtsLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
-                }
-                if (wmsLoader.layerProperties[wmsLoader.layerTitleNameMapping[n.text]].queryable) {
-                    selectedQueryableLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
-                }
-            }
-            allLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
-        }
-    });
-    mainStatusText.setText(mapLoadingString[lang]);
-    format = imageFormatForLayers(selectedLayers);
+	function (n) {
+		if (n.isLeaf()) {
+			if (n.attributes.checked) {
+				if (!wmsLoader.layerProperties[wmsLoader.layerTitleNameMapping[n.text]].wmtsLayer) {
+					selectedLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
+				}
+				else {
+					wmtsLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
+				}
+				if (wmsLoader.layerProperties[wmsLoader.layerTitleNameMapping[n.text]].queryable) {
+					selectedQueryableLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
+				}
+			}
+			allLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
+		}
+	});
+	mainStatusText.setText(mapLoadingString[lang]);
+	format = imageFormatForLayers(selectedLayers);
 
-    if (initialLoadDone) {
-        printCapabilities.layouts = [];
-    }
-    // apply printing parameters from project settings
-    var composerTemplates = wmsLoader.projectSettings.capability.composerTemplates;
-    if (composerTemplates.length > 0) {
-        printLayoutsDefined = true;
-        for (var i = 0; i < composerTemplates.length; i++) {
-            var composerTemplate = composerTemplates[i];
-            var mapWidth = composerTemplate.map.width / ptTomm;
-            var mapHeight = composerTemplate.map.height / ptTomm;
-            //for some strange reason we need to provide a "map" and a "size" object with identical content
-            printCapabilities.layouts.push({
-                "name": composerTemplate.name,
-                "map": {
-                    "width": mapWidth,
-                    "height": mapHeight
-                },
-                "size": {
-                    "width": mapWidth,
-                    "height": mapHeight
-                },
-                "rotation": true
-            });
-        }
-    }
+	if (initialLoadDone) {
+		printCapabilities.layouts = [];
+	}
+	// apply printing parameters from project settings
+	var composerTemplates = wmsLoader.projectSettings.capability.composerTemplates;
+	if (composerTemplates.length > 0) {
+		printLayoutsDefined = true;
+		for (var i = 0; i < composerTemplates.length; i++) {
+			var composerTemplate = composerTemplates[i];
+			var mapWidth = composerTemplate.map.width / ptTomm;
+			var mapHeight = composerTemplate.map.height / ptTomm;
+			//for some strange reason we need to provide a "map" and a "size" object with identical content
+			printCapabilities.layouts.push({
+				"name": composerTemplate.name,
+				"map": {
+					"width": mapWidth,
+					"height": mapHeight
+				},
+				"size": {
+					"width": mapWidth,
+					"height": mapHeight
+				},
+				"rotation": true
+			});
+		}
+	}
 
-    // The printProvider that connects us to the print service
-    printUri = wmsURI + 'SERVICE=WMS&VERSION=1.3&REQUEST=GetPrint&FORMAT=pdf&EXCEPTIONS=application/vnd.ogc.se_inimage&TRANSPARENT=true';
-    if (initialLoadDone) {
-        printProvider.capabilities = printCapabilities;
-        printProvider.url = printUri;
-    }
-    else {
-        printProvider = new QGIS.PrintProvider({
-            method: "GET", // "POST" recommended for production use
-            capabilities: printCapabilities, // from the info.json script in the html
-            url: printUri
-        });
-        printProvider.addListener("beforeprint", customBeforePrint);
-        printProvider.addListener("afterprint", customAfterPrint);
-    }
+	// The printProvider that connects us to the print service
+	printUrl = printURI + 'SERVICE=WMS&VERSION=1.3&REQUEST=GetPrint&FORMAT=pdf&EXCEPTIONS=application/vnd.ogc.se_inimage&TRANSPARENT=true';
+	if (initialLoadDone) {
+		printProvider.capabilities = printCapabilities;
+		printProvider.url = printUrl;
+	}
+	else {
+		printProvider = new QGIS.PrintProvider({
+			method: "GET", // "POST" recommended for production use
+			capabilities: printCapabilities, // from the info.json script in the html
+			url: printUrl
+		});
+		printProvider.addListener("beforeprint", customBeforePrint);
+		printProvider.addListener("afterprint", customAfterPrint);
+	}
 
-    if (!printExtent) {
-        printExtent = new GeoExt.plugins.PrintExtent({
-            printProvider: printProvider
-        });
-    }
-    else {
-        printExtent.printProvider = printProvider;
-    }
-    //set this to false, so that printExtent object will be re-initalized
-    if (!printExtent.initialized) {
-        printExtent.initialized = false;
-    }
+	if (!printExtent) {
+		printExtent = new GeoExt.plugins.PrintExtent({
+			printProvider: printProvider
+		});
+	}
+	else {
+		printExtent.printProvider = printProvider;
+	}
+	//set this to false, so that printExtent object will be re-initalized
+	if (!printExtent.initialized) {
+		printExtent.initialized = false;
+	}
 
 
-    if (!initialLoadDone) {
-        var styleHighLightLayer = new OpenLayers.Style();
-        styleHighLightLayer.addRules([
-        new OpenLayers.Rule({
-            symbolizer: symbolizersHighLightLayer
-        })]);
-        var styleMapHighLightLayer = new OpenLayers.StyleMap({
-            "default": styleHighLightLayer
-        });
-    }
+	if (!initialLoadDone) {
+		var styleHighLightLayer = new OpenLayers.Style();
+		styleHighLightLayer.addRules([
+		new OpenLayers.Rule({
+			symbolizer: symbolizersHighLightLayer
+		})]);
+		var styleMapHighLightLayer = new OpenLayers.StyleMap({
+			"default": styleHighLightLayer
+		});
+	}
 
-    var MapPanelRef = Ext.getCmp('MapPanel');
+	var MapPanelRef = Ext.getCmp('MapPanel');
 
-    // return input layers sorted by order defined in project settings
-    function layersInDrawingOrder(layers) {
-        var layerDrawingOrder = wmsLoader.projectSettings.capability.layerDrawingOrder;
-        if (layerOrderPanel != null) {
-            // override project settings (after first load)
-            if (enableWmtsBaseLayers) {
-                // prepend ordered WMTS layers
-                var orderedLayers = layerOrderPanel.orderedLayers();
-                var wmtsLayers = [];
-                for (var i = 0; i < layerDrawingOrder.length; i++) {
-                    var layer = layerDrawingOrder[i];
-                    if (orderedLayers.indexOf(layer) == -1) {
-                        wmtsLayers.push(layer);
-                    }
-                }
-                layerDrawingOrder = wmtsLayers.concat(orderedLayers);
-            }
-            else {
-                layerDrawingOrder = layerOrderPanel.orderedLayers();
-            }
-        }
+	// return input layers sorted by order defined in project settings
+	function layersInDrawingOrder(layers) {
+		var layerDrawingOrder = wmsLoader.projectSettings.capability.layerDrawingOrder;
+		if (layerOrderPanel != null) {
+			// override project settings (after first load)
+			if (enableWmtsBaseLayers) {
+				// prepend ordered WMTS layers
+				var orderedLayers = layerOrderPanel.orderedLayers();
+				var wmtsLayers = [];
+				for (var i = 0; i < layerDrawingOrder.length; i++) {
+					var layer = layerDrawingOrder[i];
+					if (orderedLayers.indexOf(layer) == -1) {
+						wmtsLayers.push(layer);
+					}
+				}
+				layerDrawingOrder = wmtsLayers.concat(orderedLayers);
+			}
+			else {
+				layerDrawingOrder = layerOrderPanel.orderedLayers();
+			}
+		}
 
-        if (layerDrawingOrder != null) {
-            var orderedLayers = [];
-            for (var i = 0; i < layerDrawingOrder.length; i++) {
-                var layer = layerDrawingOrder[i];
-                if (layers.indexOf(layer) != -1) {
-                    orderedLayers.push(layer);
-                }
-            }
-            return orderedLayers;
-        }
-        else {
-            return layers.reverse();
-        }
-    }
+		if (layerDrawingOrder != null) {
+			var orderedLayers = [];
+			for (var i = 0; i < layerDrawingOrder.length; i++) {
+				var layer = layerDrawingOrder[i];
+				if (layers.indexOf(layer) != -1) {
+					orderedLayers.push(layer);
+				}
+			}
+			return orderedLayers;
+		}
+		else {
+			return layers.reverse();
+		}
+	}
 
-    // return layer opacities sorted by input layers order
-    function layerOpacities(layers) {
-        var opacities = Array();
-        for (var i=0; i<layers.length; i++) {
-            opacities.push(wmsLoader.layerProperties[layers[i]].opacity);
-        }
-        return opacities;
-    }
+	// return layer opacities sorted by input layers order
+	function layerOpacities(layers) {
+		var opacities = Array();
+		for (var i=0; i<layers.length; i++) {
+			opacities.push(wmsLoader.layerProperties[layers[i]].opacity);
+		}
+		return opacities;
+	}
 
-    setupLayerOrderPanel();
+	setupLayerOrderPanel();
 
-    //create new map panel with a single OL layer
-    selectedLayers = layersInDrawingOrder(selectedLayers);
+	//create new map panel with a single OL layer
+	selectedLayers = layersInDrawingOrder(selectedLayers);
 
-    if (!initialLoadDone) {
-        //we need to make sure that OpenLayers.map.fallThrough is set to true
-        //otherwise the mouse events are swallowed
-        MapOptions.fallThrough = true;
-        //creating the GeoExt map panel
-        geoExtMap = new GeoExt.MapPanel({
+	if (!initialLoadDone) {
+		//we need to make sure that OpenLayers.map.fallThrough is set to true
+		//otherwise the mouse events are swallowed
+		MapOptions.fallThrough = true;
+		//creating the GeoExt map panel
+		geoExtMap = new GeoExt.MapPanel({
             frame: false,
             border: false,
             zoom: 1.6,
@@ -625,26 +629,35 @@ function postLoading() {
         //add listener to adapt map on panel resize (only needed because of IE)
         MapPanelRef.on('resize', function (panel, w, h) {
             geoExtMap.setSize(panel.getInnerWidth(),panel.getInnerHeight());
-        });
+		});
 
-        // selection from permalink
-        if (urlParams.selection) {
-            thematicLayer.mergeNewParams({
-                "SELECTION": urlParams.selection
-            });
-        }
+		// selection from permalink
+		if (urlParams.selection) {
+			thematicLayer.mergeNewParams({
+				"SELECTION": urlParams.selection
+			});
+		}
 
-        //scale listener to write current scale to numberfield
-        geoExtMap.map.events.register('zoomend', this, function () {
-            var currentScale = geoExtMap.map.getScale();
-            Ext.getCmp('ScaleNumberField').setValue(Math.round(currentScale));
-            if (geoExtMap.map.zoomBoxActive) {
-                Ext.getCmp('navZoomBoxButton').toggle(false);
-            }
-        });
+		//scale listener to write current scale to numberfield
+		geoExtMap.map.events.register('zoomend', this, function () {
+			var currentScale = geoExtMap.map.getScale();
+			Ext.getCmp('ScaleNumberField').setValue(Math.round(currentScale));
+			if (geoExtMap.map.zoomBoxActive) {
+				Ext.getCmp('navZoomBoxButton').toggle(false);
+			}
+			
+			// call custom action on Zoom Event
+			customActionOnZoomEvent();
+		});
+		
+		//listener to call custom action on moveend event
+		geoExtMap.map.events.register('moveend', this, function () {
+			customActionOnMoveEvent();
+		});
 
-        //scale listener to gray out names in TOC, which are outside visible scale
-        geoExtMap.map.events.register('zoomend', this, this.setGrayNameWhenOutsideScale);
+
+		//scale listener to gray out names in TOC, which are outside visible scale
+		geoExtMap.map.events.register('zoomend', this, this.setGrayNameWhenOutsideScale);
 
         // loading listeners
         thematicLayer.events.register('loadstart', this, function() {
@@ -1027,418 +1040,426 @@ function postLoading() {
                 panel.on("featureselectioncleared", highlighter.unhighlightFeature, highlighter);
                 panel.on("beforesearchdataloaded", showSearchPanelResults);
                 // Just for debugging...
-                // panel.on("afterdsearchdataloaded", function(e){console.log(e);});
-                searchTabPanel.add(panel);
-            }
-            searchTabPanel.setActiveTab(0);
+				// panel.on("afterdsearchdataloaded", function(e){console.log(e);});
+				searchTabPanel.add(panel);
+			}
+			searchTabPanel.setActiveTab(0);
 
-            // show search from URL parameters
-            showURLParametersSearch(searchPanelConfigs);
-        } else {
-            // hide search panel
-            var searchPanel = Ext.getCmp('SearchPanel');
-            searchPanel.removeAll();
-            searchPanel.hide();
-        }
+			// show search from URL parameters
+			showURLParametersSearch(searchPanelConfigs);
+		} else {
+			// hide search panel
+			var searchPanel = Ext.getCmp('SearchPanel');
+			searchPanel.removeAll();
+			searchPanel.hide();
+		}
 
-        //update layout of left panel and adds a listener to automatically adjust layout after resizing
-        var leftPanel = Ext.getCmp('LeftPanel');
-        leftPanel.doLayout();
-        leftPanel.addListener('resize', function (myPanel, adjWidth, adjHeight, rawWidth, rawHeight) {
-            myPanel.items.each(function (item, index, length) {
-                item.width = adjWidth;
-            });
-            myPanel.doLayout();
-        });
+		//update layout of left panel and adds a listener to automatically adjust layout after resizing
+		var leftPanel = Ext.getCmp('LeftPanel');
+		leftPanel.doLayout();
+		leftPanel.addListener('resize', function (myPanel, adjWidth, adjHeight, rawWidth, rawHeight) {
+			myPanel.items.each(function (item, index, length) {
+				item.width = adjWidth;
+			});
+			myPanel.doLayout();
+		});
 
-        //measure-controls (distance and area)
-        var styleMeasureControls = new OpenLayers.Style();
-        styleMeasureControls.addRules([
-        new OpenLayers.Rule({
-            symbolizer: sketchSymbolizersMeasureControls
-        })]);
-        var styleMapMeasureControls = new OpenLayers.StyleMap({
-            "default": styleMeasureControls
-        });
+		//measure-controls (distance and area)
+		var styleMeasureControls = new OpenLayers.Style();
+		styleMeasureControls.addRules([
+		new OpenLayers.Rule({
+			symbolizer: sketchSymbolizersMeasureControls
+		})]);
+		var styleMapMeasureControls = new OpenLayers.StyleMap({
+			"default": styleMeasureControls
+		});
 
-        measureControls = {
-            line: new OpenLayers.Control.Measure(
-            OpenLayers.Handler.Path, {
-                persist: true,
-                handlerOptions: {
-                    layerOptions: {
-                        styleMap: styleMapMeasureControls
-                    }
-                }
-            }),
-            polygon: new OpenLayers.Control.Measure(
-            OpenLayers.Handler.Polygon, {
-                persist: true,
-                handlerOptions: {
-                    layerOptions: {
-                        styleMap: styleMapMeasureControls
-                    }
-                }
-            })
-        };
+		measureControls = {
+			line: new OpenLayers.Control.Measure(
+			OpenLayers.Handler.Path, {
+				persist: true,
+				handlerOptions: {
+					layerOptions: {
+						styleMap: styleMapMeasureControls
+					}
+				}
+			}),
+			polygon: new OpenLayers.Control.Measure(
+			OpenLayers.Handler.Polygon, {
+				persist: true,
+				handlerOptions: {
+					layerOptions: {
+						styleMap: styleMapMeasureControls
+					}
+				}
+			})
+		};
 
-        var control;
-        for (var key in measureControls) {
-            control = measureControls[key];
-            control.events.on({
-                "measure": handleMeasurements,
-                "measurepartial": handleMeasurements
-            });
-            control.setImmediate(true);
-            control.geodesic = useGeodesicMeasurement;
-            geoExtMap.map.addControl(control);
-        }
-    }
-    else {
-        //todo see if we need to change something on project reload in this block, e.g. search panel
-    }
+		var control;
+		for (var key in measureControls) {
+			control = measureControls[key];
+			control.events.on({
+				"measure": handleMeasurements,
+				"measurepartial": handleMeasurements
+			});
+			control.setImmediate(true);
+			control.geodesic = useGeodesicMeasurement;
+			geoExtMap.map.addControl(control);
+		}
+	}
+	else {
+		//todo see if we need to change something on project reload in this block, e.g. search panel
+	}
 
-    leafsChangeFunction = function () {
-        //now collect all selected queryable layers for WMS request
-        selectedLayers = Array();
-        selectedQueryableLayers = Array();
-        var wmtsLayers = Array();
+	leafsChangeFunction = function () {
+		//now collect all selected queryable layers for WMS request
+		selectedLayers = Array();
+		selectedQueryableLayers = Array();
+		var wmtsLayers = Array();
 
-        layerTree.root.firstChild.cascade(
-        function (n) {
-            if (n.isLeaf() && n.attributes.checked) {
-                if (!wmsLoader.layerProperties[wmsLoader.layerTitleNameMapping[n.text]].wmtsLayer) {
-                    selectedLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
-                }
-                else {
-                    wmtsLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
-                }
-                if (wmsLoader.layerProperties[wmsLoader.layerTitleNameMapping[n.text]].queryable) {
-                    selectedQueryableLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
-                }
-            }
-        });
-        format = imageFormatForLayers(selectedLayers);
+		layerTree.root.firstChild.cascade(
+		function (n) {
+			if (n.isLeaf() && n.attributes.checked) {
+				if (!wmsLoader.layerProperties[wmsLoader.layerTitleNameMapping[n.text]].wmtsLayer) {
+					selectedLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
+				}
+				else {
+					wmtsLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
+				}
+				if (wmsLoader.layerProperties[wmsLoader.layerTitleNameMapping[n.text]].queryable) {
+					selectedQueryableLayers.push(wmsLoader.layerTitleNameMapping[n.text]);
+				}
+			}
+			
+			// Call custom action in Customizations.js
+			customActionLayerTreeCheck(n);
+		});
+		format = imageFormatForLayers(selectedLayers);
 
-        //change array order
-        selectedLayers = layersInDrawingOrder(selectedLayers);
-        selectedQueryableLayers = layersInDrawingOrder(selectedQueryableLayers);
+		//change array order
+		selectedLayers = layersInDrawingOrder(selectedLayers);
+		selectedQueryableLayers = layersInDrawingOrder(selectedQueryableLayers);
 
-        //special case if only active layers are queried for feature infos
-        if (identificationMode == 'activeLayers') {
-            //only collect selected layers that are active
-            var selectedActiveLayers = Array();
-            var selectedActiveQueryableLayers = Array();
-            //need to find active layer
-            var activeNode = layerTree.getSelectionModel().getSelectedNode();
-            activeNode.cascade(
-                function (n) {
-                    if (n.isLeaf() && n.attributes.checked) {
-                        selectedActiveLayers.push(n.text);
-                        if (wmsLoader.layerProperties[n.text].queryable) {
-                            selectedActiveQueryableLayers.push(n.text);
-                        }
-                    }
-                }
-            );
-            selectedActiveLayers = layersInDrawingOrder(selectedActiveLayers);
-            selectedActiveQueryableLayers = layersInDrawingOrder(selectedActiveQueryableLayers);
-        }
-        thematicLayer.mergeNewParams({
-            LAYERS: selectedLayers.join(","),
-            OPACITIES: layerOpacities(selectedLayers),
-            FORMAT: format
-        });
-        if (identificationMode != 'activeLayers') {
-            WMSGetFInfo.vendorParams = {
-                'QUERY_LAYERS': selectedQueryableLayers.join(',')
-            };
-            if (enableHoverPopup) {
-                WMSGetFInfoHover.vendorParams = {
-                    'QUERY_LAYERS': selectedQueryableLayers.join(',')
-                };
-            }
-        } else {
-            WMSGetFInfo.vendorParams = {
-                'QUERY_LAYERS': selectedActiveQueryableLayers.join(',')
-            };
-            if (enableHoverPopup) {
-            WMSGetFInfoHover.vendorParams = {
-                'QUERY_LAYERS': selectedActiveQueryableLayers.join(',')
-            };
-            }
-        }
+		//special case if only active layers are queried for feature infos
+		if (identificationMode == 'activeLayers') {
+			//only collect selected layers that are active
+			var selectedActiveLayers = Array();
+			var selectedActiveQueryableLayers = Array();
+			//need to find active layer
+			var activeNode = layerTree.getSelectionModel().getSelectedNode();
+			activeNode.cascade(
+				function (n) {
+					if (n.isLeaf() && n.attributes.checked) {
+						selectedActiveLayers.push(n.text);
+						if (wmsLoader.layerProperties[n.text].queryable) {
+							selectedActiveQueryableLayers.push(n.text);
+						}
+					}
+				}
+			);
+			selectedActiveLayers = layersInDrawingOrder(selectedActiveLayers);
+			selectedActiveQueryableLayers = layersInDrawingOrder(selectedActiveQueryableLayers);
+		}
+		thematicLayer.mergeNewParams({
+			LAYERS: selectedLayers.join(","),
+			OPACITIES: layerOpacities(selectedLayers),
+			FORMAT: format
+		});
+		if (identificationMode != 'activeLayers') {
+			WMSGetFInfo.vendorParams = {
+				'QUERY_LAYERS': selectedQueryableLayers.join(',')
+			};
+			if (enableHoverPopup) {
+				WMSGetFInfoHover.vendorParams = {
+					'QUERY_LAYERS': selectedQueryableLayers.join(',')
+				};
+			}
+		} else {
+			WMSGetFInfo.vendorParams = {
+				'QUERY_LAYERS': selectedActiveQueryableLayers.join(',')
+			};
+			if (enableHoverPopup) {
+			WMSGetFInfoHover.vendorParams = {
+				'QUERY_LAYERS': selectedActiveQueryableLayers.join(',')
+			};
+			}
+		}
 
-        if (enableWmtsBaseLayers) {
-            // update WMTS layers
-            setVisibleWmtsLayers(wmtsLayers);
-        }
+		if (enableWmtsBaseLayers) {
+			// update WMTS layers
+			setVisibleWmtsLayers(wmtsLayers);
+		}
 
-        // switch backgroundLayers
-        if (enableBGMaps) {
-            var checkedBackgroundNodes = [];
-            var newVisibleBaseLayer = null;
-            layerTree.root.lastChild.cascade(
-            function (n) {
-                if (n.isLeaf() && n.attributes.checked) {
-                    checkedBackgroundNodes.push(n);
-                }
-            });
-            
-            if (checkedBackgroundNodes.length == 1) {
-                newVisibleBaseLayer = checkedBackgroundNodes[0].layer.name;
-            } else if (checkedBackgroundNodes.length == 2) {
-                layerTree.removeListener("leafschange",leafsChangeFunction);
-                layerTree.root.lastChild.cascade(
-                function (n) {
-                    if (n.isLeaf() && n.attributes.checked) {
-                        if (n.layer.name == currentlyVisibleBaseLayer) {
-                            n.unselect();
-                            n.layer.setVisibility(false);
-                        } else {
-                            newVisibleBaseLayer = n.layer.name;
-                        }
-                    }
-                });
-                layerTree.addListener('leafschange',leafsChangeFunction);
-            }
-            currentlyVisibleBaseLayer = newVisibleBaseLayer;
-        }
-    }
+		// switch backgroundLayers
+		if (enableBGMaps) {
+			var checkedBackgroundNodes = [];
+			var newVisibleBaseLayer = null;
+			layerTree.root.lastChild.cascade(
+			function (n) {
+				if (n.isLeaf() && n.attributes.checked) {
+					checkedBackgroundNodes.push(n);
+				}
+			});
+			
+			if (checkedBackgroundNodes.length == 1) {
+				newVisibleBaseLayer = checkedBackgroundNodes[0].layer.name;
+			} else if (checkedBackgroundNodes.length == 2) {
+				layerTree.removeListener("leafschange",leafsChangeFunction);
+				layerTree.root.lastChild.cascade(
+				function (n) {
+					if (n.isLeaf() && n.attributes.checked) {
+						if (n.layer.name == currentlyVisibleBaseLayer) {
+							n.unselect();
+							n.layer.setVisibility(false);
+						} else {
+							newVisibleBaseLayer = n.layer.name;
+						}
+					}
+				});
+				layerTree.addListener('leafschange',leafsChangeFunction);
+			}
+			currentlyVisibleBaseLayer = newVisibleBaseLayer;
+		}
 
-    if (initialLoadDone) {
-        layerTree.removeListener("leafschange",leafsChangeFunction);
-    }
-    //add listeners for layertree
-    layerTree.addListener('leafschange',leafsChangeFunction);
+		updateLayerOrderPanelVisibilities();
+	}
 
-    //deal with commercial external bg layers
-    if (enableBGMaps) {
-        var BgLayerList = new Ext.tree.TreeNode({
-            leaf: false,
-            expanded: true,
-            text: backgroundLayerTitleString[lang]
-        });
+	if (initialLoadDone) {
+		layerTree.removeListener("leafschange",leafsChangeFunction);
+	}
+	else {
+		layerTree.addListener('checkboxclick', onLayerCheckboxClick);
+	}
+	//add listeners for layertree
+	layerTree.addListener('leafschange',leafsChangeFunction);
 
-        layerTree.root.appendChild(BgLayerList);
-        
-        if (visibleBackgroundLayer != null) {
-            initialBGMap = -1; 
-            // do not show any baseLayer if passed visibleBackgroundLayer is not found
-            for (var i = 0; i < baseLayers.length; i++) {
-                if (baseLayers[i].name == visibleBackgroundLayer) {
-                    initialBGMap = i;
-                    break;
-                }
-            }
-        }
+	initExclusiveLayerGroups();
 
-        for (var i = 0; i < baseLayers.length; i++) {
-            baseLayers[i].setVisibility(i == initialBGMap);
-            var bgnode = new GeoExt.tree.LayerNode({
-                layer: baseLayers[i],
-                leaf: true,
-                checked: (i == initialBGMap),
-                uiProvider: Ext.tree.TriStateNodeUI
-            });
-            if (i == initialBGMap) {
-                currentlyVisibleBaseLayer = baseLayers[i].name;
-            }
-            BgLayerList.appendChild(bgnode);
-        }
-    }
+	//deal with commercial external bg layers
+	if (enableBGMaps) {
+		var BgLayerList = new Ext.tree.TreeNode({
+			leaf: false,
+			expanded: true,
+			text: backgroundLayerTitleString[lang]
+		});
 
-    if (!initialLoadDone) {
-        if (printLayoutsDefined == true) {
-            //create new window to hold printing toolbar
-            printWindow = new Ext.Window({
-                title: printSettingsToolbarTitleString[lang],
-                height: 67,
-                width: 530,
-                layout: "fit",
-                renderTo: "geoExtMapPanel",
-                resizable: false,
-                closable: false,
-                x: 50,
-                y: 10,
-                items: [{
-                    tbar: {
-                        xtype: 'toolbar',
-                        autoHeight: true,
-                        id: 'myPrintToolbar',
-                        items: [{
-                            xtype: 'combo',
-                            id: 'PrintLayoutsCombobox',
-                            width: 100,
-                            mode: 'local',
-                            triggerAction: 'all',
-                            editable: false,
-                            store: new Ext.data.JsonStore({
-                                // store configs
-                                data: printCapabilities,
-                                storeId: 'printLayoutsStore',
-                                // reader configs
-                                root: 'layouts',
-                                fields: [{
-                                    name: 'name',
-                                    type: 'string'
-                                }, 'map', 'size', 'rotation']
-                            }),
-                            valueField: 'name',
-                            displayField: 'name',
-                            listeners: {
-                                'select': function (combo, record, index) {
-                                    printProvider.setLayout(record);
-                                }
-                            }
-                        }, {
-                            xtype: 'tbspacer'
-                        }, {
-                            xtype: 'combo',
-                            id: 'PrintScaleCombobox',
-                            width: 95,
-                            mode: 'local',
-                            triggerAction: 'all',
-                            editable: false,
-                            store: new Ext.data.JsonStore({
-                                // store configs
-                                data: printCapabilities,
-                                storeId: 'printScalesStore',
-                                // reader configs
-                                root: 'scales',
-                                fields: [{
-                                    name: 'name',
-                                    type: 'string'
-                                }, {
-                                    name: 'value',
-                                    type: 'int'
-                                }]
-                            }),
-                            valueField: 'value',
-                            displayField: 'name',
-                            listeners: {
-                                'select': function (combo, record, index) {
-                                    printExtent.page.setScale(record);
-                                }
-                            }
-                        }, {
-                            xtype: 'tbspacer'
-                        }, {
-                            xtype: 'combo',
-                            id: 'PrintDPICombobox',
-                            width: 70,
-                            mode: 'local',
-                            triggerAction: 'all',
-                            editable: false,
-                            store: new Ext.data.JsonStore({
-                                // store configs
-                                data: printCapabilities,
-                                storeId: 'printDPIStore',
-                                // reader configs
-                                root: 'dpis',
-                                fields: [{
-                                    name: 'name',
-                                    type: 'string'
-                                }, {
-                                    name: 'value',
-                                    type: 'int'
-                                }]
-                            }),
-                            valueField: 'value',
-                            displayField: 'name',
-                            listeners: {
-                                'select': function (combo, record, index) {
-                                    printProvider.setDpi(record);
-                                }
-                            }
-                        }, {
-                            xtype: 'tbspacer'
-                        }, {
-                            xtype: 'tbspacer'
-                        }, {
-                            xtype: 'label',
-                            text: printSettingsRotationTextlabelString[lang]
-                        }, {
-                            xtype: 'tbspacer'
-                        }, {
-                            xtype: 'spinnerfield',
-                            id: 'PrintLayoutRotation',
-                            width: 60,
-                            value: 0,
-                            allowNegative: true,
-                            autoStripChars: true,
-                            allowDecimals: false,
-                            minValue: -360,
-                            maxValue: 360,
-                            enableKeyEvents: true,
-                            listeners: {
-                                'spin': function () {
-                                    printExtent.page.setRotation(Ext.getCmp('PrintLayoutRotation').getValue(), true);
-                                },
-                                'keyup': function (textField, event) {
-                                    printExtent.page.setRotation(Ext.getCmp('PrintLayoutRotation').getValue(), true);
-                                    event.stopPropagation();
-                                },
-                                'keydown': function (textField, event) {
-                                    event.stopPropagation();
-                                },
-                                'keypress': function (textField, event) {
-                                    event.stopPropagation();
-                                }
-                            }
-                        }, {
-                            xtype: 'tbspacer'
-                        }, {
-                            xtype: 'button',
-                            tooltip: printButtonTooltipString[lang],
-                            text: printButtonTextString[lang],
-                            tooltipType: 'qtip',
-                            iconCls: '',
-                            scale: 'medium',
-                            id: 'StartPrinting',
-                            listeners: {
-                                'click': function () {
-                                    Ext.getCmp('PrintMap').toggle(false);
-                                    printProvider.print(geoExtMap, [printExtent.page]);
-                                }
-                            }
-                        }, {
-                            xtype: 'button',
-                            tooltip: printCancelButtonTooltipString[lang],
-                            text: printCancelButtonTextString[lang],
-                            tooltipType: 'qtip',
-                            iconCls: '',
-                            scale: 'medium',
-                            id: 'CancelPrinting',
-                            listeners: {
-                                'click': function () {
-                                    Ext.getCmp('PrintMap').toggle(false);
-                                }
-                            }
-                        }]
-                    }
-                }]
-            });
-        }
-    }
-    else {
-        printLayoutsCombobox = Ext.getCmp('PrintLayoutsCombobox');
-        printLayoutsCombobox.store.removeAll();
-        printLayoutsCombobox.store.loadData(printCapabilities);
-    }
-    if (printLayoutsDefined == false) {
-            //need to disable printing because no print layouts are defined in
-            var printMapButton = Ext.getCmp('PrintMap');
-            printMapButton.disable();
-            printMapButton.setTooltip(printMapDisabledTooltipString[lang]);
-    }
-    else {
-        printLayoutsCombobox = Ext.getCmp('PrintLayoutsCombobox');
-        printLayoutsCombobox.setValue(printLayoutsCombobox.store.getAt(0).data.name);
-        var printDPICombobox = Ext.getCmp('PrintDPICombobox');
-        printDPICombobox.setValue("300");
-        //need to manually fire the event, because .setValue doesn't; index omitted, not needed
-        printDPICombobox.fireEvent("select", printDPICombobox, printDPICombobox.findRecord(printDPICombobox.valueField, "300"));
+		layerTree.root.appendChild(BgLayerList);
+		
+		if (visibleBackgroundLayer != null) {
+			initialBGMap = -1; 
+			// do not show any baseLayer if passed visibleBackgroundLayer is not found
+			for (var i = 0; i < baseLayers.length; i++) {
+				if (baseLayers[i].name == visibleBackgroundLayer) {
+					initialBGMap = i;
+					break;
+				}
+			}
+		}
+
+		for (var i = 0; i < baseLayers.length; i++) {
+			baseLayers[i].setVisibility(i == initialBGMap);
+			var bgnode = new GeoExt.tree.LayerNode({
+				layer: baseLayers[i],
+				leaf: true,
+				checked: (i == initialBGMap),
+				uiProvider: Ext.tree.TriStateNodeUI
+			});
+			if (i == initialBGMap) {
+				currentlyVisibleBaseLayer = baseLayers[i].name;
+			}
+			BgLayerList.appendChild(bgnode);
+		}
+	}
+
+	if (!initialLoadDone) {
+		if (printLayoutsDefined == true) {
+			//create new window to hold printing toolbar
+			printWindow = new Ext.Window({
+				title: printSettingsToolbarTitleString[lang],
+				height: 67,
+				width: 530,
+				layout: "fit",
+				renderTo: "geoExtMapPanel",
+				resizable: false,
+				closable: false,
+				x: 50,
+				y: 10,
+				items: [{
+					tbar: {
+						xtype: 'toolbar',
+						autoHeight: true,
+						id: 'myPrintToolbar',
+						items: [{
+							xtype: 'combo',
+							id: 'PrintLayoutsCombobox',
+							width: 100,
+							mode: 'local',
+							triggerAction: 'all',
+							readonly: true,
+							store: new Ext.data.JsonStore({
+								// store configs
+								data: printCapabilities,
+								storeId: 'printLayoutsStore',
+								// reader configs
+								root: 'layouts',
+								fields: [{
+									name: 'name',
+									type: 'string'
+								}, 'map', 'size', 'rotation']
+							}),
+							valueField: 'name',
+							displayField: 'name',
+							listeners: {
+								'select': function (combo, record, index) {
+									printProvider.setLayout(record);
+								}
+							}
+						}, {
+							xtype: 'tbspacer'
+						}, {
+							xtype: 'combo',
+							id: 'PrintScaleCombobox',
+							width: 95,
+							mode: 'local',
+							triggerAction: 'all',
+							store: new Ext.data.JsonStore({
+								// store configs
+								data: printCapabilities,
+								storeId: 'printScalesStore',
+								// reader configs
+								root: 'scales',
+								fields: [{
+									name: 'name',
+									type: 'string'
+								}, {
+									name: 'value',
+									type: 'int'
+								}]
+							}),
+							valueField: 'value',
+							displayField: 'name',
+							listeners: {
+								'select': function (combo, record, index) {
+									printExtent.page.setScale(record);
+								}
+							}
+						}, {
+							xtype: 'tbspacer'
+						}, {
+							xtype: 'combo',
+							id: 'PrintDPICombobox',
+							width: 70,
+							mode: 'local',
+							triggerAction: 'all',
+							store: new Ext.data.JsonStore({
+								// store configs
+								data: printCapabilities,
+								storeId: 'printDPIStore',
+								// reader configs
+								root: 'dpis',
+								fields: [{
+									name: 'name',
+									type: 'string'
+								}, {
+									name: 'value',
+									type: 'int'
+								}]
+							}),
+							valueField: 'value',
+							displayField: 'name',
+							listeners: {
+								'select': function (combo, record, index) {
+									printProvider.setDpi(record);
+								}
+							}
+						}, {
+							xtype: 'tbspacer'
+						}, {
+							xtype: 'tbspacer'
+						}, {
+							xtype: 'label',
+							text: printSettingsRotationTextlabelString[lang]
+						}, {
+							xtype: 'tbspacer'
+						}, {
+							xtype: 'spinnerfield',
+							id: 'PrintLayoutRotation',
+							width: 60,
+							value: 0,
+							allowNegative: true,
+							autoStripChars: true,
+							allowDecimals: false,
+							minValue: -360,
+							maxValue: 360,
+							enableKeyEvents: true,
+							listeners: {
+								'spin': function () {
+									printExtent.page.setRotation(Ext.getCmp('PrintLayoutRotation').getValue(), true);
+								},
+								'keyup': function (textField, event) {
+									printExtent.page.setRotation(Ext.getCmp('PrintLayoutRotation').getValue(), true);
+									event.stopPropagation();
+								},
+								'keydown': function (textField, event) {
+									event.stopPropagation();
+								},
+								'keypress': function (textField, event) {
+									event.stopPropagation();
+								}
+							}
+						}, {
+							xtype: 'tbspacer'
+						}, {
+							xtype: 'button',
+							tooltip: printButtonTooltipString[lang],
+							text: printButtonTextString[lang],
+							tooltipType: 'qtip',
+							iconCls: '',
+							scale: 'medium',
+							id: 'StartPrinting',
+							listeners: {
+								'click': function () {
+									Ext.getCmp('PrintMap').toggle(false);
+									printProvider.print(geoExtMap, [printExtent.page]);
+								}
+							}
+						}, {
+							xtype: 'button',
+							tooltip: printCancelButtonTooltipString[lang],
+							text: printCancelButtonTextString[lang],
+							tooltipType: 'qtip',
+							iconCls: '',
+							scale: 'medium',
+							id: 'CancelPrinting',
+							listeners: {
+								'click': function () {
+									Ext.getCmp('PrintMap').toggle(false);
+								}
+							}
+						}]
+					}
+				}]
+			});
+		}
+	}
+	else {
+		printLayoutsCombobox = Ext.getCmp('PrintLayoutsCombobox');
+		printLayoutsCombobox.store.removeAll();
+		printLayoutsCombobox.store.loadData(printCapabilities);
+	}
+	if (printLayoutsDefined == false) {
+			//need to disable printing because no print layouts are defined in
+			var printMapButton = Ext.getCmp('PrintMap');
+			printMapButton.disable();
+			printMapButton.setTooltip(printMapDisabledTooltipString[lang]);
+	}
+	else {
+		printLayoutsCombobox = Ext.getCmp('PrintLayoutsCombobox');
+		printLayoutsCombobox.setValue(printLayoutsCombobox.store.getAt(0).data.name);
+		var printDPICombobox = Ext.getCmp('PrintDPICombobox');
+		printDPICombobox.setValue("300");
+		//need to manually fire the event, because .setValue doesn't; index omitted, not needed
+		printDPICombobox.fireEvent("select", printDPICombobox, printDPICombobox.findRecord(printDPICombobox.valueField, "300"));
         //if the var fixedPrintResolution in GlobalOptions.js is set, the printLayoutsCombobox will be hidden
         if (fixedPrintResolution != null && parseInt(fixedPrintResolution) > 0){
             printDPICombobox.hide(); // hide dpi combobox
@@ -1839,41 +1860,189 @@ function createPermalink(){
 }
 
 function addInfoButtonsToLayerTree() {
-    var treeRoot = layerTree.getNodeById("wmsNode");
-    treeRoot.firstChild.cascade(
-        function (n) {
-            // info button
-            var buttonId = 'layer_' + n.id;
-            Ext.DomHelper.insertBefore(n.getUI().getAnchor(), {
-                tag: 'b',
-                id: buttonId,
-                cls: 'layer-button x-tool custom-x-tool-info'
-            });
-            Ext.get(buttonId).on('click', function(e) {
-                if(typeof(interactiveLegendGetLegendURL) == 'undefined'){
-                    showLegendAndMetadata(n.text);
-                } else {
-                    showInteractiveLegendAndMetadata(n.text);
-                }
-            });
-        }
-    );
+	var treeRoot = layerTree.getNodeById("wmsNode");
+	treeRoot.firstChild.cascade(
+		function (n) {
+			var layerProperties = wmsLoader.layerProperties[wmsLoader.layerTitleNameMapping[n.text]];
+			if (!layerProperties.showLegend && !layerProperties.showMetadata) {
+				// no info button, add blank element to keep text aligned
+				Ext.DomHelper.insertBefore(n.getUI().getAnchor(), {
+					tag: 'b',
+					cls: 'layer-button x-tool custom-x-tool-blank'
+				});
+			}
+			else {
+				// info button
+				var buttonId = 'layer_' + n.id;
+				Ext.DomHelper.insertBefore(n.getUI().getAnchor(), {
+					tag: 'b',
+					id: buttonId,
+					cls: 'layer-button x-tool custom-x-tool-info'
+				});
+				Ext.get(buttonId).on('click', function(e) {
+					if(typeof(interactiveLegendGetLegendURL) == 'undefined'){
+						showLegendAndMetadata(n.text);
+					} else {
+						showInteractiveLegendAndMetadata(n.text);
+					}
+				});
+			}
+		}
+	);
 }
 
 function addAbstractToLayerGroups() {
-    var treeRoot = layerTree.getNodeById("wmsNode");
-    treeRoot.firstChild.cascade(
-        function (n) {
-            if (! n.isLeaf()) {
-                if (n == treeRoot.firstChild) {
-                    var thisAbstract = wmsLoader.projectSettings.service.abstract;
-                } else {
-                    var thisAbstract = layerGroupString[lang]+ ' "' + n.text + '"';
-                }
-                wmsLoader.layerProperties[n.text].abstract = thisAbstract;
-            }
-        }
-    );
+	var treeRoot = layerTree.getNodeById("wmsNode");
+	treeRoot.firstChild.cascade(
+		function (n) {
+			if (! n.isLeaf()) {
+				var layerProperties = wmsLoader.layerProperties[wmsLoader.layerTitleNameMapping[n.text]];
+				if (n == treeRoot.firstChild) {
+					layerProperties.abstract = wmsLoader.projectSettings.service.abstract;
+				}
+				else if (layerProperties.abstract === undefined) {
+					layerProperties.abstract = layerGroupString[lang]+ ' "' + n.text + '"';
+				}
+			}
+		}
+	);
+}
+
+// apply initial exclusive layer groups: only a single layer of a group may be active, or none
+function initExclusiveLayerGroups() {
+	if (wmsLoader.projectSettings.capability.exclusiveLayerGroups.length == 0) {
+		// no exclusive layer groups
+		return;
+	}
+
+	// collect initially active layers
+	var activeLayers = [];
+	layerTree.root.firstChild.cascade(function(node) {
+		if (node.isLeaf() && node.attributes.checked) {
+			activeLayers.push(wmsLoader.layerTitleNameMapping[node.text]);
+		}
+	});
+
+	// collect layers of exclusive layer groups
+	var layersToUncheck = [];
+	for (var i=0; i<wmsLoader.projectSettings.capability.exclusiveLayerGroups.length; i++) {
+		var exclusiveGroup = wmsLoader.projectSettings.capability.exclusiveLayerGroups[i];
+
+		// get first group layer from active layers
+		var activeLayerName = null;
+		for (var l=0; l<exclusiveGroup.length; l++) {
+			var groupLayerName = exclusiveGroup[l];
+			if (activeLayers.indexOf(groupLayerName) != -1) {
+				activeLayerName = groupLayerName;
+				break;
+			}
+		}
+
+		// collect inactive group layers
+		for (var l=0; l<exclusiveGroup.length; l++) {
+			var groupLayerName = exclusiveGroup[l];
+			if (groupLayerName != activeLayerName) {
+				// add layer to uncheck if not yet in list
+				if (layersToUncheck.indexOf(groupLayerName) == -1) {
+					layersToUncheck.push(groupLayerName);
+				}
+			}
+		}
+	}
+
+	if (layersToUncheck.length > 0) {
+		// update layer tree
+		layerTree.root.firstChild.cascade(function(node) {
+			if (node.isLeaf() && node.attributes.checked) {
+				// uncheck layer node
+				if (layersToUncheck.indexOf(wmsLoader.layerTitleNameMapping[node.text]) != -1) {
+					node.getUI().toggleCheck(false);
+				}
+			}
+		});
+		layerTree.fireEvent("leafschange");
+	}
+}
+
+function onLayerCheckboxClick(node) {
+	if (wmsLoader.projectSettings.capability.exclusiveLayerGroups.length == 0) {
+		// no exclusive layer groups
+		return;
+	}
+
+	// apply exclusive layer groups: only a single layer of a group may be active, or none
+	if (node.attributes.checked) {
+		var layersToUncheck = [];
+		if (node.isLeaf()) {
+			// layer checked
+
+			// collect other layers of the first matching exclusive layer group
+			var activeLayerName = wmsLoader.layerTitleNameMapping[node.text];
+			for (var i=0; i<wmsLoader.projectSettings.capability.exclusiveLayerGroups.length; i++) {
+				var exclusiveGroup = wmsLoader.projectSettings.capability.exclusiveLayerGroups[i];
+				if (exclusiveGroup.indexOf(activeLayerName) != -1) {
+					layersToUncheck = exclusiveGroup.slice().remove(activeLayerName);
+					break;
+				}
+			}
+		}
+		else {
+			// layer group checked
+
+			// collect child layers
+			var childLayers = [];
+			node.cascade(function(node) {
+				if (node.isLeaf()) {
+					childLayers.push(wmsLoader.layerTitleNameMapping[node.text]);
+				}
+			});
+
+			// collect layers of exclusive layer groups for all child layers, keep first layer occuring in child layers active
+			for (var i=0; i<childLayers.length; i++) {
+				for (var g=0; g<wmsLoader.projectSettings.capability.exclusiveLayerGroups.length; g++) {
+					var exclusiveGroup = wmsLoader.projectSettings.capability.exclusiveLayerGroups[g];
+					if (exclusiveGroup.indexOf(childLayers[i]) != -1) {
+						// first matching exclusive layer group
+
+						// get first group layer from child layers
+						var activeLayerName = null;
+						for (var l=0; l<exclusiveGroup.length; l++) {
+							var groupLayerName = exclusiveGroup[l];
+							if (childLayers.indexOf(groupLayerName) != -1) {
+								activeLayerName = groupLayerName;
+								break;
+							}
+						}
+
+						// collect inactive group layers
+						for (var l=0; l<exclusiveGroup.length; l++) {
+							var groupLayerName = exclusiveGroup[l];
+							if (groupLayerName != activeLayerName) {
+								// add layer to uncheck if not yet in list
+								if (layersToUncheck.indexOf(groupLayerName) == -1) {
+									layersToUncheck.push(groupLayerName);
+								}
+							}
+						}
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (layersToUncheck.length > 0) {
+			// update layer tree
+			layerTree.root.firstChild.cascade(function(node) {
+				if (node.isLeaf() && node.attributes.checked) {
+					// uncheck layer node
+					if (layersToUncheck.indexOf(wmsLoader.layerTitleNameMapping[node.text]) != -1) {
+						node.getUI().toggleCheck(false);
+					}
+				}
+			});
+		}
+	}
 }
 
 function applyPermalinkParams() {
@@ -1901,108 +2070,121 @@ function applyPermalinkParams() {
 }
 
 function setupLayerOrderPanel() {
-    layerOrderPanel = Ext.getCmp('LayerOrderTab');
+	layerOrderPanel = Ext.getCmp('LayerOrderTab');
 
-    /* initial layer order: (highest priority on top)
-     * - initialLayerOrder from permalink/URL param
-     * - layerDrawingOrder from GetProjectSettings
-     * - layer tree from GetCapabilities
-     */
-    var orderedLayers = [];
-    if (initialLayerOrder != null) {
-        // use order from permalink or URL parameter
-        orderedLayers = initialLayerOrder;
-        //TODO: we need to add additional layers if the initialLayerOrder is shorter than the layerDrawingOrder from the project
-        if (wmsLoader.projectSettings.capability.layerDrawingOrder != null) {
-            //case GetProjectSettings supported
-            if (initialLayerOrder.length < wmsLoader.projectSettings.capability.layerDrawingOrder.length) {
-                for (var i=0;i<wmsLoader.projectSettings.capability.layerDrawingOrder.length;i++) {
-                    if (orderedLayers.indexOf(wmsLoader.projectSettings.capability.layerDrawingOrder[i]) == -1) {
-                        var layerIndex = wmsLoader.projectSettings.capability.layerDrawingOrder.indexOf(wmsLoader.projectSettings.capability.layerDrawingOrder[i]);
-                        if (layerIndex >= orderedLayers.length) {
-                            orderedLayers.push(wmsLoader.projectSettings.capability.layerDrawingOrder[i]);
-                        }
-                        else {
-                            orderedLayers.splice(layerIndex,0,wmsLoader.projectSettings.capability.layerDrawingOrder[i]);
-                        }
-                    }
-                }
-            }
-        }
-        else {
-            //only GetCapabilities is supported
-            if (initialLayerOrder.length < allLayers.length) {
-                for (var i=0;i<allLayers.length;i++) {
-                    if (orderedLayers.indexOf(allLayers[i]) == -1) {
-                        var layerIndex = allLayers.indexOf(allLayers[i]);
-                        if (layerIndex >= orderedLayers.length) {
-                            orderedLayers.push(allLayers[i]);
-                        }
-                        else {
-                            orderedLayers.splice(layerIndex,0,allLayers[i]);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    else if (wmsLoader.projectSettings.capability.layerDrawingOrder != null) {
-        // use order from GetProjectSettings
-        orderedLayers = wmsLoader.projectSettings.capability.layerDrawingOrder;
-    }
-    else {
-        // use order from GetCapabilities
-        orderedLayers = allLayers.reverse();
-    }
+	/* initial layer order: (highest priority on top)
+	 * - initialLayerOrder from permalink/URL param
+	 * - layerDrawingOrder from GetProjectSettings
+	 * - layer tree from GetCapabilities
+	 */
+	var orderedLayers = [];
+	if (initialLayerOrder != null) {
+		// use order from permalink or URL parameter
+		orderedLayers = initialLayerOrder;
+		//TODO: we need to add additional layers if the initialLayerOrder is shorter than the layerDrawingOrder from the project
+		if (wmsLoader.projectSettings.capability.layerDrawingOrder != null) {
+			//case GetProjectSettings supported
+			if (initialLayerOrder.length < wmsLoader.projectSettings.capability.layerDrawingOrder.length) {
+				for (var i=0;i<wmsLoader.projectSettings.capability.layerDrawingOrder.length;i++) {
+					if (orderedLayers.indexOf(wmsLoader.projectSettings.capability.layerDrawingOrder[i]) == -1) {
+						var layerIndex = wmsLoader.projectSettings.capability.layerDrawingOrder.indexOf(wmsLoader.projectSettings.capability.layerDrawingOrder[i]);
+						if (layerIndex >= orderedLayers.length) {
+							orderedLayers.push(wmsLoader.projectSettings.capability.layerDrawingOrder[i]);
+						}
+						else {
+							orderedLayers.splice(layerIndex,0,wmsLoader.projectSettings.capability.layerDrawingOrder[i]);
+						}
+					}
+				}
+			}
+		}
+		else {
+			//only GetCapabilities is supported
+			if (initialLayerOrder.length < allLayers.length) {
+				for (var i=0;i<allLayers.length;i++) {
+					if (orderedLayers.indexOf(allLayers[i]) == -1) {
+						var layerIndex = allLayers.indexOf(allLayers[i]);
+						if (layerIndex >= orderedLayers.length) {
+							orderedLayers.push(allLayers[i]);
+						}
+						else {
+							orderedLayers.splice(layerIndex,0,allLayers[i]);
+						}
+					}
+				}
+			}
+		}
+	}
+	else if (wmsLoader.projectSettings.capability.layerDrawingOrder != null) {
+		// use order from GetProjectSettings
+		orderedLayers = wmsLoader.projectSettings.capability.layerDrawingOrder;
+	}
+	else {
+		// use order from GetCapabilities
+		orderedLayers = allLayers.reverse();
+	}
 
-    layerOrderPanel.clearLayers();
-    for (var i=0; i<orderedLayers.length; i++) {
-        //because of a but in QGIS Server we need to check if a layer from layerDrawingOrder actually really exists
-        //QGIS Server is delivering invalid layer when linking to different projects
-        var layerProperties = wmsLoader.layerProperties[orderedLayers[i]];
-        if (layerProperties && !layerProperties.wmtsLayer) {
-            // skip WMTS base layers
-            layerOrderPanel.addLayer(orderedLayers[i], layerProperties.opacity);
-        }
-    }
+	layerOrderPanel.clearLayers();
+	for (var i=0; i<orderedLayers.length; i++) {
+		//because of a but in QGIS Server we need to check if a layer from layerDrawingOrder actually really exists
+		//QGIS Server is delivering invalid layer when linking to different projects
+		var layerProperties = wmsLoader.layerProperties[orderedLayers[i]];
+		if (layerProperties && !layerProperties.wmtsLayer) {
+			// skip WMTS base layers
+			layerOrderPanel.addLayer(orderedLayers[i], layerProperties.opacity);
+		}
+	}
 
-    if (!initialLoadDone) {
-        if (showLayerOrderTab) {
-            // handle layer order panel events
-            layerOrderPanel.on('layerVisibilityChange', function(layer) {
-                // deactivate layer node in layer tree
-                layerTree.root.findChildBy(function() {
-                    if (wmsLoader.layerTitleNameMapping[this.attributes["text"]] == layer) {
-                        this.getUI().toggleCheck();
-                        // update active layers
-                        layerTree.fireEvent("leafschange");
-                        return true;
-                    }
-                    return false;
-                }, null, true);
-            });
+	if (!initialLoadDone) {
+		if (showLayerOrderTab) {
+			// handle layer order panel events
+			layerOrderPanel.on('layerVisibilityChange', function(layer) {
+				// deactivate layer node in layer tree
+				layerTree.root.findChildBy(function() {
+					if (wmsLoader.layerTitleNameMapping[this.attributes["text"]] == layer) {
+						this.getUI().toggleCheck();
+						// update active layers
+						layerTree.fireEvent('checkboxclick', this);
+						layerTree.fireEvent("leafschange");
+						return true;
+					}
+					return false;
+				}, null, true);
+			});
 
-            layerOrderPanel.on('orderchange', function() {
-                // update layer order after drag and drop
-                layerTree.fireEvent("leafschange");
-            });
+			layerOrderPanel.on('orderchange', function() {
+				// update layer order after drag and drop
+				layerTree.fireEvent("leafschange");
+			});
 
-            layerOrderPanel.on('opacitychange', function(layer, opacity) {
-                // update layer opacities after slider change
-                wmsLoader.layerProperties[layer].opacity = opacity;
-                layerTree.fireEvent("leafschange");
-            });
-            //hack to set title of southern panel - normally it is hidden in ExtJS
-            Ext.layout.BorderLayout.Region.prototype.getCollapsedEl = Ext.layout.BorderLayout.Region.prototype.getCollapsedEl.createSequence(function() {
-                if ( ( this.position == 'south' ) && !this.collapsedEl.titleEl ) {
-                    this.collapsedEl.titleEl = this.collapsedEl.createChild({cls: 'x-collapsed-title', cn: this.panel.title});
-                }
-            });
-            Ext.getCmp('leftPanelMap').layout.south.getCollapsedEl().titleEl.dom.innerHTML = layerOrderPanelTitleString[lang];
-        } else {
-            Ext.getCmp('leftPanelMap').layout.south.getCollapsedEl().setVisible(showLayerOrderTab);
-        }
-    }
+			layerOrderPanel.on('opacitychange', function(layer, opacity) {
+				// update layer opacities after slider change
+				wmsLoader.layerProperties[layer].opacity = opacity;
+				layerTree.fireEvent("leafschange");
+			});
+			//hack to set title of southern panel - normally it is hidden in ExtJS
+			Ext.layout.BorderLayout.Region.prototype.getCollapsedEl = Ext.layout.BorderLayout.Region.prototype.getCollapsedEl.createSequence(function() {
+				if ( ( this.position == 'south' ) && !this.collapsedEl.titleEl ) {
+					this.collapsedEl.titleEl = this.collapsedEl.createChild({cls: 'x-collapsed-title', cn: this.panel.title});
+				}
+			});
+			Ext.getCmp('leftPanelMap').layout.south.getCollapsedEl().titleEl.dom.innerHTML = layerOrderPanelTitleString[lang];
+		} else {
+			Ext.getCmp('leftPanelMap').layout.south.getCollapsedEl().setVisible(showLayerOrderTab);
+		}
+	}
+}
+
+function updateLayerOrderPanelVisibilities() {
+	// update layer visibilities in layer order panel according to layer tree
+	layerTree.root.firstChild.cascade(function(node) {
+		if (node.isLeaf()) {
+			var layerName = wmsLoader.layerTitleNameMapping[node.text];
+			if (layerOrderPanel.layerVisible(layerName) != node.attributes.checked) {
+				layerOrderPanel.toggleLayerVisibility(layerName);
+			}
+		}
+	});
 }
 
 function activateGetFeatureInfo(doIt) {

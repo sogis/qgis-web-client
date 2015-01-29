@@ -668,7 +668,7 @@ Fliessgewässer,Orthofoto",
          ]
 
     },{
-          "name": "Naturgefahren",
+          "name": "Naturgefahrenkarten und Gefahrenhinweiskarte",
           "projectpath": "",
           "projectfile": "naturgefahren",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
@@ -677,7 +677,7 @@ Fliessgewässer,Orthofoto",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Naturgefahren",
-          "switcher": false,
+          "switcher": true,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
@@ -688,8 +688,8 @@ Fliessgewässer,Orthofoto",
           "sogismaxscale" : null,
           "wmtsLayers": [
                 wmts_layer_orthofoto,
-                wmts_layer_basisplan_farbig,
-                wmts_layer_strassenkarte_farbig
+                wmts_layer_basisplan_sw,
+                wmts_layer_strassenkarte_sw
          ]
 
     },{
@@ -711,7 +711,7 @@ Fliessgewässer,Orthofoto",
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null,
-	  "wmtsLayers": [
+	      "wmtsLayers": [
                 wmts_layer_orthofoto,
                 wmts_layer_strassenkarte_sw,
                 wmts_layer_basisplan_sw
