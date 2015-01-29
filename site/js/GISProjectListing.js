@@ -178,8 +178,31 @@ var gis_projects = {
                 wmts_layer_strassenkarte_farbig,
                 wmts_layer_basisplan_farbig
 				]
-
     },{
+          "name": "Lidar",
+          "projectpath": "",
+          "projectfile": "lidar",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "LIDAR-Daten-Index,Digitales Oberflächenmodell (DOM)",
+          "updateInterval": "",
+          "responsible": "Amt für Geoinformation",
+          "tags": "Lidar",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 600,
+          "sogistooltipheight" : 550,
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_farbig,
+                wmts_layer_basisplan_farbig
+				]
+        },{
           "projectpath": "",
           "projectfile": "mocheckso",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
@@ -482,7 +505,7 @@ var gis_projects = {
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Gemeindegrenzen,Grundnutzung,Überlagerte Nutzung,Einzelobjekte,Grundkarte",
           "updateInterval": "",
-          "responsible": "Amtliche für Raumplanung",
+          "responsible": "Amt für Raumplanung",
           "tags": "Richtplan",
           "switcher": true,
           "sogiswmsserviceinfo": true,
@@ -668,56 +691,31 @@ Fliessgewässer,Orthofoto",
          ]
 
     },{
-          "name": "Naturgefahren",
+          "name": "Naturgefahrenkarten und Gefahrenhinweiskarte",
           "projectpath": "",
           "projectfile": "naturgefahren",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Naturgefahren",
+          "visibleLayers": "Untersuchungsperimeter Gefahrenkarten,Einzelereignisse,GK synoptisch,Naturgefahren Hinweiskarte,Gemeindegrenzen,Grundkarte",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Naturgefahren",
-          "switcher": false,
+          "switcher": true,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
-          "sogistooltipwidth" : 940,
-          "sogistooltipheight" : 500,
+          "sogistooltipwidth" : 940, 
+          "sogistooltipheight" : 500, 
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null,
           "wmtsLayers": [
                 wmts_layer_orthofoto,
-                wmts_layer_basisplan_farbig,
-                wmts_layer_strassenkarte_farbig
-         ]
-
-    },{
-          "name": "Naturgefahrenhinweiskarte",
-          "projectpath": "",
-          "projectfile": "natgef",
-          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
-          //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Einzelereignisse, Doline, Rutschungen, Steinschlag, Wassergefahren, Grundkarte",
-          "updateInterval": "",
-          "responsible": "Amt für Umwelt",
-          "tags": "Naturgefahrenhinweiskarte",
-          "switcher": false,
-          "sogiswmsserviceinfo": true,
-          "searchtables": "",
-          "sogissearchhint": "",
-          "sogistooltipwidth" : 360,
-          "sogistooltipheight" : 400,
-          "sogisbuttons" : default_buttons_seperators,
-          "sogisdefaultbutton" : "sogistooltip",
-          "sogismaxscale" : null,
-	  "wmtsLayers": [
-                wmts_layer_orthofoto,
-                wmts_layer_strassenkarte_sw,
-                wmts_layer_basisplan_sw
-				]
-    },{
-          "projectpath": "",
+                wmts_layer_basisplan_sw,
+                wmts_layer_strassenkarte_sw
+         ]    
+    },{  
+      "projectpath": "",
           "projectfile": "neophyten",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
@@ -799,24 +797,24 @@ Fliessgewässer,Orthofoto",
           "projectfile": "ews",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Gemeindegrenzen,Grundkarte",
+          "visibleLayers": "Gemeindegrenzen,Abfrage-Perimeter,Grundkarte",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Meine Tags",
-          "switcher": false,
+          "switcher": true,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
-          "sogistooltipwidth" : 450,
-          "sogistooltipheight" : 400,
+          "sogistooltipwidth" : 750,
+          "sogistooltipheight" : 500,
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null,
-          "name": "Erdwärmesonden",
+          "name": "EWS Online-Abfrage",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
-                wmts_layer_strassenkarte_farbig,
-                wmts_layer_basisplan_farbig
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
 				]
     },{
           "projectpath": "",
