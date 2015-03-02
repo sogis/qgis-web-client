@@ -47,6 +47,7 @@ new objectIdentificationModes();
 
 // BEGIN SOGIS: Menu
 // Define header menu. Can be nested one level deep.
+/*
     var sogis_menu = [
         {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/', 'title': 'Geoportal', 'class': 'sogis-aktiv', 'target':'_blank', 'submenu' : [
             {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/interaktive-karten/', 'title': 'Interaktive Karten', 'target':'_blank'},
@@ -56,6 +57,16 @@ new objectIdentificationModes();
         ]},
       {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/rechtlicher-hinweis/', 'title': 'Rechtlicher Hinweis', 'target':'_blank'}
     ];
+*/
+var sogis_menu = [ 
+        {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/', 'title': 'Geoportal', 'class': 'sogis-aktiv', 'target':'_blank', 'submenu' : [
+            {'url': 'http://www.sogis1.so.ch/sogis/OnLineData/php/index.php', 'title': 'Geodatenbezug', 'target':'_blank'},
+            {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/interaktive-karten/', 'title': 'Interaktive Karten', 'target':'_blank'},
+            {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/geodienste/', 'title': 'Geodienste', 'target':'_blank'},
+            {'url': 'http://www.sogis1.so.ch/sogis/OnLineData/php/datenbeschreibung_auswahl.php', 'title': 'Geodatenkatalog', 'target':'_blank'}
+        ]}, 
+      {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/rechtlicher-hinweis/', 'title': 'Rechtlicher Hinweis', 'target':'_blank'}
+    ]; 
 
     // Builds a HTML string for a nested menu (see above).
     var getMenuString = function(menu) {
