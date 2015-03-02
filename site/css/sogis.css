@@ -20,7 +20,7 @@ body {
 	background: url(../img/logo.png) no-repeat scroll 0 0 / 340px 32px transparent;
 	width: 340px;
 	height: 32px;
-	right: 5px;
+	right: 26px;
 	top: 5px;
 	position: absolute;
 }
@@ -78,7 +78,7 @@ body {
 	border-top: 0px solid #CCC;
 	background-color: #fff;
 	margin-top: 0px;
-	padding-top: 7px;
+	padding-top: 8px;
 }
 
 .sogis-headernav ul ul { 

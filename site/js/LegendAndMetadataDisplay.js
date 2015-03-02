@@ -129,11 +129,13 @@ function showLegendAndMetadata(layertitle) {
 
 		//create metadata text
 		var metadataText = '<style type="text/css">.even { background-color:rgb(240,240,240);border:none;} .mdCell {padding:0.3em;border:none;} .mdHeader {padding:0.3em;font-weight:bold;border:none;}</style>';
-		metadataText += '<div style="margin:1em;"><h1 style="margin-bottom:0.8em;">'+metadataSectionTitleString[lang]+' "'+layertitle+'"</h1>';
+		//metadataText += '<div style="margin:1em;"><h1 style="margin-bottom:0.8em;">'+metadataSectionTitleString[lang]+' "'+layertitle+'"</h1>';
+		metadataText += '<div style="margin:1em;">';
 		//abstract
 		if (layerProperties.abstract) {
 			metadataText += '<p><b>'+abstractString[lang]+'</b><p><p>'+layerProperties.abstract+'</p>';
 		}
+        /* SOGIS BEGIN
 		//is layer queryable
 		metadataText += '<p style="margin-top:1em;">'+layerQueryable[lang];
 		if (layerProperties.queryable) {
@@ -161,7 +163,6 @@ function showLegendAndMetadata(layertitle) {
 		metadataText += '<table style="margin-top:0.5em;border:none;border-collapse:collapse;"><tr class="even"><th class="mdHeader">'+westString[lang]+'</th><th class="mdHeader">'+southString[lang]+'</th><th class="mdHeader">'+eastString[lang]+'</th><th class="mdHeader">'+northString[lang]+'</th></tr>';
 		metadataText += '<tr><td class="mdCell">'+layerProperties.bbox[0]+'</td><td class="mdCell">'+layerProperties.bbox[1]+'</td><td class="mdCell">'+layerProperties.bbox[2]+'</td><td class="mdCell">'+layerProperties.bbox[3]+'</td></tr>';
 		metadataText += '</table>';
-
 		//attributes/fields
 		if (layerProperties.attributes) {
 			metadataText += '<p style="margin-top:1em"><b>'+attributesString [lang]+'</b></p><table style="margin-top:0.5em;border:none;border-collapse:collapse;"><tr class="even"><th class="mdHeader">'+attributeNameString[lang]+'</th><th class="mdHeader">'+attributeTypeString[lang]+'</th><th class="mdHeader">'+attributeCommentString[lang]+'</th><th class="mdHeader">'+attributeLengthString[lang]+'</th><th class="mdHeader">'+attributePrecisionString[lang]+'</th></tr>';
@@ -179,6 +180,7 @@ function showLegendAndMetadata(layertitle) {
 			}
 			metadataText += '</table>';
 		}
+        END SOGIS */
 		metadataText += '</div>';
 
 		metadataTab.update(metadataText);
@@ -202,11 +204,12 @@ function showLegendAndMetadata(layertitle) {
 			FORMAT: "image/png",
 			EXCEPTIONS: "application/vnd.ogc.se_inimage",
 			BOXSPACE: 1,
-			LAYERSPACE: 2,
+			LAYERSPACE: 4, // SOGIS
+            LAYERFONTBOLD: "TRUE", //SOGIS
 			SYMBOLSPACE: 1,
 			SYMBOLHEIGHT: 2,
-			LAYERFONTSIZE: 8,
-			ITEMFONTSIZE: 8,
+			LAYERFONTSIZE: 10, // SOGIS
+			ITEMFONTSIZE: 10, // SOGIS
 			LAYERS: layername,
 			DPI: screenDpi
 		});

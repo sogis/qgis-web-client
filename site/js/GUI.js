@@ -48,13 +48,13 @@ new objectIdentificationModes();
 // BEGIN SOGIS: Menu
 // Define header menu. Can be nested one level deep.
     var sogis_menu = [
-        {'url': 'http://www-t.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/', 'title': 'Geoportal', 'class': 'sogis-aktiv', 'target':'_blank', 'submenu' : [
-            {'url': 'http://www-t.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/www.sogis1.so.ch/sogis/OnLineData/php/index.php', 'title': 'Geodatenbezug', 'target':'_blank'},
-            {'url': 'http://www-t.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/interaktive-karten/', 'title': 'Interaktive Karten', 'target':'_blank'},
-            {'url': 'http://www-t.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/geodienste/', 'title': 'Geodienste', 'target':'_blank'},
+        {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/', 'title': 'Geoportal', 'class': 'sogis-aktiv', 'target':'_blank', 'submenu' : [
+            {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/interaktive-karten/', 'title': 'Interaktive Karten', 'target':'_blank'},
+            {'url': 'http://www.sogis1.so.ch/sogis/OnLineData/php/index.php', 'title': 'Geodatenbezug', 'target':'_blank'},
+            {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/geodienste/', 'title': 'Geodienste', 'target':'_blank'},
             {'url': 'http://www.sogis1.so.ch/sogis/OnLineData/php/datenbeschreibung_auswahl.php', 'title': 'Geodatenkatalog', 'target':'_blank'}
         ]},
-      {'url': 'http://www-t.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/rechtlicher-hinweis/', 'title': 'Rechtlicher Hinweis', 'target':'_blank'}
+      {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/rechtlicher-hinweis/', 'title': 'Rechtlicher Hinweis', 'target':'_blank'}
     ];
 
     // Builds a HTML string for a nested menu (see above).
@@ -100,7 +100,8 @@ var layoutHeaderCfg = {
 		},
         {
             tag: 'a',
-            href: 'http://www.so.ch/departemente/bau-und-justiz/amt-fuer-geoinformation.html',
+            href: 'http://www.so.ch',
+            target: '_blank',
             cls: 'sogis-header-logo'
         },
 		{
