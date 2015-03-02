@@ -4,10 +4,17 @@ var lang = "de"; //for available codes see array availableLanguages in file Glob
 //Help file (must be a local file)
 var helpfile = "help_sogis.html";
 
+//Custom function to populate GetUrlParams variables
+var customGetUrlParamsParser = null;
+
 //Servername (optional) and path and name name of QGIS Server FCGI-file
 //either with or without server-name - without servername recommended for easier porting to other servers
 //do not add a ? or & after the .fcgi extension
-var serverAndCGI = "http://www.sogis1.so.ch/wms";
+var serverAndCGI = "http://srsofaioi12288.ktso.ch/wmstest";
+
+//Optional url for print server hosted on a different server. Default: same as above.
+// var serverAndCGI = "http://otherserver/cgi-bin/qgis_mapserv.fcgi";
+var printServer = serverAndCGI;
 
 //Define whether you want to use the GetProjectSettings extension of QGIS Server
 //for more configuration options in the project.
@@ -24,11 +31,12 @@ var showWMSServiceInfoTab = true;
 var grayLayerNameWhenOutsideScale = true;
 
 // show the tab metadata in legend
-var showMetaDataInLegend = false;
+var showMetaDataInLegend = true;
 
 // show maptips when mouse is over object, set to false if you just want to click and show results
 // if set to true every mouse position over feature of queriable layers is GetFeatureInfo request on server
 var enableHoverPopup = false;
+
 
 // use geodesic measures, i.e. not planar measures
 // this is useful if a projection with high distortion of length/area is used, eg.g. GoogleMercator
@@ -69,6 +77,7 @@ var enableBingCommercialMaps = false;
 if (enableBingCommercialMaps) {
     var bingApiKey = "add Bing api key here"; // http://msdn.microsoft.com/en-us/library/ff428642.aspx
 }
+
 var enableGoogleCommercialMaps = false;
 
 var enableOSMMaps = false;
@@ -78,10 +87,10 @@ if (enableBingCommercialMaps || enableOSMMaps || enableGoogleCommercialMaps) {
 	enableBGMaps = true;
 }
 if (enableBGMaps) {
-// enter the index of the backgroundLayer to be visible after loading,
-// set to a value < 0 to not show any backgroundLayer
-// this setting is overridden if a value for url-parameter visibleBackgroundLayer is passed
-var initialBGMap = 0;
+    // enter the index of the backgroundLayer to be visible after loading,
+    // set to a value < 0 to not show any backgroundLayer
+    // this setting is overridden if a value for url-parameter visibleBackgroundLayer is passed
+    var initialBGMap = 0;
 }
 
 // enable to use WMTS base layers
@@ -100,6 +109,26 @@ var showFieldNamesInClickPopup = true;
 // can be overwritten on a per-project basis in GISProjectListing.js
 var showFeatureInfoLayerTitle = true;
 // max-width and max-height of the feature-info popup can be controlled in site/css/popup.css
+
+// Custom WMS GetFeatureInfo results formatters: you can define custom
+// filter functions to apply custom formatting to values coming from
+// GetFeatureInfo requests when the user use the "identify" tool.
+// The same formatting functions can be normally also used as "renderer"
+// function passed to column configuration in the "gridColumns" property
+// of the grid configuration of the WMS GetFeatureInfo search panels.
+
+// Example formatter, takes the value, the column name and the layer name,
+// normally only the first parameter is used.
+function customURLFormatter(attValue, attName, layerName){
+    return '<a href="http://www.google.com/search?q=' + encodeURI(attValue) + '">' + attValue + '</a>';
+}
+
+// Formatters configuration
+var getFeatureInfoCustomFormatters = {
+    'Country': { // Layer name
+        'name': customURLFormatter // Can be an array if you need multiple formatters
+    }
+};
 
 //config for QGIS.SearchPanel
 //Number of results: FEATURE_COUNT in WMS request
@@ -122,7 +151,7 @@ var simpleWmsSearch = {
     }
   ],
   gridColumns: [
-    {header: 'Name', dataIndex: 'name', menuDisabled: 'true'}
+    {header: 'Name', dataIndex: 'name', menuDisabled: 'true', renderer: customURLFormatter}
   ],
 //  highlightFeature: true,
 //  highlightLabel: 'name',
@@ -163,7 +192,7 @@ var mapSearchPanelConfigs = {
   "helloworld": [simpleWmsSearch, urlRewriteSearch]
 };
 
-// ABP: needed for helloworld if no rewrite
+// Needed for helloworld project if rewrite is not active
 mapSearchPanelConfigs[project_map] = [simpleWmsSearch, urlRewriteSearch];
 
 //templates to define tooltips for a layer, to be shown on hover identify. The layer fields must be wrapped inside <%%> special tags.
@@ -206,6 +235,9 @@ var headerLogoHeight = 60; // logo image height in pixels
 var headerLogoLink = ""; // logo links to this URL
 var headerTermsOfUseText = null; // set null for no link
 var headerTermsOfUseLink = ""; // URL to terms of use
+
+//language switcher in qgiswebclient.html
+var enableLangSwitcher = false;
 
 // optional project title per map name
 var projectTitles = {
@@ -378,7 +410,7 @@ var printCapabilities={
   // c. fill in the URL to the proxy "url_proxy":"http://www.urltoproxy/printpostget.wsgi?
   //
   "method":"POST", // POST or GET
-  "url_proxy": "http://www.sogis1.so.ch/wsgi/printpostget.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
+  "url_proxy": "http://srsofaioi12288.ktso.ch/wsgi/printpostget.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
 };
 
 // <------------ No changes should be needed below here ------------------>
@@ -396,21 +428,22 @@ var symbolizersHighLightLayer = {
   "Point": {
     pointRadius: 4,
     graphicName: "circle",
-    fillColor: "#FF2800",
+    fillColor: "#0000FF",
     fillOpacity: 0.4,
     strokeWidth: 1,
-    strokeColor: "#FF2800"
+    strokeColor: "#0000FF"
   },
   "Line": {
-    strokeWidth: 0.8,
-    strokeOpacity: 1,
-    strokeColor: "#FF2800",
+    strokeWidth: 1.5,
+    strokeOpacity: 0.5,
+    strokeColor: "#0000FF",
     strokeDashstyle: "dash"
   },
   "Polygon": {
-    strokeWidth: 0.8,
-    strokeColor: "#FF2800",
-    fillColor: "#FF2800",
+    strokeWidth: 1.5,
+    strokeOpacity: 0.5,
+    strokeColor: "#0000FF",
+    fillColor: "#0000FF",
     fillOpacity: 0.0
   }
 };
@@ -421,7 +454,7 @@ var highlightLabelStyle = {
   font: "CadastraCondensed",
   size: 10,
 //  weight: 75,
-  color: "#FF2800",
+  color: "#0000FF",
   buffercolor: "#FFFFFF",
   buffersize: 1
 };

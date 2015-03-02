@@ -448,6 +448,39 @@ function httpGet(theUrl) {
 }
 
 /*
+ * @desc Wird für den Download und die Statistik der LIDAR-Daten benötigt 
+ * @param 
+ */
+
+ function download(url,download) {
+    // Request erzeugen
+    if (window.XMLHttpRequest) {
+        request = new XMLHttpRequest(); // Mozilla, Safari, Opera
+    } else if (window.ActiveXObject) {
+    try {
+        request = new ActiveXObject('Msxml2.XMLHTTP'); // IE 5
+    } catch (e) {
+        try {
+            request = new ActiveXObject('Microsoft.XMLHTTP'); // IE 6
+            } catch (e) {}
+        }
+    }
+ 
+     // überprüfen, ob Request erzeugt wurde
+    if (!request) {
+        alert("Kann keine XMLHTTP-Instanz erzeugen");
+        return false;
+    } else {
+        var url = "../sogis/qgis-web-tooltip/lidar/counter.php?" + url;
+        // Request öffnen
+        request.open('get', url, true);
+        request.onreadystatechange = self.location=download;
+        // Request senden
+        request.send(null);
+    }
+}
+
+/*
  * Overwrite Translations.js
 */
 
