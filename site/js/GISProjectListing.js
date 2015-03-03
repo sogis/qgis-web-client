@@ -148,8 +148,8 @@ var wmts_layer_basisplan_farbig = {
 				}
 
 var gis_projects = {
-  "path": "/maptest", /* DEPLOY !!! */
-  "mapserver": "/wmstest",
+  "path": "/map", /* DEPLOY !!! */
+  "mapserver": "/wms",
   "thumbnails": "/thumbnails",
   "title": "SO!GIS",
   "topics": [{
@@ -915,7 +915,7 @@ Fliessgewässer,Orthofoto",
           "projectfile": "ews",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Gemeindegrenzen,Abfrage-Perimeter,Grundkarte",
+          "visibleLayers": "Fliessgewässer,Gemeindegrenzen,Belastete Standorte,Grundwasserschutzzonen und -areale,Abfrage-Perimeter,Grundstücke,Grundkarte",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Meine Tags",
@@ -1054,8 +1054,8 @@ Fliessgewässer,Orthofoto",
           "name": "Netzbetreiber Strom im Kanton Solothurn",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
-                wmts_layer_strassenkarte_sw,
-                wmts_layer_basisplan_sw
+                wmts_layer_basisplan_sw,
+                wmts_layer_strassenkarte_sw
 				]
     },{
           "projectpath": "",
@@ -1126,8 +1126,8 @@ Fliessgewässer,Orthofoto",
           "name": "ÖV-Erschliessungsgüte",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
-                wmts_layer_strassenkarte_farbig,
-                wmts_layer_basisplan_farbig
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
 				]
     },{
           "projectpath": "",
