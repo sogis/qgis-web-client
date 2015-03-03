@@ -179,7 +179,7 @@ var gis_projects = {
                 wmts_layer_basisplan_farbig
 				]
     },{
-          "name": "Lidar",
+          "name": "LIDAR",
           "projectpath": "",
           "projectfile": "lidar",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
@@ -293,12 +293,12 @@ var gis_projects = {
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null
     },{
-          "name": "Ortsplan",
+          "name": "Ortsplan Kanton Solothurn",
           "projectpath": "",
           "projectfile": "ortsplan",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           "fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Hoheitsgrenzen,Ortsplan",
+          "visibleLayers": "Grundkarte,Gemeindegrenzen,Ortsplan",
           "updateInterval": "",
           "responsible": "Amt für Geoinformation",
           "tags": "Ortsplan",
@@ -310,7 +310,12 @@ var gis_projects = {
           "sogistooltipheight" : 400,
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
-          "sogismaxscale" : null
+          "sogismaxscale" : null,
+		  		"wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+				]
     },{
           "projectpath": "",
           "projectfile": "grundbuchplan-nf",
@@ -579,7 +584,7 @@ var gis_projects = {
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Bodeninformationen Kanton Solothurn",
-          "switcher": true,
+          "switcher": false,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
@@ -776,8 +781,8 @@ Fliessgewässer,Orthofoto",
           "sogisdefaultbutton" : "sogistooltip",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
-                wmts_layer_basisplan_farbig,
-                wmts_layer_strassenkarte_farbig
+                wmts_layer_basisplan_sw,
+                wmts_layer_strassenkarte_sw
 				]
     },{
           "name": "Kataster der belasteten Standorte",
@@ -789,7 +794,7 @@ Fliessgewässer,Orthofoto",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Kataster der belasteten Standorte",
-          "switcher": true,
+          "switcher": false,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
@@ -1049,8 +1054,8 @@ Fliessgewässer,Orthofoto",
           "name": "Netzbetreiber Strom im Kanton Solothurn",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
-                wmts_layer_strassenkarte_farbig,
-                wmts_layer_basisplan_farbig
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
 				]
     },{
           "projectpath": "",
@@ -1073,8 +1078,8 @@ Fliessgewässer,Orthofoto",
           "name": "Notfallplanung KKW",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
-                wmts_layer_strassenkarte_farbig,
-                wmts_layer_basisplan_farbig
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
 				]
     },{
           "projectpath": "",
@@ -1129,7 +1134,7 @@ Fliessgewässer,Orthofoto",
           "projectfile": "veza",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "",
+          "visibleLayers": "Gemeindegrenzen,Grundkarte,Kantonsstrassen",
           "updateInterval": "",
           "responsible": "Amt für Verkehr und Tiefbau",
           "tags": "Verkehrszählung 2005 / 2010",
@@ -1142,7 +1147,7 @@ Fliessgewässer,Orthofoto",
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null,
-          "name": "VEZA",
+          "name": "Verkehrszählung 2005 / 2010",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
                 wmts_layer_strassenkarte_farbig,
