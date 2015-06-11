@@ -156,6 +156,30 @@ var gis_projects = {
       "name": "Grundlagen und Planung",
       "projects": [{
           "projectpath": "",
+          "projectfile": "gebaeudeadressen",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Gebäudeeingang,Hausnummer,Verbindungslinie,Lokalisation,PLZ / Ortschaft,Gemeindegrenzen,Grundkarte",
+          "updateInterval": "",
+          "responsible": "Amtliche Vermessung",
+          "tags": "Gebäudeadressen",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 420, 
+          "sogistooltipheight" : 300, 
+          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','sogistooltip','ShowHelp'],
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "Gebäudeadressen",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+                ]    
+    },{
+          "projectpath": "",
           "projectfile": "hoheitsgrenzsteine",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
@@ -178,6 +202,30 @@ var gis_projects = {
                 wmts_layer_strassenkarte_farbig,
                 wmts_layer_basisplan_farbig
 				]
+    },{
+          "projectpath": "",
+          "projectfile": "ivs",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Gemeindegrenzen,Grundkarte,IVS-Wegbegleiter,IVS-Objekte",
+          "updateInterval": "",
+          "responsible": "Amt für Raumplanung",
+          "tags": "Inventar der historischen Verkehrswege",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 450,
+          "sogistooltipheight" : 400,
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "Inventar der historischen Verkehrswege",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_farbig,
+                wmts_layer_basisplan_farbig
+                                ]
     },{
           "name": "LIDAR",
           "projectpath": "",
@@ -268,7 +316,7 @@ var gis_projects = {
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null,
           "name": "Nutzungszonen im Siedlungsgebiet",
-		  "wmtsLayers": [
+		    "wmtsLayers": [
                 wmts_layer_orthofoto,
                 wmts_layer_strassenkarte_sw,
                 wmts_layer_basisplan_sw
@@ -314,7 +362,7 @@ var gis_projects = {
 		  		"wmtsLayers": [
                 wmts_layer_orthofoto,
                 wmts_layer_strassenkarte_sw,
-                wmts_layer_basisplan_sw
+                wmts_layer_basisplan_farbig
 				]
     },{
           "projectpath": "",
@@ -525,25 +573,6 @@ var gis_projects = {
                 wmts_layer_strassenkarte_sw,
                 wmts_layer_basisplan_sw
 				]
-   },{
-          "name": "Lidar",
-          "projectpath": "",
-          "projectfile": "lidar",
-          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
-          //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Gemeindegrenzen,Grundnutzung,Überlagerte Nutzung,Einzelobjekte,Grundkarte",
-          "updateInterval": "",
-          "responsible": "Amtliche für Raumplanung",
-          "tags": "Lidar",
-          "switcher": true,
-          "sogiswmsserviceinfo": true,
-          "searchtables": "",
-          "sogissearchhint": "",
-          "sogistooltipwidth" : 600,
-          "sogistooltipheight" : 300,
-          "sogisbuttons" : default_buttons_seperators,
-          "sogisdefaultbutton" : "sogistooltip",
-          "sogismaxscale" : null
    }
 
 ]
@@ -580,16 +609,16 @@ var gis_projects = {
           "projectfile": "isboden",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Bodentypen, Profilstandorte, Grundkarte, Gemeindegrenzen",
+          "visibleLayers": "Bodentypen,Profilstandorte,Grundkarte,Gemeindegrenzen",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Bodeninformationen Kanton Solothurn",
-          "switcher": false,
+          "switcher": true,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
-          "sogistooltipwidth" : 400,
-          "sogistooltipheight" : 600,
+          "sogistooltipwidth" : 600,
+          "sogistooltipheight" : 400,
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "wmtsLayers": [
@@ -790,15 +819,15 @@ Fliessgewässer,Orthofoto",
           "projectfile": "altlast",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Belastete Standorte,Grundkarte farbig",
+          "visibleLayers": "Belastete Standorte,Grundkarte,Fliessgewässer ,Belastete Standorte BAV,Belastete Standorte BAZL",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Kataster der belasteten Standorte",
-          "switcher": false,
+          "switcher": true,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
-          "sogistooltipwidth" : 400,
+          "sogistooltipwidth" : 650,
           "sogistooltipheight" : 300,
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
@@ -967,7 +996,7 @@ Fliessgewässer,Orthofoto",
           "updateInterval": "",
           "responsible": "Amt für Verkehr und Tiefbau",
           "tags": "ÖV Netz",
-          "switcher": false,
+          "switcher": true,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
@@ -976,7 +1005,7 @@ Fliessgewässer,Orthofoto",
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null,
-          "name": "GVM 2010 ÖV-Netz",
+          "name": "GVM 2010/2030 ÖV-Netz",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
                 wmts_layer_strassenkarte_farbig,
@@ -1012,7 +1041,7 @@ Fliessgewässer,Orthofoto",
           "projectfile": "gemeindegis",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Grundkarte,Wasser Leitungsbeschriftung,Wasser Leitung,Abwasser Leitung,Abwasser Leitungsbeschriftung,Elektro",
+          "visibleLayers": "Grundkarte,Wasser Leitungsbeschriftung,Wasser Leitung,Abwasser Leitung,Abwasser Leitungsbeschriftung,Elektro,Kein Leitungskataster verfügbar",
           "updateInterval": "",
           "responsible": "Gemeinden Kanton SO",
           "tags": "Leitungskataster,GemeindeGIS",

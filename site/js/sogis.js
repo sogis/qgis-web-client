@@ -2,6 +2,9 @@ var servername = "http://" + location.href.split(/\/+/)[1];
 var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip/'; // URL to the SOGIS tooltip
 var origPrintCapabilities = printCapabilities;
 
+Ext.override(Ext.data.Connection, { timeout: 240000 });
+Ext.Ajax.timeout = 240000;
+
 function setProjectSettings() {
     strSOGISSearchHelpText = '';
     //get sogis settings
@@ -483,7 +486,6 @@ function httpGet(theUrl) {
 /*
  * Overwrite Translations.js
 */
-
 sendPermalinkTooltipString["de"] = "Permalink";
 
 leftPanelTitleString["de"] = "";
@@ -496,4 +498,4 @@ themeSwitcherWindowTitleString["de"] = "Kartenthemen";
 
 modeObjectIdentificationString["de"] = "Bewegen Sie die Maus über das Objekt, um es zu identifizeren, klicken Sie es an, um seine Attributdaten anzuzeigen.";
 
-
+metadataTabTitleString["de"] = "Weitere Information";
