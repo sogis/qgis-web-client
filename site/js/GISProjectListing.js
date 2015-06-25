@@ -178,6 +178,30 @@ var gis_projects = {
                 wmts_layer_strassenkarte_sw,
                 wmts_layer_basisplan_sw
                 ]    
+    },{  
+          "projectpath": "",
+          "projectfile": "av_gb_abgleich",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Gebäudeeingang,Hausnummer,Verbindungslinie,Lokalisation,PLZ / Ortschaft,Gemeindegrenzen,Grundkarte",
+          "updateInterval": "",
+          "responsible": "Amtliche Vermessung",
+          "tags": "Abgleich GB AV",
+          "switcher": false,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 420, 
+          "sogistooltipheight" : 300, 
+          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','sogistooltip','ShowHelp'],
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "av_gb_abgleich",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+          ]    
     },{
           "projectpath": "",
           "projectfile": "hoheitsgrenzsteine",
