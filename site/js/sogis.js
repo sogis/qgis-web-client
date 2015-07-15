@@ -14,6 +14,7 @@ function setProjectSettings() {
                 SOGISSettings = gis_projects.topics[i].projects[j]
                 intSOGISTooltipWidth = SOGISSettings.sogistooltipwidth;
                 intSOGISTooltipHeight = SOGISSettings.sogistooltipheight;
+                strSOGISTooltipMethod = SOGISSettings.sogistooltipmethod;
                 arr_SOGISButtons = SOGISSettings.sogisbuttons;
                 strSOGISDefaultButton = SOGISSettings.sogisdefaultbutton;
                 strSOGISMaxScale = SOGISSettings.sogismaxscale;
@@ -128,6 +129,8 @@ function initSOGISProjects() {
         addButtons(['sogistooltip','PrintMap']);
         strSOGISDefaultButton = 'sogistooltip';
         setDefaultButton(strSOGISDefaultButton);
+        Ext.getCmp('mapThemeButton').hide();  // disable theme switcher button
+        Ext.getCmp('LeftPanel').doLayout();
     /* all regular projects */
     } else {
         //handle buttons
@@ -204,50 +207,73 @@ function initSOGISProjects() {
 * @param string with html
 */
 function showTooltip(str_html){
+    
+    // close already opened windows
+    if (typeof(Ext.getCmp('tooltipWindow')) != 'undefined'){
+        Ext.getCmp('tooltipWindow').destroy();
+    }
 
-    var str_message = str_html;
-        /*
-        Ext.Msg.show({
-        minWidth: 400,
-        title: 'Tooltip ' + getProject(),
-        msg: str_message,
-        buttons: Ext.MessageBox.OK,
-        maxHeight: 5,
-        resizable: false,
-        autoScroll: true
-        //icon: Ext.MessageBox.INFO
-        });
-        */
-        if (typeof(Ext.getCmp('tooltipWindow')) != 'undefined'){
-            Ext.getCmp('tooltipWindow').destroy();
+    // is the tooltip (/var/wwwroot/sogis/qgis-web-tooltip/) sending json?
+    try {
+        var decodedString = Ext.decode(str_html, true); // decode json
+        var number_of_tabs = decodedString['tabs'].length; // how many tabs have to be generated?
+        is_json = true;
+        if (number_of_tabs == 1){ // only one tab, decode message
+            str_html = decodedString['tabs'][0]['html'];
+            is_json = false;
         }
+    } 
+    // no correct json
+    catch (err){
+        is_json = false;
+    }
 
-        var tooltipWindow = new Ext.Window({
-            title: 'Abfrage', //getProject(),
-            minWidth: intSOGISTooltipWidth,
-            width: intSOGISTooltipWidth,
-            minHeight: intSOGISTooltipHeight,
-            height: intSOGISTooltipHeight,
-            bodyStyle: 'background:#ffffff;height:' + intSOGISTooltipHeight + 'px;',
-            floating: true,
-            html: str_message,
-            id: 'tooltipWindow',
-            renderTo: document.body,
-            /*
-            buttonAlign: 'center',
-            buttons : [
-                {
-                text: 'OK',
-                handler: function(){
-                    tooltipWindow.close();
+    if (is_json){ // more than one tab
+        var tabs = []; // tabs in tooltip window
+            for (i=0;i<number_of_tabs;i++){
+                var simpleTab = {
+                    title: decodedString['tabs'][i]['title'],
+                    html: decodedString['tabs'][i]['html'],
                 }
-        }
-            ],
-            */
-            closable: true,
-            autoScroll: true
+                tabs.push(simpleTab);
+            }
+        var tooltipPanel = new Ext.TabPanel({
+            activeTab : 0,
+            id: 'sogistooltippanel',
+            autoHeight: true,
+            autoWidth: true,
+            items : tabs
         });
-        tooltipWindow.show();
+
+    } else { // no tabs
+        var tooltipPanel = new Ext.Panel({
+            id: 'sogistooltippanel',
+            header: false,
+            html: str_html,
+            autoHeight: true,
+            autoWidth: true
+        });
+    }
+
+    var tooltipWindow = new Ext.Window({
+        title: 'Abfrage', //getProject(),
+        minWidth: intSOGISTooltipWidth,
+        width: intSOGISTooltipWidth,
+        minHeight: intSOGISTooltipHeight,
+        height: intSOGISTooltipHeight,
+        bodyStyle: 'background:#ffffff;height:' + intSOGISTooltipHeight + 'px;',
+        layout: 'fit',
+        floating: true,
+        items: tooltipPanel,
+        id: 'tooltipWindow',
+        renderTo: document.body,
+        closable: true,
+        autoScroll: true
+    });
+
+    Ext.getCmp('sogistooltippanel').body.applyStyles({'border-color':'white',
+                                                             'border':'0px'}); // at least it works
+    tooltipWindow.show();
 
 }
 

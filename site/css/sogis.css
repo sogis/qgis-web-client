@@ -403,3 +403,16 @@ body {
     font-size:12px;
     font-weight: bold;
 }
+
+.sogisTooltipTableTextWidth {
+	width: 150px;
+}
+
+.sogisTooltipTableWidth {
+	width: 400px;
+	border: 0px;
+}
+
+.sogisTooltipTitleWidth {
+	width: 400px;
+}

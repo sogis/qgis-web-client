@@ -401,7 +401,7 @@ var gis_projects = {
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
-          "sogistooltipwidth" : 400,
+          "sogistooltipwidth" : 500,
           "sogistooltipheight" : 300,
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
