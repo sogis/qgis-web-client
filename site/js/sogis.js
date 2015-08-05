@@ -14,7 +14,6 @@ function setProjectSettings() {
                 SOGISSettings = gis_projects.topics[i].projects[j]
                 intSOGISTooltipWidth = SOGISSettings.sogistooltipwidth;
                 intSOGISTooltipHeight = SOGISSettings.sogistooltipheight;
-                strSOGISTooltipMethod = SOGISSettings.sogistooltipmethod;
                 arr_SOGISButtons = SOGISSettings.sogisbuttons;
                 strSOGISDefaultButton = SOGISSettings.sogisdefaultbutton;
                 strSOGISMaxScale = SOGISSettings.sogismaxscale;
@@ -180,6 +179,9 @@ function initSOGISProjects() {
                                 }]
                             });
     Ext.getCmp('PrintScaleCombobox').bindStore('sogisprintcapabilities');
+
+    // get the right print project
+    printProvider.url = printServer + "/" + getProject() + "?" + 'SERVICE=WMS&VERSION=1.3&REQUEST=GetPrint&FORMAT=pdf&EXCEPTIONS=application/vnd.ogc.se_inimage&TRANSPARENT=true';
 
     // ============================================
     // END handle print when switching themes - handling different max-scales

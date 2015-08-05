@@ -148,8 +148,8 @@ var wmts_layer_basisplan_farbig = {
 				}
 
 var gis_projects = {
-  "path": "/map", /* DEPLOY !!! */
-  "mapserver": "/wms",
+  "path": "/maptest", /* DEPLOY !!! */
+  "mapserver": "/wmstest",
   "thumbnails": "/thumbnails",
   "title": "SO!GIS",
   "topics": [{
@@ -401,7 +401,7 @@ var gis_projects = {
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
-          "sogistooltipwidth" : 500,
+          "sogistooltipwidth" : 400,
           "sogistooltipheight" : 300,
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
@@ -597,6 +597,26 @@ var gis_projects = {
                 wmts_layer_strassenkarte_sw,
                 wmts_layer_basisplan_sw
 				]
+   },{
+          "name": "Anhörung Richtplan 2015",
+          "projectpath": "",
+          "projectfile": "richtplan_anhoerung2015",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "",
+          "updateInterval": "",
+          "responsible": "Amt für Raumplanung",
+          "tags": "Richtplan",
+          "switcher": false,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 600,
+          "sogistooltipheight" : 300,
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : 18000
+          //"wmtsLayers": []
    }
 
 ]

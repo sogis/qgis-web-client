@@ -457,7 +457,7 @@ Ext.extend(QGIS.PrintProvider, GeoExt.data.PrintProvider, {
     });
     Ext.getBody().mask(printLoadingString[lang], 'x-mask-loading');
     var protocol = new OpenLayers.Protocol.WFS({
-            url: printURI,
+            url: printUrl,
             featureType: 'print',
             geometryName: 'geometry',
             srsName: authid,
