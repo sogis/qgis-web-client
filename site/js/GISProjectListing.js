@@ -148,8 +148,8 @@ var wmts_layer_basisplan_farbig = {
 				}
 
 var gis_projects = {
-  "path": "/maptest", /* DEPLOY !!! */
-  "mapserver": "/wmstest",
+  "path": "/map", /* DEPLOY !!! */
+  "mapserver": "/wms",
   "thumbnails": "/thumbnails",
   "title": "SO!GIS",
   "topics": [{
@@ -979,8 +979,8 @@ Fliessgewässer,Orthofoto",
           "name": "Bienenstandorte und Sperrgebiete",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
-                wmts_layer_basisplan_farbig,
-                wmts_layer_strassenkarte_farbig,
+                wmts_layer_basisplan_sw,
+                wmts_layer_strassenkarte_sw,
 				]
 
     },{

@@ -210,8 +210,13 @@ function initSOGISProjects() {
 */
 function showTooltip(str_html){
     
+    var activeTabIndex = 0; 
+
     // close already opened windows
     if (typeof(Ext.getCmp('tooltipWindow')) != 'undefined'){
+        // determine, which tab is active
+        var activeTab = Ext.getCmp('sogistooltippanel').getActiveTab();
+        activeTabIndex = Ext.getCmp('sogistooltippanel').items.findIndex('id', activeTab.id);
         Ext.getCmp('tooltipWindow').destroy();
     }
 
@@ -240,7 +245,7 @@ function showTooltip(str_html){
                 tabs.push(simpleTab);
             }
         var tooltipPanel = new Ext.TabPanel({
-            activeTab : 0,
+            activeTab : activeTabIndex,
             id: 'sogistooltippanel',
             autoHeight: true,
             autoWidth: true,
