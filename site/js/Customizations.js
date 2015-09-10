@@ -1,3 +1,6 @@
+var openLayersVectorClickPoint = new OpenLayers.Layer.Vector("ClickPoint");  // create global variable with layer for click point
+var openLayersMarkerClickPoint = new OpenLayers.Layer.Markers("ClickPoint2");
+
 // customInit() is called before any map initialization
 function customInit() {
 
@@ -47,6 +50,11 @@ function customAfterPrint() {
 // called after map initialization
 function customAfterMapInit() {
 
+    if (typeof(geoExtMap.map.getLayersByName('ClickPoint')[0]) == "undefined"){
+        geoExtMap.map.addLayer(openLayersVectorClickPoint);  // add click point layer to map
+        geoExtMap.map.addLayer(openLayersMarkerClickPoint);
+    }
+
      // Create a new map control based on Control Click Event
     openlayersClickEvent = new OpenLayers.Control.Click( {
          id: 'sogistooltipcontrol',
@@ -62,6 +70,34 @@ function customAfterMapInit() {
              var extent = left + ',' + bottom + ',' + right + ',' + top;
              var scale = Math.round(geoExtMap.map.getScale());
              
+             
+             // we want opaque external graphics and non-opaque internal graphics
+             var click_point_style = new OpenLayers.Style({
+                'fillColor': '#000000',
+                'fillOpacity': 0.2,
+                'strokeColor': '#00000000',
+                'strokeWidth': 1,
+                'pointRadius': 2
+
+             });
+             var click_point_style_map = new OpenLayers.StyleMap({
+                'default': click_point_style
+             });
+             
+             point = new OpenLayers.Geometry.Point(x, y);
+             openLayersVectorClickPoint.styleMap = click_point_style_map;
+             openLayersVectorClickPoint.removeAllFeatures(); // remove click point
+             openLayersVectorClickPoint.addFeatures([new OpenLayers.Feature.Vector(point)]);
+
+
+             // marker
+             var size = new OpenLayers.Size(11,23);
+             var offset = new OpenLayers.Pixel(-(size.w/2 - 4), -size.h);
+             var icon = new OpenLayers.Icon('img/stecknadel.png', size, offset);
+             openLayersMarkerClickPoint.clearMarkers(); // remove click point on map
+             openLayersMarkerClickPoint.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(x, y), icon));
+            
+
              Ext.Ajax.request({
                 isLoading: true,
                 url:  strSOGISTooltipURL + getProject() + '/', // URL to the SOGIS tooltip
@@ -92,6 +128,10 @@ function customAfterMapInit() {
             geoExtMap.map.controls[i].destroy();
         }
     }
+
+    // remove click features after layer switching
+    openLayersVectorClickPoint.removeAllFeatures(); // remove click point on map
+    openLayersMarkerClickPoint.clearMarkers(); // remove click point on map
  
     geoExtMap.map.addControl(openlayersClickEvent);
     initSOGISProjects(); //INIT SOGIS PROJECT
@@ -109,11 +149,6 @@ function customAfterMapInit() {
 
 // called at the end of GetMapUrls
 function customAfterGetMapUrls() {
-}
-
-// called when DOM is ready (Ext.onReady in WebgisInit.js)
-function customPostLoading() {
-//    Ext.get("panel_header").addClass('sogis-header').insertHtml('beforeEnd', '<div style="float: right; width: 250px;">hello world</div>');
 }
 
 function customPostLoading() {
@@ -160,7 +195,7 @@ function customMapToolbarHandler(btn, evt) {
      }
 
     if (btn.id != "sogistooltip" && btn.id != "IdentifyTool"){
-        if (!btn.pressed) {
+        if (!btn.pressed && strSOGISDefaultButton == "sogistooltip") {
             Ext.getCmp("sogistooltip").toggle(true);
         }
     }

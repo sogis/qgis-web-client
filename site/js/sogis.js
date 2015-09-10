@@ -2,6 +2,9 @@ var servername = "http://" + location.href.split(/\/+/)[1];
 var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip/'; // URL to the SOGIS tooltip
 var origPrintCapabilities = printCapabilities;
 
+var cursorX; // global var holding cursor position
+var cursorY;
+
 Ext.override(Ext.data.Connection, { timeout: 240000 });
 Ext.Ajax.timeout = 240000;
 
@@ -214,9 +217,15 @@ function showTooltip(str_html){
 
     // close already opened windows
     if (typeof(Ext.getCmp('tooltipWindow')) != 'undefined'){
-        // determine, which tab is active
-        var activeTab = Ext.getCmp('sogistooltippanel').getActiveTab();
-        activeTabIndex = Ext.getCmp('sogistooltippanel').items.findIndex('id', activeTab.id);
+        // determine, which tab is active, if tabs exist
+        try {
+            // remember active tab
+            var activeTab = Ext.getCmp('sogistooltippanel').getActiveTab();
+            activeTabIndex = Ext.getCmp('sogistooltippanel').items.findIndex('id', activeTab.id);
+
+        } catch (err) {
+            // pass
+        }
         Ext.getCmp('tooltipWindow').destroy();
     }
 
@@ -275,13 +284,21 @@ function showTooltip(str_html){
         id: 'tooltipWindow',
         renderTo: document.body,
         closable: true,
-        autoScroll: true
+        autoScroll: true,
+        x: cursorX - intSOGISTooltipWidth/2,
+        y: cursorY + 10,
+        initCenter: false,
+        listeners:{
+            'close': function(win){
+                openLayersVectorClickPoint.removeAllFeatures(); // remove click point on map
+                openLayersMarkerClickPoint.clearMarkers(); // remove click point on map
+            }
+        }
     });
 
     Ext.getCmp('sogistooltippanel').body.applyStyles({'border-color':'white',
                                                              'border':'0px'}); // at least it works
     tooltipWindow.show();
-
 }
 
 /**
@@ -532,3 +549,9 @@ themeSwitcherWindowTitleString["de"] = "Kartenthemen";
 modeObjectIdentificationString["de"] = "Bewegen Sie die Maus über das Objekt, um es zu identifizeren, klicken Sie es an, um seine Attributdaten anzuzeigen.";
 
 metadataTabTitleString["de"] = "Weitere Information";
+
+function printMousePos(e) {
+    cursorX = e.clientX;
+    cursorY = e.clientY;
+}
+document.addEventListener("click", printMousePos);
