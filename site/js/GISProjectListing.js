@@ -5,6 +5,7 @@ var default_buttons_seperators = [
                             'PrintMap',
                             'SendPermalink',
                             'ShowHelp',
+                            'ExportMap'
                             //'navZoomBoxButton',
                             //'zoomNext',
                             //'zoomLast'
@@ -250,6 +251,30 @@ var gis_projects = {
                 wmts_layer_strassenkarte_farbig,
                 wmts_layer_basisplan_farbig
                                 ]
+    },{
+          "projectpath": "",
+          "projectfile": "geologie",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "",
+          "updateInterval": "",
+          "responsible": "Amt für Umwelt",
+          "tags": "Mocheckso",
+          "switcher": false,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 600,
+          "sogistooltipheight" : 300,
+          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','sogistooltip','ShowHelp'],
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "Geologie_Internetkarte",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+				]
     },{
           "name": "LIDAR",
           "projectpath": "",
@@ -911,7 +936,7 @@ Fliessgewässer,Orthofoto",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
           "visibleLayers": "Pflanzenlisten pro Jahr,Gemeindegrenzen,Orthofoto",
-          "format": "image/png; mode=8bit",
+          //"format": "image/png; mode=8bit",
           "fullColorLayers" : "Orthofoto",
           "updateInterval": "",
           "responsible": "Amt für Umwel",

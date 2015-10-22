@@ -396,6 +396,10 @@ var printCapabilities={
     {"name":"1200 dpi","value":"1200"}
   ],
   "layouts":[],
+  "formats":[
+    {"name":"JPEG","value":"jpg"},
+    {"name":"PNG","value":"png"}
+  ],
   //
   // configuration of the proxy printpostget.wsgi
   //
@@ -412,6 +416,7 @@ var printCapabilities={
   "method":"POST", // POST or GET
   "url_proxy": "http://srsofaioi12288.ktso.ch/wsgi/printpostget.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
 };
+var exportCapabilities = printCapabilities;
 
 // <------------ No changes should be needed below here ------------------>
 

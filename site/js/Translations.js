@@ -2116,3 +2116,40 @@ errMessageSearchComboNetworkRequestFailureString["sl"] = "Omrežni zahtevek za g
 errMessageSearchComboNetworkRequestFailureString["nl"] = "Netwerkrequest voor de geometrie van het zoekresultaat is mislukt:\n";
 errMessageSearchComboNetworkRequestFailureString["en"] = "Zapytanie sieci o geometrię wyszukiwania nie powiodło się:\n";
 errMessageSearchComboNetworkRequestFailureString["sv"] = "Nätverksbegäran för den eftersökta geometrin misslyckades:\n";
+
+// export map
+var exportSettingsToolbarTitleString = new Array();
+exportSettingsToolbarTitleString["de"] = "Exporteinstellungen - Geben Sie Breite/Höhe ein oder zeichnen Sie ein Rechteck in der Karte.";
+
+var exportWindowTitleString = new Array();
+exportWindowTitleString["de"] = "Datei wird vom Server generiert.";
+
+var exportWidthInputField = new Array();
+exportWidthInputField["de"] = "Breite:";
+
+var exportHeightInputField = new Array();
+exportHeightInputField["de"] = "Höhe:";
+
+var exportLockAspectRatioText = new Array();
+exportLockAspectRatioText["de"] = "Seitenverhältnis sperren";
+
+var exportTransparentOptionText = new Array();
+exportTransparentOptionText["de"] = "Transparent";
+
+var exportButtonTextString = new Array();
+exportButtonTextString["de"] = "Exportieren";
+
+var exportFilePropertyTextString = new Array();
+exportFilePropertyTextString["de"] = "Rasterdateieigenschaften: ";
+
+var exportSaveCopyHintText = new Array();
+exportSaveCopyHintText["de"] = "Verwenden Sie das Kontext-Menü (Rechts-Klick) zum Speichern oder Kopieren.";
+
+var exportMapTooltipString = new Array();
+exportMapTooltipString["de"] = "Karte als Raster rexportieren";
+
+var exportButtonTooltipString = new Array();
+exportButtonTooltipString["de"] = "Export in gewähltes Dateiformat";
+
+var exportCancelButtonTooltipString = new Array();
+exportCancelButtonTooltipString["de"] = "Export abbrechen";

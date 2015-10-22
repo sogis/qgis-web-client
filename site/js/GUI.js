@@ -386,6 +386,16 @@ MyViewportUi = Ext.extend(Ext.Viewport, {
 							id: 'PrintMap'
 						}, {
 							xtype: 'button',
+							enableToggle: true,
+							allowDepress: true,
+							toggleGroup: 'mapTools',
+							scale: 'medium',
+							icon: 'gis_icons/mActionSaveMapAsImage.png',
+							tooltipType: 'qtip',
+							tooltip: exportMapTooltipString[lang],
+							id: 'ExportMap'
+						}, {
+							xtype: 'button',
 							enableToggle: false,
 							allowDepress: false,
 							scale: 'medium',
