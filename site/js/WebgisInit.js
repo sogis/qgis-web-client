@@ -1514,7 +1514,7 @@ function postLoading() {
                         id: 'ExportWidthField',
                         label: exportWidthInputField[lang],
                         width: 50,
-                        maxValue: 3000,
+                        maxValue: 1000, // SOGIS
                         minValue: 10,
                         decimalPrecision : 0,
                         listeners: {
@@ -1539,7 +1539,7 @@ function postLoading() {
                         id: 'ExportHeightField',
                         label: exportHeightInputField[lang],
                         width: 50,
-                        maxValue: 3000,
+                        maxValue: 1000, // SOGIS
                         minValue: 10,
                         decimalPrecision : 0,
                         listeners: {

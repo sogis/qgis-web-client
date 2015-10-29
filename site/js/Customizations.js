@@ -93,7 +93,7 @@ function customAfterMapInit() {
              // marker
              var size = new OpenLayers.Size(11,23);
              var offset = new OpenLayers.Pixel(-(size.w/2 - 4), -size.h);
-             var icon = new OpenLayers.Icon('img/stecknadel.svg', size, offset);
+             var icon = new OpenLayers.Icon('img/stecknadel.png', size, offset);
              openLayersMarkerClickPoint.clearMarkers(); // remove click point on map
              openLayersMarkerClickPoint.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(x, y), icon));
             
