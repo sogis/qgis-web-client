@@ -10,7 +10,7 @@ var customGetUrlParamsParser = null;
 //Servername (optional) and path and name name of QGIS Server FCGI-file
 //either with or without server-name - without servername recommended for easier porting to other servers
 //do not add a ? or & after the .fcgi extension
-var serverAndCGI = "http://www.sogis1.so.ch/wms";
+var serverAndCGI = "http://srsofaioi12288.ktso.ch/wmstest";
 
 //Optional url for print server hosted on a different server. Default: same as above.
 // var serverAndCGI = "http://otherserver/cgi-bin/qgis_mapserv.fcgi";
@@ -47,8 +47,8 @@ var useGeodesicMeasurement = false;
 var useGeoNamesSearchBox = false;
 var geoNamesUserName = 'insert your geonames user name';
 //URL for custom search scripts
-var searchBoxQueryURL = "/wsgi/search.wsgi?";
-var searchBoxGetGeomURL = "/wsgi/getSearchGeom.wsgi";
+var searchBoxQueryURL = "/wsgi/lv95_search.wsgi?";
+var searchBoxGetGeomURL = "/wsgi/lv95_getSearchGeom.wsgi";
 
 // use QGIS WMS highlight for selected search result in search box
 var enableSearchBoxWmsHighlight = true;
@@ -260,7 +260,7 @@ var layerImageFormats = [
 ];
 */
 //EPSG projection code of your QGIS project
-var authid = "EPSG:"+21781;
+var authid = "EPSG:"+2056;
 
 //background transparency for the QGIS Server generated layer (commercial background layers not effected)
 //set to true if you want the background to be transparent, layer image will be bigger (32 vs 24bit)
@@ -280,7 +280,7 @@ var MapOptions = {
   minResolution: 0.1,
   fallThrough: false,
   resolutions: [250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.25, 0.1],
-  maxExtent: new OpenLayers.Bounds(590000.0,210000.0,650000.0,270000.0),
+  maxExtent: new OpenLayers.Bounds(2590000.0,1210000.0,2650000.0,1270000.0),
   //maxExtent: new OpenLayers.Bounds(570000.0,190000.0,670000.0,290000.0),
   fractionalZoom: false, // with tiles to guarantee correct zoom level
   controls: []
@@ -312,7 +312,7 @@ var OverviewMapOptions = {
   minResolution: 0.1,
   fallThrough: false,
   resolutions: [500.0, 250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.25, 0.1],
-  maxExtent: new OpenLayers.Bounds(570000.0,190000.0,670000.0,290000.0),
+  maxExtent: new OpenLayers.Bounds(2570000.0,1190000.0,2670000.0,1290000.0),
   fractionalZoom: false // with tiles to guarantee correct zoom level
 };
 
@@ -324,16 +324,16 @@ var OverviewMapMaximized = true; // is the overview map opend or closed by defau
 //  {buffer:0,singleTile:true,transitionEffect:"resize"});
 
 var overviewLayer = new OpenLayers.Layer.WMTS({
-    projection: new OpenLayers.Projection('EPSG:21781'),
+    projection: new OpenLayers.Projection('EPSG:2056'),
     name: "Strassenkarte_farbig",
     url: "http://www.sogis1.so.ch/mapcache/wmts",
     requestEncoding: 'REST',
     buffer: 0,
     zoomOffset: 15,
     layer: "Strassenkarte_farbig",
-    matrixSet: "21781",
+    matrixSet: "2056",
     version: "1.0.0",
-    tileOrigin: new OpenLayers.LonLat(420000.0, 350000.0),
+    tileOrigin: new OpenLayers.LonLat(2420000.0, 1350000.0),
     resolutions: [500.0, 250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.25, 0.1],
     format: "image/png",
     formatSuffix: "png",
@@ -414,7 +414,7 @@ var printCapabilities={
   // c. fill in the URL to the proxy "url_proxy":"http://www.urltoproxy/printpostget.wsgi?
   //
   "method":"POST", // POST or GET
-  "url_proxy": "http://www.sogis1.so.ch/wsgi/printpostget.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
+  "url_proxy": "http://srsofaioi12288.ktso.ch/wsgi/printpostget_test.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
 };
 var exportCapabilities = printCapabilities;
 

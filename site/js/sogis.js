@@ -1,5 +1,6 @@
 var servername = "http://" + location.href.split(/\/+/)[1];
 var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip/'; // URL to the SOGIS tooltip
+var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip-lv95/'; // TODO: Delete after testing LV95
 var origPrintCapabilities = printCapabilities;
 
 var cursorX; // global var holding cursor position
@@ -38,7 +39,7 @@ function setProjectSettings() {
 
     // build search hint
     strSearchHelpText = '<b>Suche</b><br/>';
-    strSearchHelpText += 'Zu einer Koordinate zoomen: <b>607890 228256</b><br/>';
+    strSearchHelpText += 'Zu einer Koordinate zoomen: <b>2607890 1228256</b><br/>';
     strSearchHelpText += '<br/>'
     strSearchHelpText += 'Um nur in bestimmten Datenbereichen zu suchen,<br/>';
     strSearchHelpText += 'können Sie Kürzel verwenden:<br/>';

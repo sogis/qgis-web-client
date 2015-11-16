@@ -3,11 +3,9 @@
 #http://localhost/wsgi/getSearchGeom.wsgi?searchtable=av_user.suchtabelle&displaytext=Oberlandautobahn (Strasse, Uster)
 
 import re #regular expression support
-import string #string manipulation support
 import psycopg2 #PostgreSQL DB Connection
 import psycopg2.extras #z.b. für named column indexes
 import sys #für Fehlerreporting
-#import logging
 # barpareb: added module webob 
 sys.path.append("/opt/wsgi/")
 from webob import Request
@@ -21,21 +19,7 @@ def application(environ, start_response):
   #logging.debug('Bin jetzt im getSearchGeom')
   
   if searchtable == 'Koordinaten':
-    
-    r = re.compile('([0-9]{6}(\.?[0-9]*?))((\s)|( / )|(/))([0-9]{6}(\.?[0-9]*?))$')
-    n = re.compile('([0-9]{7}(\.?[0-9]*?))((\s)|( / )|(/))([0-9]{7}(\.?[0-9]*?))$')
-    #Die srids werden gesetzt. Bei 6 Stellen auf lv03, bei 8 auf lv95
-    if r.match(displaytext) is not None: 
-      srid = '21781'
-    #if n.match(displaytext) is not None: 
-      #srid = '2056'
-      
-    #DIESE LÖSUNG IST TEMPORÄR!!! Es werden die ersten Zahlen der lv95 Koordinaten gelöscht, so dass sie danach (fast) 
-    #lv03 Koordinaten sind. Entsprechend wird auch die srid standardmässig auf 21781 gesetzt! 
-    
-    else:
-      srid = '21781'
-      
+
     querystring_koord = displaytext
     #Wenn der querystring ein / hat, werden zuerst die Leerzeichen entfernt und dann der / durch ein , ersetzt.
     if querystring_koord.find("/") != -1: 
@@ -50,28 +34,22 @@ def application(environ, start_response):
     if querystring_koord.find(".") != -1:
       querystring_koord = re.sub(r'\..*?\,', ',', querystring_koord)
       querystring_koord = re.sub(r'\..*', '', querystring_koord)
-      
-    #logging.debug('Query_koord_geom ist jetzt hier 2: '+querystring_koord)
-      
-    #Wenn der querystring im lv95 abgesetzt wurde, werden die ersten Zahlen der beiden Koordinaten gelöscht (= umprojeziert!)
-    if n.match(displaytext) is not None:
-      l = list(querystring_koord)  # convert to list
-      l[0:1] = [] 
-      l[8:9] = []
-      querystring_koord = "".join(l)
+
+    #Die srids werden gesetzt. Bei 6 Stellen auf lv03, bei 8 auf lv95
+    n = re.compile('([0-9]{7}(\.?[0-9]*?))((\s)|(,)|(, ))([0-9]{7}(\.?[0-9]*?))$')
+    if n.match(querystring_koord) is not None:
+      srid = '2056'
+    else:
+      srid = '21781'
 
     
-    #logging.debug('Bin jetzt im getSearchGeom. querystring_koord = '+querystring_koord)
-    
-    sql = "SELECT ST_AsText(st_transform(ST_SetSRID(ST_MakePoint("+querystring_koord+"), "+srid+"),21781)) AS geom"
-  
+    sql = "SELECT ST_AsText(st_transform(ST_SetSRID(ST_MakePoint("+querystring_koord+"), "+srid+"),2056)) AS geom"
   else:  
-    sql = "SELECT ST_AsText(the_geom) AS geom FROM "+searchtable+" WHERE displaytext = %(displaytext)s;"
+    sql = "SELECT ST_AsText(ST_Simplify(ST_SnapToGrid(the_geom, 0.1),0.1)) AS geom FROM "+searchtable+" WHERE displaytext = %(displaytext)s;"
   
   errorText = ''
-  #logging.debug('SQL-Query-getgeom: '+sql)  
   try:
-    conn = psycopg2.connect("host='sogis1.so.ch' dbname='sogis' port='5432' user='' password=''")
+    conn = psycopg2.connect("host='srsofaioi19589.verw.rootso.org' dbname='sogis' port='5432' user='mspublic' password=''")
     conn.set_client_encoding("UTF-8")
   except:
     errorText += 'error: database connection failed.'
@@ -82,7 +60,8 @@ def application(environ, start_response):
     start_response('500 INTERNAL SERVER ERROR', response_headers)
 
     return [errorText]
-  
+
+  #logging.warning(sql)
   cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
   if searchtable == 'Koordinaten':
     try:
