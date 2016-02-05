@@ -2146,7 +2146,7 @@ var exportSaveCopyHintText = new Array();
 exportSaveCopyHintText["de"] = "Verwenden Sie das Kontext-Menü (Rechts-Klick) zum Speichern oder Kopieren.";
 
 var exportMapTooltipString = new Array();
-exportMapTooltipString["de"] = "Karte als Raster rexportieren";
+exportMapTooltipString["de"] = "Karte als Raster exportieren";
 
 var exportButtonTooltipString = new Array();
 exportButtonTooltipString["de"] = "Export in gewähltes Dateiformat";

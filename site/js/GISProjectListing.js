@@ -229,30 +229,6 @@ var gis_projects = {
 				]
     },{
           "projectpath": "",
-          "projectfile": "ivs",
-          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
-          //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Gemeindegrenzen,Grundkarte,IVS-Wegbegleiter,IVS-Objekte",
-          "updateInterval": "",
-          "responsible": "Amt für Raumplanung",
-          "tags": "Inventar der historischen Verkehrswege",
-          "switcher": true,
-          "sogiswmsserviceinfo": true,
-          "searchtables": "",
-          "sogissearchhint": "",
-          "sogistooltipwidth" : 450,
-          "sogistooltipheight" : 400,
-          "sogisbuttons" : default_buttons_seperators,
-          "sogisdefaultbutton" : "sogistooltip",
-          "sogismaxscale" : null,
-          "name": "Inventar der historischen Verkehrswege",
-          "wmtsLayers": [
-                wmts_layer_orthofoto,
-                wmts_layer_strassenkarte_farbig,
-                wmts_layer_basisplan_farbig
-                                ]
-    },{
-          "projectpath": "",
           "projectfile": "geologie",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
@@ -697,6 +673,29 @@ var gis_projects = {
          ]
 
     },{
+          "name": "Fischereireviere ",
+          "projectpath": "",
+          "projectfile": "fischrev",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Fischereireviere,Gewässer,Grundkarte,Gemeindegrenzen,Übersicht Wald",
+          "updateInterval": "",
+          "responsible": "Amt für Wald, Jagd und Fischerei",
+          "tags": "Fischereireviere",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "qwebclient.search_revierid, qwebclient.search_gewaesser",
+          "sogissearchhint": "- Revier-ID: <b>revierid</b> </br> - Gewässername: <b>gwname</b>",
+          "sogistooltipwidth" : 600, 
+          "sogistooltipheight" : 400, 
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+         ]    
+    },{
           "name": "Forstliche Grundlagendaten",
           "projectpath": "",
           "projectfile": "wald",
@@ -1080,6 +1079,30 @@ Fliessgewässer,Orthofoto",
                 wmts_layer_strassenkarte_farbig,
                 wmts_layer_basisplan_farbig
 				]
+    },{
+          "projectpath": "",
+          "projectfile": "ivs",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Gemeindegrenzen,Grundkarte,IVS-Wegbegleiter,IVS-Objekte",
+          "updateInterval": "",
+          "responsible": "Amt für Raumplanung",
+          "tags": "Inventar der historischen Verkehrswege",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 450,
+          "sogistooltipheight" : 400,
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "Inventar der historischen Verkehrswege",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_farbig,
+                wmts_layer_basisplan_farbig
+                                ]
     },{
           "projectpath": "",
           "projectfile": "lw_grund",
