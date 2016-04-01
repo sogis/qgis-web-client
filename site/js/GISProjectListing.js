@@ -228,30 +228,6 @@ var gis_projects = {
                 wmts_layer_basisplan_farbig
 				]
     },{
-          "projectpath": "",
-          "projectfile": "geologie",
-          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
-          //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "",
-          "updateInterval": "",
-          "responsible": "Amt für Umwelt",
-          "tags": "Mocheckso",
-          "switcher": false,
-          "sogiswmsserviceinfo": true,
-          "searchtables": "",
-          "sogissearchhint": "",
-          "sogistooltipwidth" : 600,
-          "sogistooltipheight" : 300,
-          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','sogistooltip','ShowHelp'],
-          "sogisdefaultbutton" : "sogistooltip",
-          "sogismaxscale" : null,
-          "name": "Geologie_Internetkarte",
-          "wmtsLayers": [
-                wmts_layer_orthofoto,
-                wmts_layer_strassenkarte_sw,
-                wmts_layer_basisplan_sw
-				]
-    },{
           "name": "LIDAR",
           "projectpath": "",
           "projectfile": "lidar",
@@ -766,6 +742,31 @@ var gis_projects = {
             }
          ]
         },{
+          "projectpath": "",
+          "projectfile": "geologie",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Fliessgewässer,Gemeindegrenzen,Parzellen,Schichtfallen,Abrisskanten,Karst,Tektonische Strukturen,Holozän,Pleistozän,Grundschicht,Basisplan (WMS),Grundkarte",
+          "updateInterval": "",
+          "responsible": "Amt für Umwelt",
+          "tags": "Geologie",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 600,
+          "sogistooltipheight" : 300,
+          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','sogistooltip','ShowHelp'],
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "Geologische Karte",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+                ]
+        },
+        {
           "projectpath": "",
           "projectfile": "gs",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
