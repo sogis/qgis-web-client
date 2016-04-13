@@ -34,6 +34,7 @@
             <li><span class="linksim" onclick="scrollToHelpItem('help_navigating')">Kartennavigation</span></li>
             <li><span class="linksim" onclick="scrollToHelpItem('help_measuring')">Messen</span></li>
             <li><span class="linksim" onclick="scrollToHelpItem('help_printing')">Drucken</span></li>
+            <li><span class="linksim" onclick="scrollToHelpItem('help_export_image')">Kartenausschnitt als Bild exportieren</span></li>
             <li><span class="linksim" onclick="scrollToHelpItem('help_permalink')">Permalink</span></li>
           </ul>
         </li>
@@ -78,7 +79,7 @@
     </article>
     <article>
       <h3 id="help_InformationFromObjects">Informationen zu Kartenobjekten</h3>
-      <p>Durch Klicken auf die Karte können Sie Informationen zu den Kartenobjekten abfragen.
+      <p>Durch Klicken auf die Karte können Sie Informationen zu den Kartenobjekten abfragen. Der Klickpunkt wird als Stecknadel <img src="img/stecknadel.png" alt="Klickpunkt" height="20px" /> visualisiert.
       Wenn keine Resultate dargestellt werden, kann es daran liegen, dass eine Abfrage im aktuellen Kartenmassstab nicht möglich ist oder dass kein abfragbares Objekt an dieser Stelle liegt.
       </p>
     </article>
@@ -118,6 +119,16 @@
       <p>Zusätzlich kann auch eine Drucklegende generiert werden. Dies funktioniert folgendermassen: Anklicken des Drucksymbols und bei den Einstellungen der Blattgrösse das Layout für die Legende wählen. 
       Danach wieder auf <i>Drucken</i> klicken und die Drucklegende wird generiert.
       </p>
+    </article>
+    <article>
+	    <h3 id="help_export_image">Kartenausschnitt als Bild exportieren</h3>
+	    <p>Wenn auf das Kamerasymbol <img src="gis_icons/mActionSaveMapAsImage.png" alt="Karte als Raster exportieren"/> geklickt wird, erscheint ein Fenster mit den Exporteinstellungen:
+	    </p><p style="text-align:center;"><img src="img/hilfe_exporteinstellungen.png" width="730px" alt="Bildexport"/></p><p>
+		Nun kann in der Karte der gewünschte Kartenausschnitt mit der Maus aufgezogen werden (klicken und ziehen). Falls das entstandene Rechteck nicht genau dem gewünschten Ausschnitt entsprechen sollte, kann dieses mittels Textfeldern (Breite und Höhe) oder direkt in der Karte
+		durch verschieben Ecke verändert werden. In den Exporteinstellungen kann nebst dem Bildausschnitt, der Massstab, die Auflösung des Bildes (dpi) und der Bildtyp eingestellt werden. Beim Bildtyp kann zwischen PNG und JPEG gewählt werden.
+		Transparenz kann nur bei PNG ausgewählt werden.
+	    <br/>Nachdem der gewünschte Kartenausschnitt und die entsprechenden Einstellungen gemacht wurden, kann der Kartenausschnitt mittels Knopf <i>Exportieren</i> ausgeführt werden. Je nach
+	    Bildausschnitt kann es eine Weile dauern, bis das exportierte Bild im Fenster erscheint. Um das Bild zu Speichern, kann das Kontext-Menü (Rechts-Klick) verwendet werden.
     </article>
      <article>
       <h3 id="help_permalink">Permalink</h3>

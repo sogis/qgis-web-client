@@ -416,3 +416,8 @@ body {
 .sogisTooltipTitleWidth {
 	width: 400px;
 }
+
+/* Specialformatierung des Tooltips gw_info */
+.sogisTooltipGWInfo td, .sogisTooltipGWInfo p {
+    font-size: 12px;
+}
