@@ -907,6 +907,31 @@ Fliessgewässer,Orthofoto",
          ]
 
     },{
+      "projectpath": "",
+          "projectfile": "luftbelastung",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Stickstoffdioxid NO2 2010,Kantons- und Gemeindegrenzen,Grundkarte",
+          //"format": "image/png; mode=8bit",
+          "fullColorLayers" : "Orthofoto",
+          "updateInterval": "",
+          "responsible": "Amt für Umwelt",
+          "tags": "Luftbelastung",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 600,
+          "sogistooltipheight" : 400,
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : 18000,
+          "name": "Luftbelastung",
+          "wmtsLayers": [
+                //wmts_layer_orthofoto,
+                //wmts_layer_basisplan_sw
+				]
+    },{
           "name": "Naturgefahrenkarten und Gefahrenhinweiskarte",
           "projectpath": "",
           "projectfile": "naturgefahren",
