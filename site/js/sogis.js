@@ -103,6 +103,7 @@ function initSOGISProjects() {
     if (bolSOGISWMSServiceInfo == true && showWMSServiceInfoTab == true) {
         Ext.getCmp('WMSServiceInfoPanel').setVisible(true);
         Ext.getCmp('WMSServiceInfoPanel').loadServiceInfo();
+        Ext.getCmp('TwitterServicePanel').loadServiceInfo(twitterURL);
     } else {
         Ext.getCmp('WMSServiceInfoPanel').setVisible(false);
     }

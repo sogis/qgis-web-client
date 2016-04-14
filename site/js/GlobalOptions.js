@@ -50,6 +50,9 @@ var geoNamesUserName = 'insert your geonames user name';
 var searchBoxQueryURL = "/wsgi/search.wsgi?";
 var searchBoxGetGeomURL = "/wsgi/getSearchGeom.wsgi";
 
+// URL for twitter scripts
+var twitterURL = "/wsgi/twitter.wsgi?count=2";
+
 // use QGIS WMS highlight for selected search result in search box
 var enableSearchBoxWmsHighlight = true;
 // search result attribute to show as label if enableSearchBoxWmsHighlight is enabled

@@ -282,22 +282,34 @@ MyViewportUi = Ext.extend(Ext.Viewport, {
 							frame: false
 						}] // map items
 					}] // accordion items
-				}
-                // BEGIN SOGIS: wms service information
-                ,{
-                        xtype: 'qgis_wmsserviceinfopanel',
-                        id: 'WMSServiceInfoPanel',
-                        split: true,
-                        flex: 0.5,
-                        width: 'auto',
-                        layout: 'auto',
-                        maxHeight: 250,
-                        minHeight: 150,
-                        height: 200,
-                        autoScroll: true,
-                        border: false,
-                        frame: false
-                }
+				},
+                //BEGIN SOGIS: wms service information, twitter
+                {   
+                    xtype: 'qgis_twitterservicepanel',
+                    id: 'TwitterServicePanel',
+                    split: true,
+                    flex: 0.5,
+                    width: 'auto',
+                    minWidth: 300,
+                    height: 140,
+                    layout: 'auto',
+                    autoScroll: true,
+                    border: false,
+                    frame: false
+                },{ 
+                    xtype: 'qgis_wmsserviceinfopanel',
+                    id: 'WMSServiceInfoPanel',
+                    split: true,
+                    flex: 0.5,
+                    width: 'auto',
+                    layout: 'auto',
+                    maxHeight: 250,
+                    minHeight: 200,
+                    height: 200,
+                    autoScroll: true,
+                    border: false,
+                    frame: false
+                }   
                 //END SOGIS
             ] // left panel items
 			}, {
