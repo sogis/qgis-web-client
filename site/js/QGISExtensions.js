@@ -1513,7 +1513,8 @@ QGIS.TwitterServicePanel = Ext.extend(Ext.Panel, {
                     for (var j=0; j < decodedJson.tweets[i].entities.urls.length; j++){
                             var url = decodedJson.tweets[i].entities.urls[j].url
                             var expanded_url = decodedJson.tweets[i].entities.urls[j].expanded_url
-                            tweet = tweet.replace(url , '<a target="_blank" href="' + expanded_url + '">' + url + '</a>');
+                            var display_url = decodedJson.tweets[i].entities.urls[j].display_url
+                            tweet = tweet.replace(url , '<a target="_blank" href="' + expanded_url + '">' + display_url + '</a>');
                     }    
 
                     html += '<li><p class="sogisHinweisText"><a href="https://twitter.com/_sogis/status/' + decodedJson.tweets[i].id_str + '" target="_blank"><img src="' + 'img/twitter.svg" width="14px" height="14px" alt="Twitter"></a> ' + tweet + '</p></li>';
