@@ -765,8 +765,33 @@ var gis_projects = {
                 wmts_layer_strassenkarte_sw,
                 wmts_layer_basisplan_sw
                 ]
-        },
-        {
+       },{  
+          "projectpath": "",
+          "projectfile": "sorkas",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Betriebe,Nationalstrassen,Durchgangsstrassen,Gasleitungen,Eisenbahn,Gemeindegrenzen,Konsultationsbereiche,Grundkarte schwarz-weiss",
+          //"format": "image/png; mode=8bit",
+          "fullColorLayers" : "Orthofoto",
+          "updateInterval": "",
+          "responsible": "Amt für Umwelt",
+          "tags": "SORKAS",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 600, 
+          "sogistooltipheight" : 400, 
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "Gefahrenhinweiskarte Störfälle",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+                ]    
+       },{
           "projectpath": "",
           "projectfile": "gs",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
