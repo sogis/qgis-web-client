@@ -766,6 +766,33 @@ var gis_projects = {
                 wmts_layer_basisplan_sw
                 ]
        },{  
+      "projectpath": "",
+          "projectfile": "pruefperimeter",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Strasse,Eisenbahn,Flugplatz,Schiessanlage,Korrosionsgeschützte Objekte,Familiengarten,"
+        + "Gärtnerei,Rebbaugebiet,Hopfenbaugebiet,Siedlungsgebiet,Bodenbelastungsgebiet,Gemeindegrenzen,Basisplan sw,Grundkarte",
+          //"format": "image/png; mode=8bit",
+          "fullColorLayers" : "Orthofoto",
+          "updateInterval": "",
+          "responsible": "Amt für Umwelt",
+          "tags": "Pruefperimeter",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 600, 
+          "sogistooltipheight" : 400, 
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "Prüfperimeter Bodenabtrag",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+                ]    
+    },{  
           "projectpath": "",
           "projectfile": "sorkas",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
@@ -1295,7 +1322,7 @@ Fliessgewässer,Orthofoto",
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null,
-          "name": "ÖV-Erschliessungsgüte",
+          "name": "ÖV-Erschliessungsgüte 2016",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
                 wmts_layer_strassenkarte_sw,
