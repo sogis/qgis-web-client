@@ -785,7 +785,7 @@ var gis_projects = {
           "sogistooltipheight" : 400, 
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
-          "sogismaxscale" : null,
+          "sogismaxscale" : 1800,
           "name": "Prüfperimeter Bodenabtrag",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
@@ -823,7 +823,7 @@ var gis_projects = {
           "projectfile": "gs",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Schutzzonen und -areale,Gewässerschutzbereiche,Grundkarte,Gemeindegrenzen",
+          "visibleLayers": "Schutzzonen und -areale,Fliessgewässer  ,Gewässerschutzbereiche,Grundkarte,Gemeindegrenzen",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Gewässerschutzkarte, Grundwasserkarte",
@@ -989,7 +989,7 @@ Fliessgewässer,Orthofoto",
           "projectfile": "naturgefahren",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Untersuchungsperimeter Gefahrenkarten,Einzelereignisse,GK synoptisch,Naturgefahren Hinweiskarte,Gemeindegrenzen,Grundkarte",
+          "visibleLayers": "Einzelereignisse,Gefahrenkarte synoptisch,Gemeindegrenzen,Grundkarte",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Naturgefahren",
@@ -1012,7 +1012,7 @@ Fliessgewässer,Orthofoto",
           "projectfile": "neophyten",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Pflanzenlisten pro Jahr,Gemeindegrenzen,Orthofoto",
+          "visibleLayers": "Arten und Menge 2016,Gemeindegrenzen,Orthofoto",
           //"format": "image/png; mode=8bit",
           "fullColorLayers" : "Orthofoto",
           "updateInterval": "",
