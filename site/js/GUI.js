@@ -60,10 +60,10 @@ new objectIdentificationModes();
 */
 var sogis_menu = [ 
         {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/', 'title': 'Geoportal', 'class': 'sogis-aktiv', 'target':'_blank', 'submenu' : [
-            {'url': 'http://www.sogis1.so.ch/sogis/OnLineData/php/index.php', 'title': 'Geodatenbezug', 'target':'_blank'},
+            {'url': 'http://geoweb.so.ch/geodaten/index.php', 'title': 'Geodatenbezug', 'target':'_blank'},
             {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/interaktive-karten/', 'title': 'Interaktive Karten', 'target':'_blank'},
             {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/geodienste/', 'title': 'Geodienste', 'target':'_blank'},
-            {'url': 'http://www.sogis1.so.ch/sogis/OnLineData/php/datenbeschreibung_auswahl.php', 'title': 'Geodatenkatalog', 'target':'_blank'}
+            {'url': 'http://geoweb.so.ch/geodatenkatalog/datenbeschreibung_auswahl.php', 'title': 'Geodatenkatalog', 'target':'_blank'}
         ]}, 
       {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/rechtlicher-hinweis/', 'title': 'Rechtlicher Hinweis', 'target':'_blank'}
     ]; 
