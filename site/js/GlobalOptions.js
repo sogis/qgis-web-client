@@ -10,7 +10,7 @@ var customGetUrlParamsParser = null;
 //Servername (optional) and path and name name of QGIS Server FCGI-file
 //either with or without server-name - without servername recommended for easier porting to other servers
 //do not add a ? or & after the .fcgi extension
-var serverAndCGI = "http://www.sogis1.so.ch/wms";
+var serverAndCGI = "http://geoweb-t.rootso.org/wms";
 
 //Optional url for print server hosted on a different server. Default: same as above.
 // var serverAndCGI = "http://otherserver/cgi-bin/qgis_mapserv.fcgi";
@@ -47,11 +47,11 @@ var useGeodesicMeasurement = false;
 var useGeoNamesSearchBox = false;
 var geoNamesUserName = 'insert your geonames user name';
 //URL for custom search scripts
-var searchBoxQueryURL = "/wsgi/search.wsgi?";
-var searchBoxGetGeomURL = "/wsgi/getSearchGeom.wsgi";
+var searchBoxQueryURL = "/rest/qgis/search.wsgi?";
+var searchBoxGetGeomURL = "/rest/qgis/getSearchGeom.wsgi";
 
 // URL for twitter scripts
-var twitterURL = "/wsgi/twitter.wsgi?count=2";
+var twitterURL = "/rest/qgis/twitter.wsgi?count=2"
 
 // use QGIS WMS highlight for selected search result in search box
 var enableSearchBoxWmsHighlight = true;
@@ -72,7 +72,7 @@ var project_map = Ext.urlDecode(window.location.search.substring(1)).map;
 
 
 //use a URL shortener for your permalink function
-var permaLinkURLShortener = "/wsgi/createShortPermalink.wsgi";
+var permaLinkURLShortener = "/rest/qgis/createShortPermalink.wsgi";
 
 // enable to use commercial Google and Bing layers (also add BingApiKey)
 var enableBingCommercialMaps = false;
@@ -329,7 +329,7 @@ var OverviewMapMaximized = true; // is the overview map opend or closed by defau
 var overviewLayer = new OpenLayers.Layer.WMTS({
     projection: new OpenLayers.Projection('EPSG:21781'),
     name: "Strassenkarte_farbig",
-    url: "http://www.sogis1.so.ch/mapcache/wmts",
+    url: "http://geoweb-t.rootso.org/mapcache/wmts",
     requestEncoding: 'REST',
     buffer: 0,
     zoomOffset: 15,
@@ -417,7 +417,7 @@ var printCapabilities={
   // c. fill in the URL to the proxy "url_proxy":"http://www.urltoproxy/printpostget.wsgi?
   //
   "method":"POST", // POST or GET
-  "url_proxy": "http://www.sogis1.so.ch/wsgi/printpostget.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
+  "url_proxy": "http://geoweb-t.rootso.org/rest/qgis/printpostget.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
 };
 var exportCapabilities = printCapabilities;
 
