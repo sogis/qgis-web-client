@@ -65,7 +65,7 @@ var sogis_menu = [
             {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/geodienste/', 'title': 'Geodienste', 'target':'_blank'},
             {'url': 'http://geoweb.so.ch/geodatenkatalog/datenbeschreibung_auswahl.php', 'title': 'Geodatenkatalog', 'target':'_blank'}
         ]}, 
-      {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/rechtlicher-hinweis/', 'title': 'Rechtlicher Hinweis', 'target':'_blank'}
+      {'url': 'http://bgs.so.ch/frontend/versions/4288', 'title': 'Rechtlicher Hinweis', 'target':'_blank'}
     ]; 
 
     // Builds a HTML string for a nested menu (see above).
