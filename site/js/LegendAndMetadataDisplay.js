@@ -207,7 +207,7 @@ function showLegendAndMetadata(layertitle) {
 			LAYERSPACE: 4, // SOGIS
             LAYERFONTBOLD: "TRUE", //SOGIS
 			SYMBOLSPACE: 1,
-			SYMBOLHEIGHT: 2,
+			SYMBOLHEIGHT: 4, // SOGIS
 			LAYERFONTSIZE: 10, // SOGIS
 			ITEMFONTSIZE: 10, // SOGIS
 			LAYERS: layername,

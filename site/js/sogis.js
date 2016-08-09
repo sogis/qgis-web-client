@@ -1,6 +1,5 @@
 var servername = "http://" + location.href.split(/\/+/)[1];
-var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip/'; // URL to the SOGIS tooltip
-var strSOGISTooltipURL = servername + '/sogis/qgis-web-tooltip-lv95/'; // TODO: Delete after testing LV95
+var strSOGISTooltipURL = servername + '/maps/qgis-web-tooltip/'; // URL to the SOGIS tooltip
 var origPrintCapabilities = printCapabilities;
 
 var cursorX; // global var holding cursor position
@@ -104,6 +103,7 @@ function initSOGISProjects() {
     if (bolSOGISWMSServiceInfo == true && showWMSServiceInfoTab == true) {
         Ext.getCmp('WMSServiceInfoPanel').setVisible(true);
         Ext.getCmp('WMSServiceInfoPanel').loadServiceInfo();
+        Ext.getCmp('TwitterServicePanel').loadServiceInfo(twitterURL);
     } else {
         Ext.getCmp('WMSServiceInfoPanel').setVisible(false);
     }

@@ -17,6 +17,7 @@
 * QGIS.FeatureInfoParser
 * QGIS.Highlighter
 * QGIS.WMSServiceInfoPanel
+* QGIS.TwitterServicePanel
 * QGIS.LayerOrderPanel
 */
 
@@ -1479,10 +1480,57 @@ QGIS.WMSServiceInfoPanel = Ext.extend(Ext.Panel, {
     }
 });
 
+QGIS.TwitterServicePanel = Ext.extend(Ext.Panel, {
+    title: 'Aktuell',
+    html : '<div class="sogisHinweis"><p class="sogisHinweisText">Aktuelles über das Geoportal des Kantons Solothurn wird von Twitter geladen...</p></div>', // default text
+    loadServiceInfo: function(twitterUrl) {
+        var html;
+        var that = this;
+        Ext.Ajax.request({
+            url: twitterUrl,
+            success: function(response, options){
+                //console.log('success');
+            },   
+            failure: function(response, options){
+               Ext.getCmp('TwitterServicePanel').setVisible(false); 
+            },   
+            callback: function(options, success, response){
+                html = '<div class="sogisHinweis">';
+                html += '<ul>';
+
+                decodedJson = Ext.decode(response.responseText);
+                // iterate trough all tweets
+                for (var i=0; i < decodedJson.tweets.length; i++){
+                    var tweet = decodedJson.tweets[i].text 
+                    // make a link to all hashtags
+                    /*   
+                    for (var j=0; j < decodedJson.tweets[i].entities.hashtags.length; j++){
+                            var hashtag = decodedJson.tweets[i].entities.hashtags[j].text
+                            tweet = tweet.replace('#' + hashtag , '</a><a target="_blank" href="https://twitter.com/hashtag/' + hashtag + '?src=hash">#' + hashtag + '</a>' + link_twitter);
+                    }
+                    */
+                    // wrapp a-tag around all links
+                    for (var j=0; j < decodedJson.tweets[i].entities.urls.length; j++){
+                            var url = decodedJson.tweets[i].entities.urls[j].url
+                            var expanded_url = decodedJson.tweets[i].entities.urls[j].expanded_url
+                            var display_url = decodedJson.tweets[i].entities.urls[j].display_url
+                            tweet = tweet.replace(url , '<a target="_blank" href="' + expanded_url + '">' + display_url + '</a>');
+                    }    
+
+                    html += '<li><p class="sogisHinweisText"><a href="https://twitter.com/_sogis/status/' + decodedJson.tweets[i].id_str + '" target="_blank"><img src="' + 'img/twitter.svg" width="14px" height="14px" alt="Twitter"></a> ' + tweet + '</p></li>';
+                }
+                html += '</ul>';
+                html += '</div>';
+                that.update(html);
+            }
+        });
+            }
+});
 
 /** api: xtype = wmsserviceinfopanel */
 Ext.reg('qgis_wmsserviceinfopanel', QGIS.WMSServiceInfoPanel);
-// BEGIN SOGIS
+Ext.reg('qgis_twitterservicepanel', QGIS.TwitterServicePanel);
+// END SOGIS
 
 /* *************************** QGIS.LayerOrderPanel **************************** */
 // extends Ext.Panel with a list of the active layers that can be ordered by the user

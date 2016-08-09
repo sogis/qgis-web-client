@@ -60,12 +60,12 @@ new objectIdentificationModes();
 */
 var sogis_menu = [ 
         {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/', 'title': 'Geoportal', 'class': 'sogis-aktiv', 'target':'_blank', 'submenu' : [
-            {'url': 'http://www.sogis1.so.ch/sogis/OnLineData/php/index.php', 'title': 'Geodatenbezug', 'target':'_blank'},
+            {'url': 'http://geoweb.so.ch/geodaten/index.php', 'title': 'Geodatenbezug', 'target':'_blank'},
             {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/interaktive-karten/', 'title': 'Interaktive Karten', 'target':'_blank'},
             {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/geodienste/', 'title': 'Geodienste', 'target':'_blank'},
-            {'url': 'http://www.sogis1.so.ch/sogis/OnLineData/php/datenbeschreibung_auswahl.php', 'title': 'Geodatenkatalog', 'target':'_blank'}
+            {'url': 'http://geoweb.so.ch/geodatenkatalog/datenbeschreibung_auswahl.php', 'title': 'Geodatenkatalog', 'target':'_blank'}
         ]}, 
-      {'url': 'http://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/rechtlicher-hinweis/', 'title': 'Rechtlicher Hinweis', 'target':'_blank'}
+      {'url': 'http://bgs.so.ch/frontend/versions/4288', 'title': 'Rechtlicher Hinweis', 'target':'_blank'}
     ]; 
 
     // Builds a HTML string for a nested menu (see above).
@@ -282,22 +282,34 @@ MyViewportUi = Ext.extend(Ext.Viewport, {
 							frame: false
 						}] // map items
 					}] // accordion items
-				}
-                // BEGIN SOGIS: wms service information
-                ,{
-                        xtype: 'qgis_wmsserviceinfopanel',
-                        id: 'WMSServiceInfoPanel',
-                        split: true,
-                        flex: 0.5,
-                        width: 'auto',
-                        layout: 'auto',
-                        maxHeight: 250,
-                        minHeight: 150,
-                        height: 200,
-                        autoScroll: true,
-                        border: false,
-                        frame: false
-                }
+				},
+                //BEGIN SOGIS: wms service information, twitter
+                {   
+                    xtype: 'qgis_twitterservicepanel',
+                    id: 'TwitterServicePanel',
+                    split: true,
+                    flex: 0.5,
+                    width: 'auto',
+                    minWidth: 300,
+                    height: 140,
+                    layout: 'auto',
+                    autoScroll: true,
+                    border: false,
+                    frame: false
+                },{ 
+                    xtype: 'qgis_wmsserviceinfopanel',
+                    id: 'WMSServiceInfoPanel',
+                    split: true,
+                    flex: 0.5,
+                    width: 'auto',
+                    layout: 'auto',
+                    maxHeight: 250,
+                    minHeight: 200,
+                    height: 200,
+                    autoScroll: true,
+                    border: false,
+                    frame: false
+                }   
                 //END SOGIS
             ] // left panel items
 			}, {

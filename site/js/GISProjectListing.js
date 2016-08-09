@@ -28,7 +28,7 @@ var wmts_layer_orthofoto = 	{
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Orthofoto",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Orthofoto",
                         "visibility": "True",
@@ -54,7 +54,7 @@ var wmts_layer_strassenkarte_sw = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_sw",
                         "visibility": "True",
@@ -79,7 +79,7 @@ var wmts_layer_strassenkarte_farbig = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_farbig",
                         "visibility": "True",
@@ -104,7 +104,7 @@ var wmts_layer_basisplan_sw = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -129,7 +129,7 @@ var wmts_layer_basisplan_farbig = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_farbig",
                         "visibility": "True",
@@ -226,54 +226,6 @@ var gis_projects = {
                 wmts_layer_orthofoto,
                 wmts_layer_strassenkarte_farbig,
                 wmts_layer_basisplan_farbig
-				]
-    },{
-          "projectpath": "",
-          "projectfile": "ivs",
-          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
-          //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Gemeindegrenzen,Grundkarte,IVS-Wegbegleiter,IVS-Objekte",
-          "updateInterval": "",
-          "responsible": "Amt für Raumplanung",
-          "tags": "Inventar der historischen Verkehrswege",
-          "switcher": true,
-          "sogiswmsserviceinfo": true,
-          "searchtables": "",
-          "sogissearchhint": "",
-          "sogistooltipwidth" : 450,
-          "sogistooltipheight" : 400,
-          "sogisbuttons" : default_buttons_seperators,
-          "sogisdefaultbutton" : "sogistooltip",
-          "sogismaxscale" : null,
-          "name": "Inventar der historischen Verkehrswege",
-          "wmtsLayers": [
-                wmts_layer_orthofoto,
-                wmts_layer_strassenkarte_farbig,
-                wmts_layer_basisplan_farbig
-                                ]
-    },{
-          "projectpath": "",
-          "projectfile": "geologie",
-          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
-          //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "",
-          "updateInterval": "",
-          "responsible": "Amt für Umwelt",
-          "tags": "Mocheckso",
-          "switcher": false,
-          "sogiswmsserviceinfo": true,
-          "searchtables": "",
-          "sogissearchhint": "",
-          "sogistooltipwidth" : 600,
-          "sogistooltipheight" : 300,
-          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','sogistooltip','ShowHelp'],
-          "sogisdefaultbutton" : "sogistooltip",
-          "sogismaxscale" : null,
-          "name": "Geologie_Internetkarte",
-          "wmtsLayers": [
-                wmts_layer_orthofoto,
-                wmts_layer_strassenkarte_sw,
-                wmts_layer_basisplan_sw
 				]
     },{
           "name": "LIDAR",
@@ -440,7 +392,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_farbig",
                         "visibility": "True",
@@ -463,7 +415,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -486,7 +438,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_farbig",
                         "visibility": "True",
@@ -533,7 +485,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_farbig",
                         "visibility": "True",
@@ -556,7 +508,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -579,7 +531,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_farbig",
                         "visibility": "True",
@@ -697,6 +649,29 @@ var gis_projects = {
          ]
 
     },{
+          "name": "Fischereireviere ",
+          "projectpath": "",
+          "projectfile": "fischrev",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Fischereireviere,Gewässer,Grundkarte,Gemeindegrenzen,Übersicht Wald",
+          "updateInterval": "",
+          "responsible": "Amt für Wald, Jagd und Fischerei",
+          "tags": "Fischereireviere",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "qwebclient.search_revierid, qwebclient.search_gewaesser",
+          "sogissearchhint": "- Revier-ID: <b>revierid</b> </br> - Gewässername: <b>gwname</b>",
+          "sogistooltipwidth" : 600, 
+          "sogistooltipheight" : 400, 
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+         ]    
+    },{
           "name": "Forstliche Grundlagendaten",
           "projectpath": "",
           "projectfile": "wald",
@@ -724,7 +699,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_sw",
                         "visibility": "True",
@@ -747,7 +722,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -768,10 +743,87 @@ var gis_projects = {
          ]
         },{
           "projectpath": "",
+          "projectfile": "geologie",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Fliessgewässer,Gemeindegrenzen,Parzellen,Schichtfallen,Abrisskanten,Karst,Tektonische Strukturen,Holozän,Pleistozän,Grundschicht,Basisplan (WMS),Grundkarte",
+          "updateInterval": "",
+          "responsible": "Amt für Umwelt",
+          "tags": "Geologie",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 600,
+          "sogistooltipheight" : 300,
+          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','sogistooltip','ShowHelp'],
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "Geologische Karte",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+                ]
+       },{  
+      "projectpath": "",
+          "projectfile": "pruefperimeter",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Strasse,Eisenbahn,Flugplatz,Schiessanlage,Korrosionsgeschützte Objekte,Familiengarten,"
+        + "Gärtnerei,Rebbaugebiet,Hopfenbaugebiet,Siedlungsgebiet,Bodenbelastungsgebiet,Gemeindegrenzen,Basisplan sw,Grundkarte",
+          //"format": "image/png; mode=8bit",
+          "fullColorLayers" : "Orthofoto",
+          "updateInterval": "",
+          "responsible": "Amt für Umwelt",
+          "tags": "Pruefperimeter",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 600, 
+          "sogistooltipheight" : 400, 
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : 1800,
+          "name": "Prüfperimeter Bodenabtrag",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+                ]    
+    },{  
+          "projectpath": "",
+          "projectfile": "sorkas",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Betriebe,Nationalstrassen,Durchgangsstrassen,Gasleitungen,Eisenbahn,Gemeindegrenzen,Konsultationsbereiche,Grundkarte schwarz-weiss",
+          //"format": "image/png; mode=8bit",
+          "fullColorLayers" : "Orthofoto",
+          "updateInterval": "",
+          "responsible": "Amt für Umwelt",
+          "tags": "SORKAS",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 600, 
+          "sogistooltipheight" : 400, 
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "Gefahrenhinweiskarte Störfälle",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+                ]    
+       },{
+          "projectpath": "",
           "projectfile": "gs",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Schutzzonen und -areale,Gewässerschutzbereiche,Grundkarte,Gemeindegrenzen",
+          "visibleLayers": "Schutzzonen und -areale,Fliessgewässer  ,Gewässerschutzbereiche,Grundkarte,Gemeindegrenzen",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Gewässerschutzkarte, Grundwasserkarte",
@@ -821,7 +873,7 @@ Fliessgewässer,Orthofoto",
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://www.sogis1.so.ch/mapcache/wmts",
+						"url": "http://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -907,12 +959,37 @@ Fliessgewässer,Orthofoto",
          ]
 
     },{
+      "projectpath": "",
+          "projectfile": "luftbelastung",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Stickstoffdioxid NO2 2010,Kantons- und Gemeindegrenzen,Grundkarte",
+          //"format": "image/png; mode=8bit",
+          "fullColorLayers" : "Orthofoto",
+          "updateInterval": "",
+          "responsible": "Amt für Umwelt",
+          "tags": "Luftbelastung",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 600,
+          "sogistooltipheight" : 400,
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : 18000,
+          "name": "Luftbelastung",
+          "wmtsLayers": [
+                //wmts_layer_orthofoto,
+                //wmts_layer_basisplan_sw
+				]
+    },{
           "name": "Naturgefahrenkarten und Gefahrenhinweiskarte",
           "projectpath": "",
           "projectfile": "naturgefahren",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Untersuchungsperimeter Gefahrenkarten,Einzelereignisse,GK synoptisch,Naturgefahren Hinweiskarte,Gemeindegrenzen,Grundkarte",
+          "visibleLayers": "Einzelereignisse,Gefahrenkarte synoptisch,Gemeindegrenzen,Grundkarte",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Naturgefahren",
@@ -935,7 +1012,7 @@ Fliessgewässer,Orthofoto",
           "projectfile": "neophyten",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Pflanzenlisten pro Jahr,Gemeindegrenzen,Orthofoto",
+          "visibleLayers": "Arten und Menge 2016,Gemeindegrenzen,Orthofoto",
           //"format": "image/png; mode=8bit",
           "fullColorLayers" : "Orthofoto",
           "updateInterval": "",
@@ -1026,7 +1103,7 @@ Fliessgewässer,Orthofoto",
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null,
-          "name": "EWS Online-Abfrage",
+          "name": "Erdwärmesonden Online-Abfrage",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
                 wmts_layer_strassenkarte_sw,
@@ -1080,6 +1157,30 @@ Fliessgewässer,Orthofoto",
                 wmts_layer_strassenkarte_farbig,
                 wmts_layer_basisplan_farbig
 				]
+    },{
+          "projectpath": "",
+          "projectfile": "ivs",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Gemeindegrenzen,Grundkarte,IVS-Wegbegleiter,IVS-Objekte",
+          "updateInterval": "",
+          "responsible": "Amt für Raumplanung",
+          "tags": "Inventar der historischen Verkehrswege",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 450,
+          "sogistooltipheight" : 400,
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "Inventar der historischen Verkehrswege",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_farbig,
+                wmts_layer_basisplan_farbig
+                                ]
     },{
           "projectpath": "",
           "projectfile": "lw_grund",
@@ -1221,7 +1322,7 @@ Fliessgewässer,Orthofoto",
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null,
-          "name": "ÖV-Erschliessungsgüte",
+          "name": "ÖV-Erschliessungsgüte 2016",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
                 wmts_layer_strassenkarte_sw,
