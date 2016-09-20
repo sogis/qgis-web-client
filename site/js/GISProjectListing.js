@@ -28,7 +28,7 @@ var wmts_layer_orthofoto = 	{
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Orthofoto",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Orthofoto",
                         "visibility": "True",
@@ -54,7 +54,7 @@ var wmts_layer_strassenkarte_sw = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_sw",
                         "visibility": "True",
@@ -79,7 +79,7 @@ var wmts_layer_strassenkarte_farbig = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_farbig",
                         "visibility": "True",
@@ -104,7 +104,7 @@ var wmts_layer_basisplan_sw = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -129,7 +129,7 @@ var wmts_layer_basisplan_farbig = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_farbig",
                         "visibility": "True",
@@ -149,8 +149,8 @@ var wmts_layer_basisplan_farbig = {
 				}
 
 var gis_projects = {
-  "path": "/maptest", /* DEPLOY !!! */
-  "mapserver": "/wmstest",
+  "path": "/map", /* DEPLOY !!! */
+  "mapserver": "/wms",
   "thumbnails": "/thumbnails",
   "title": "SO!GIS",
   "topics": [{
@@ -392,7 +392,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_farbig",
                         "visibility": "True",
@@ -415,7 +415,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -438,7 +438,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_farbig",
                         "visibility": "True",
@@ -485,7 +485,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_farbig",
                         "visibility": "True",
@@ -508,7 +508,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -531,7 +531,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_farbig",
                         "visibility": "True",
@@ -699,7 +699,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_sw",
                         "visibility": "True",
@@ -722,7 +722,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -873,7 +873,7 @@ Fliessgewässer,Orthofoto",
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb.so.ch/mapcache/wmts",
+						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
