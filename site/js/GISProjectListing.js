@@ -498,7 +498,7 @@ var gis_projects = {
 						"style": "default",
                         "projection" : new OpenLayers.Projection('EPSG:2056'),
                         "version": "1.0.0",
-                        "tileOrigin": new OpenLayers.LonLat(420000, 350000),
+                        "tileOrigin": new OpenLayers.LonLat(2420000, 1350000),
                         "resolutions": [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
                         "formatSuffix": "jpeg"
                      }
@@ -521,7 +521,7 @@ var gis_projects = {
 						"style": "default",
                         "projection" : new OpenLayers.Projection('EPSG:2056'),
                         "version": "1.0.0",
-                        "tileOrigin": new OpenLayers.LonLat(420000, 350000),
+                        "tileOrigin": new OpenLayers.LonLat(2420000, 1350000),
                         "resolutions": [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
                         "formatSuffix": "png"
                      }
@@ -544,7 +544,7 @@ var gis_projects = {
 						"style": "default",
                         "projection" : new OpenLayers.Projection('EPSG:2056'),
                         "version": "1.0.0",
-                        "tileOrigin": new OpenLayers.LonLat(420000, 350000),
+                        "tileOrigin": new OpenLayers.LonLat(2420000, 1350000),
                         "resolutions": [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
                         "formatSuffix": "png"
                      }
@@ -886,7 +886,7 @@ Fliessgewässer,Orthofoto",
 						"style": "default",
                         "projection" : new OpenLayers.Projection('EPSG:2056'),
                         "version": "1.0.0",
-                        "tileOrigin": new OpenLayers.LonLat(420000, 350000),
+                        "tileOrigin": new OpenLayers.LonLat(2420000, 1350000),
                         "resolutions": [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1],
                         "formatSuffix": "png"
                      }
