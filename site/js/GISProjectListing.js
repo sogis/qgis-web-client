@@ -1282,6 +1282,30 @@ Fliessgewässer,Orthofoto",
 				]
     },{
           "projectpath": "",
+          "projectfile": "sirenenplanung",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Sirenen, Gemeindegrenzen, Wald, Grundkarte",
+          "updateInterval": "",
+          "responsible": "Amt für Militär und Bevölkerungsschutz",
+          "tags": "Sirenenplanung",
+          "switcher": false,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 450,
+          "sogistooltipheight" : 400,
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "Sirenenplanung",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+				]
+    },{
+          "projectpath": "",
           "projectfile": "oev",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
@@ -1290,7 +1314,7 @@ Fliessgewässer,Orthofoto",
           "responsible": "Amt für Verkehr",
           "tags": "Öffentlicher Verkehr",
           "switcher": true,
-          "sogiswmsserviceinfo": true,
+          "sogiswmsserviceinfo": true, 
           "searchtables": "",
           "sogissearchhint": "",
           "sogistooltipwidth" : 450,
