@@ -156,6 +156,31 @@ var gis_projects = {
   "topics": [{
       "name": "Grundlagen und Planung",
       "projects": [{
+          "name": "Agglomerationsprogramm",
+          "projectpath": "",
+          "projectfile": "agglo",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Massnahmen,Grundkarte",
+          "updateInterval": "",
+          "responsible": "Amt für Raumplanung",
+          "tags": "Agglomerationsprogramm",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 600,
+          "sogistooltipheight" : 300,
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : 3000,
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+				]
+   
+    },{        
           "projectpath": "",
           "projectfile": "gebaeudeadressen",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
@@ -178,8 +203,8 @@ var gis_projects = {
                 wmts_layer_orthofoto,
                 wmts_layer_strassenkarte_sw,
                 wmts_layer_basisplan_sw
-                ]    
-    },{  
+                ] 
+   },{
           "projectpath": "",
           "projectfile": "av_gb_abgleich",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
@@ -202,7 +227,31 @@ var gis_projects = {
                 wmts_layer_orthofoto,
                 wmts_layer_strassenkarte_sw,
                 wmts_layer_basisplan_sw
-          ]    
+          ] 
+   },{
+          "projectpath": "",
+          "projectfile": "av_kaso_abgleich",
+          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
+          //"fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Übersicht, Gemeindegrenzen, Grundkarte",
+          "updateInterval": "",
+          "responsible": "Amtliche Vermessung",
+          "tags": "Abgleich KASO AV",
+          "switcher": false,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 420, 
+          "sogistooltipheight" : 300, 
+          "sogisbuttons" : ['measureDistance','measureArea','SendPermalink','PrintMap','sogistooltip','ShowHelp'],
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "av_kaso_abgleich",
+          "wmtsLayers": [
+                wmts_layer_orthofoto,
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+          ]   
     },{
           "projectpath": "",
           "projectfile": "hoheitsgrenzsteine",
@@ -381,7 +430,7 @@ var gis_projects = {
           "sogistooltipwidth" : 400,
           "sogistooltipheight" : 300,
           "sogisbuttons" : default_buttons_seperators,
-          "sogisdefaultbutton" : "sogistooltip",
+          "sogisdefultbutton" : "sogistooltip",
           "sogismaxscale" : null,
           "name": "Plan für das Grundbuch",
           "wmtsLayers": [
