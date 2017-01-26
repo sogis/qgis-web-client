@@ -165,7 +165,7 @@ var gis_projects = {
           "updateInterval": "",
           "responsible": "Amt für Raumplanung",
           "tags": "Agglomerationsprogramm",
-          "switcher": true,
+          "switcher": false,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
