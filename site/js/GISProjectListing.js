@@ -430,7 +430,7 @@ var gis_projects = {
           "sogistooltipwidth" : 400,
           "sogistooltipheight" : 300,
           "sogisbuttons" : default_buttons_seperators,
-          "sogisdefultbutton" : "sogistooltip",
+          "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null,
           "name": "Plan für das Grundbuch",
           "wmtsLayers": [
