@@ -1,4 +1,4 @@
-var servername = "http://" + location.href.split(/\/+/)[1];
+var servername = "https://" + location.href.split(/\/+/)[1];
 var strSOGISTooltipURL = servername + '/maps/qgis-web-tooltip/'; // URL to the SOGIS tooltip
 var origPrintCapabilities = printCapabilities;
 

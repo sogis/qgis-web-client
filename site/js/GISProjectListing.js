@@ -28,7 +28,7 @@ var wmts_layer_orthofoto = 	{
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Orthofoto",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Orthofoto",
                         "visibility": "True",
@@ -54,7 +54,7 @@ var wmts_layer_strassenkarte_sw = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_sw",
                         "visibility": "True",
@@ -79,7 +79,7 @@ var wmts_layer_strassenkarte_farbig = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_farbig",
                         "visibility": "True",
@@ -104,7 +104,7 @@ var wmts_layer_basisplan_sw = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -129,7 +129,7 @@ var wmts_layer_basisplan_farbig = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_farbig",
                         "visibility": "True",
@@ -161,11 +161,11 @@ var gis_projects = {
           "projectfile": "agglo",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Massnahmen,Grundkarte",
+          "visibleLayers": "Aggloprogramme,Grundkarte",
           "updateInterval": "",
           "responsible": "Amt für Raumplanung",
           "tags": "Agglomerationsprogramm",
-          "switcher": false,
+          "switcher": true,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
@@ -441,7 +441,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_farbig",
                         "visibility": "True",
@@ -464,7 +464,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -487,7 +487,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_farbig",
                         "visibility": "True",
@@ -534,7 +534,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_farbig",
                         "visibility": "True",
@@ -557,7 +557,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -580,7 +580,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_farbig",
                         "visibility": "True",
@@ -748,7 +748,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_sw",
                         "visibility": "True",
@@ -771,7 +771,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -922,7 +922,7 @@ Fliessgewässer,Orthofoto",
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "http://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",

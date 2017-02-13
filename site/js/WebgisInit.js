@@ -1997,7 +1997,7 @@ function mapToolbarHandler(btn, evt) {
     if (btn.id == "SendPermalink") {
         var permalink = createPermalink();
         if (permaLinkURLShortener) {
-            var servername = "http://"+location.href.split(/\/+/)[1];
+            var servername = "https://"+location.href.split(/\/+/)[1];
             Ext.Ajax.request({
               url: servername + permaLinkURLShortener,
               success: receiveShortPermalinkFromDB,
@@ -2122,7 +2122,7 @@ function createPermalink(){
 
     if (!norewrite){
         var servername = location.href.split(/\/+/)[1];
-        permalink = "http://"+servername;
+        permalink = "https://"+servername;
         if (gis_projects) {
             permalink += gis_projects.path + "/";
         }
