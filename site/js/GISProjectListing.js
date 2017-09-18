@@ -600,12 +600,12 @@ var gis_projects = {
 				}
 				]
     },{
-          "name": "Richtplankarte",
+          "name": "Richtplan",
           "projectpath": "",
           "projectfile": "richtplan",
           //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
           //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "Gemeindegrenzen,Grundnutzung,Überlagerte Nutzung,Einzelobjekte,Grundkarte",
+          "visibleLayers": "Gemeindegrenzen,Grundnutzung,Siedlung (S),Landschaft (L),Verkehr (V),Ver- und Entsorgung (E),Punktsymbole,Grundkarte",
           "updateInterval": "",
           "responsible": "Amt für Raumplanung",
           "tags": "Richtplan",
@@ -623,28 +623,7 @@ var gis_projects = {
                 wmts_layer_strassenkarte_sw,
                 wmts_layer_basisplan_sw
 				]
-   },{
-          "name": "Anhörung Richtplan 2015",
-          "projectpath": "",
-          "projectfile": "richtplan_anhoerung2015",
-          //"format": "image/png; mode=8bit", //only active after switching, initial def in GetUrlParams.js
-          //"fullColorLayers" : "Orthofoto", //obsolete
-          "visibleLayers": "",
-          "updateInterval": "",
-          "responsible": "Amt für Raumplanung",
-          "tags": "Richtplan",
-          "switcher": false,
-          "sogiswmsserviceinfo": true,
-          "searchtables": "",
-          "sogissearchhint": "",
-          "sogistooltipwidth" : 600,
-          "sogistooltipheight" : 300,
-          "sogisbuttons" : default_buttons_seperators,
-          "sogisdefaultbutton" : "sogistooltip",
-          "sogismaxscale" : 18000
-          //"wmtsLayers": []
    }
-
 ]
   },{
 /* NATUR UND UMWELT *************************************************************************************** */
