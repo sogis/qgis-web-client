@@ -372,6 +372,28 @@ var gis_projects = {
                 wmts_layer_basisplan_sw
 				]
     },{
+          "projectpath": "",
+          "projectfile": "nutzungsplanung",
+          "fullColorLayers" : "Orthofoto", //obsolete
+          "visibleLayers": "Grundnutzung,Perimeter,Grundkarte,Gemeindegrenzen, Grundstücke",
+          "updateInterval": "",
+          "responsible": "Amt für Raumplanung",
+          "tags": "Nutzungsplanung",
+          "switcher": true,
+          "sogiswmsserviceinfo": true,
+          "searchtables": "",
+          "sogissearchhint": "",
+          "sogistooltipwidth" : 400,
+          "sogistooltipheight" : 300,
+          "sogisbuttons" : default_buttons_seperators,
+          "sogisdefaultbutton" : "sogistooltip",
+          "sogismaxscale" : null,
+          "name": "Nutzungsplanung",
+		    "wmtsLayers": [
+                wmts_layer_strassenkarte_sw,
+                wmts_layer_basisplan_sw
+				]
+    },{
           "name": "Grundbuchplan (wms)",
           "projectpath": "",
           "projectfile": "grundbuchplan",
