@@ -388,7 +388,7 @@ var gis_projects = {
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null,
-          "name": "Nutzungsplanung",
+          "name": "Nutzungspläne",
 		    "wmtsLayers": [
                 wmts_layer_strassenkarte_sw,
                 wmts_layer_basisplan_sw
