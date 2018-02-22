@@ -1396,7 +1396,7 @@ Fliessgewässer,Orthofoto",
           "sogisbuttons" : default_buttons_seperators,
           "sogisdefaultbutton" : "sogistooltip",
           "sogismaxscale" : null,
-          "name": "ÖV-Erschliessungsgüte 2016",
+          "name": "ÖV-Erschliessungsgüte",
           "wmtsLayers": [
                 wmts_layer_orthofoto,
                 wmts_layer_strassenkarte_sw,
