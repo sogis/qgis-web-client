@@ -445,7 +445,7 @@ var gis_projects = {
           "updateInterval": "täglich",
           "responsible": "Amtliche Vermessung",
           "tags": "Grundbuchplan",
-          "switcher": false,
+          "switcher": true,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
