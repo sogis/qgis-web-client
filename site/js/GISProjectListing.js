@@ -684,7 +684,7 @@ var gis_projects = {
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Bodeninformationen Kanton Solothurn",
-          "switcher": false,
+          "switcher": true,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
