@@ -28,7 +28,7 @@ var wmts_layer_orthofoto = 	{
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Orthofoto",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Orthofoto",
                         "visibility": "True",
@@ -54,7 +54,7 @@ var wmts_layer_strassenkarte_sw = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_sw",
                         "visibility": "True",
@@ -79,7 +79,7 @@ var wmts_layer_strassenkarte_farbig = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_farbig",
                         "visibility": "True",
@@ -104,7 +104,7 @@ var wmts_layer_basisplan_sw = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -129,7 +129,7 @@ var wmts_layer_basisplan_farbig = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_farbig",
                         "visibility": "True",
@@ -463,7 +463,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_farbig",
                         "visibility": "True",
@@ -486,7 +486,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -509,7 +509,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_farbig",
                         "visibility": "True",
@@ -556,7 +556,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_farbig",
                         "visibility": "True",
@@ -579,7 +579,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -602,7 +602,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_farbig",
                         "visibility": "True",
@@ -684,7 +684,7 @@ var gis_projects = {
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Bodeninformationen Kanton Solothurn",
-          "switcher": true,
+          "switcher": false,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
@@ -749,7 +749,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Strassenkarte",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Strassenkarte_sw",
                         "visibility": "True",
@@ -772,7 +772,7 @@ var gis_projects = {
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -905,7 +905,7 @@ Fliessgewässer,Orthofoto",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Grundwasserbewirtschaftung",
-          "switcher": true,
+          "switcher": false,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
@@ -923,7 +923,7 @@ Fliessgewässer,Orthofoto",
 					// WMTS base layer config
 					"wmtsConfig": {
 						"name": "Basisplan",
-						"url": "https://geoweb-t.rootso.org/mapcache/wmts",
+						"url": "https://geoweb.so.ch/mapcache/wmts",
                         "requestEncoding": "REST",
 						"layer": "Basisplan_sw",
                         "visibility": "True",
@@ -1144,7 +1144,7 @@ Fliessgewässer,Orthofoto",
           "updateInterval": "",
           "responsible": "Amt für Umwelt",
           "tags": "Meine Tags",
-          "switcher": true,
+          "switcher": false,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
@@ -1168,7 +1168,7 @@ Fliessgewässer,Orthofoto",
           "updateInterval": "",
           "responsible": "Amt für Verkehr und Tiefbau",
           "tags": "Gesamtverkehrsmodell 2010",
-          "switcher": true,
+          "switcher": false,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
@@ -1291,7 +1291,7 @@ Fliessgewässer,Orthofoto",
           "updateInterval": "",
           "responsible": "Amt für Wirtschaft und Arbeit",
           "tags": "Strom",
-          "switcher": true,
+          "switcher": false,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
@@ -1411,7 +1411,7 @@ Fliessgewässer,Orthofoto",
           "updateInterval": "",
           "responsible": "Amt für Verkehr und Tiefbau",
           "tags": "Verkehrszählung 2005 / 2010",
-          "switcher": true,
+          "switcher": false,
           "sogiswmsserviceinfo": true,
           "searchtables": "",
           "sogissearchhint": "",
