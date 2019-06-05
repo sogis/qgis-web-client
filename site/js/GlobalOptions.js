@@ -10,7 +10,7 @@ var customGetUrlParamsParser = null;
 //Servername (optional) and path and name name of QGIS Server FCGI-file
 //either with or without server-name - without servername recommended for easier porting to other servers
 //do not add a ? or & after the .fcgi extension
-var serverAndCGI = "https://geoweb-t.rootso.org/wms";
+var serverAndCGI = "https://geoweb.so.ch/wms";
 
 //Optional url for print server hosted on a different server. Default: same as above.
 // var serverAndCGI = "http://otherserver/cgi-bin/qgis_mapserv.fcgi";
@@ -329,7 +329,7 @@ var OverviewMapMaximized = true; // is the overview map opend or closed by defau
 var overviewLayer = new OpenLayers.Layer.WMTS({
     projection: new OpenLayers.Projection('EPSG:2056'),
     name: "Strassenkarte_farbig",
-    url: "https://geoweb-t.rootso.org/mapcache/wmts",
+    url: "https://geoweb.so.ch/mapcache/wmts",
     requestEncoding: 'REST',
     buffer: 0,
     zoomOffset: 15,
@@ -417,7 +417,7 @@ var printCapabilities={
   // c. fill in the URL to the proxy "url_proxy":"http://www.urltoproxy/printpostget.wsgi?
   //
   "method":"POST", // POST or GET
-  "url_proxy": "https://geoweb-t.rootso.org/rest/qgis/printpostget.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
+  "url_proxy": "https://geoweb.so.ch/rest/qgis/printpostget.wsgi" // url to printpostget.wsgi  http://www.urltoproxy/printpostget.wsgi?
 };
 var exportCapabilities = printCapabilities;
 

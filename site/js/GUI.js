@@ -101,7 +101,7 @@ var layoutHeaderCfg = {
 		{
 			tag: 'div',
 			id: 'panel_header_link',
-			html: '<a></a>'
+		html: '</br> Der Web GIS Client des Kanton Solothurn ist umgezogen! Sie erreichen den neuen Web GIS Client unter <a href="geo.so.ch/map">https://geo.so.ch/map</a>.</br>Nähere Informationen dazu finden Sie unter <a href="https://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/interaktive-karten/">https://www.so.ch/verwaltung/bau-und-justizdepartement/amt-fuer-geoinformation/geoportal/interaktive-karten/</a>'
 		},
 		{
 			tag: 'div',

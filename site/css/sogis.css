@@ -25,6 +25,11 @@ body {
 	position: absolute;
 }
 
+.x-panel-header-text {
+        font-size: 17px;
+}
+
+
 .sogis-header-text {
     font-family: "Frutiger LT Com 55 Roman",Arial,sans,sans-serif;
     color: #656d78;
